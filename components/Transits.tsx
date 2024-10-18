@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { Text, View } from '@/components/Themed'
 import { imagesMap } from '@/assets/glyphs/exports'
 import { card } from '@/constants/Styles'
-import { Transit, TransitsProps } from '@/types/contentful'
+import { TransitsProps } from '@/types/contentful'
 
 const Transits: FC<TransitsProps> = ({ transits }) => {
   return (
