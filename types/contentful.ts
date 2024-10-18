@@ -37,6 +37,10 @@ export interface BlogPostQueryVariables {
   tomorrow?: Date
 }
 
+export interface TransitsProps {
+  transits: Transit[]
+}
+
 export interface RenderMarkdownNode {
   key: string
   attributes: {

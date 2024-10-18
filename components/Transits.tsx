@@ -3,18 +3,7 @@ import { FC } from 'react'
 import { Text, View } from '@/components/Themed'
 import { imagesMap } from '@/assets/glyphs/exports'
 import { card } from '@/constants/Styles'
-
-interface Transit {
-  planet: string
-  sign: string
-  aspect: string
-  transitingPlanet?: string
-  transitingSign?: string
-}
-
-interface TransitsProps {
-  transits: Transit[]
-}
+import { Transit, TransitsProps } from '@/types/contentful'
 
 const Transits: FC<TransitsProps> = ({ transits }) => {
   return (
