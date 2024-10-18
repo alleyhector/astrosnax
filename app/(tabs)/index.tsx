@@ -1,17 +1,33 @@
 import { ScrollView, StyleSheet } from 'react-native'
 import { textShadow } from '@/constants/Styles'
-import EditScreenInfo from '@/components/EditScreenInfo'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Text, View } from '@/components/Themed'
+import Today from '@/components/Today'
+import Tomorrow from '@/components/Tomorrow'
 
-export default function TabOneScreen() {
+const HomeScreen = () => {
+  const insets = useSafeAreaInsets()
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>AstroSnax</Text>
-      <Text style={styles.subtitle}>Food for celestial thought</Text>
-      <EditScreenInfo path='app/(tabs)/index.tsx' />
+    <View
+      style={{
+        paddingTop: insets.top,
+        backgroundColor: '#fff',
+      }}
+    >
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.title}>AstroSnax</Text>
+          <Text style={styles.subtitle}>Food for celestial thought</Text>
+          <Today />
+          <Tomorrow />
+        </View>
+      </ScrollView>
     </View>
   )
 }
+
+export default HomeScreen
 
 const styles = StyleSheet.create({
   container: {
