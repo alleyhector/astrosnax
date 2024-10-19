@@ -30,6 +30,7 @@ export interface Transit {
   aspect: string
   transitingPlanet: string
   transitingSign: string
+  foods?: string
 }
 
 export interface BlogPostQueryVariables {

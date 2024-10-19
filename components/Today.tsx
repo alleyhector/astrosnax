@@ -44,6 +44,7 @@ const QUERY_TODAY_POST = gql`
             aspect
             transitingPlanet
             transitingSign
+            foods
           }
         }
       }

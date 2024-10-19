@@ -4,10 +4,12 @@ import { Text, View } from '@/components/Themed'
 import { imagesMap } from '@/assets/glyphs/exports'
 import { card } from '@/constants/Styles'
 import { TransitsProps } from '@/types/contentful'
+import Recipes from './Recipes'
 
 const Transits: FC<TransitsProps> = ({ transits }) => {
   return (
     <>
+      {/* Ingresses, i.e. don't have a transiting planet */}
       {transits &&
         transits.map((transit, index) => {
           return (
@@ -38,10 +40,14 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                         imagesMap[transit?.sign ?? ''] as ImageSourcePropType
                       }
                     />
+                    {transit.foods && (
+                      <Recipes query={transit.foods.toString()} />
+                    )}
                   </View>
                 </>
               ) : (
                 <>
+                  {/* All normal transits with a transiting planet */}
                   <Text style={styles.transitText}>
                     {`${transit.planet} in ${transit.sign} `}
                     {transit.transitingPlanet &&
@@ -113,6 +119,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                   </View>
                 </>
               )}
+              {transit.foods && <Recipes query={transit.foods.toString()} />}
             </View>
           )
         })}
@@ -139,6 +146,13 @@ const styles = StyleSheet.create({
   image: {
     width: 40,
     height: 40,
+    resizeMode: 'contain',
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  recipeimage: {
+    width: 100,
+    height: 100,
     resizeMode: 'contain',
     flex: 1,
     backgroundColor: 'transparent',

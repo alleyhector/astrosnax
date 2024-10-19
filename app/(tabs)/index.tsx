@@ -20,7 +20,6 @@ const HomeScreen = () => {
           <Text style={styles.title}>AstroSnax</Text>
           <Text style={styles.subtitle}>Food for celestial thought</Text>
           <Today />
-          <Tomorrow />
         </View>
       </ScrollView>
     </View>

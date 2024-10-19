@@ -35,6 +35,7 @@ const QUERY_POSTS = gql`
             aspect
             transitingPlanet
             transitingSign
+            foods
           }
         }
       }
