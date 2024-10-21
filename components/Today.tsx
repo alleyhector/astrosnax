@@ -111,9 +111,11 @@ const Today: FC = () => {
           <Text style={styles.menu}>{date}</Text>
           <Text style={styles.menu}>On today's astrological menu:</Text>
           <Transits transits={post.transitCollection.items} />
-          <Markdown rules={rules} style={markdownStyles}>
-            {post.body}
-          </Markdown>
+          {post.body && (
+            <Markdown rules={rules} style={markdownStyles}>
+              {post.body}
+            </Markdown>
+          )}
         </View>
       )}
     </View>
