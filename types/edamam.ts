@@ -1,5 +1,6 @@
 export interface RecipeProps {
   query: string
+  cuisineType?: string
 }
 
 export interface RecipeSearchResponse {
