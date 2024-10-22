@@ -21,13 +21,13 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
         return ['coffee', 'american']
         break
       case 'Venus':
-        return ['chocolate', 'french']
+        return ['egg', 'french']
         break
       case 'Mars':
         return ['cheese', 'italian']
         break
       case 'Jupiter':
-        return ['pasta', 'greek']
+        return ['chicken', 'greek']
         break
       case 'Saturn':
         return ['potato', 'central europe']
@@ -36,10 +36,10 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
         return ['spicy', 'caribbean']
         break
       case 'Neptune':
-        return ['soup', 'mediterranean']
+        return ['oil', 'mediterranean']
         break
       case 'Pluto':
-        return ['fermented', 'asian']
+        return ['mushroom', 'asian']
         break
       case 'Aries':
         return ['beans', 'american']
@@ -48,7 +48,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
         return ['butter', 'french']
         break
       case 'Gemini':
-        return ['pie', 'middle eastern']
+        return ['onion', 'middle eastern']
         break
       case 'Cancer':
         return ['bread', 'italian']
@@ -75,7 +75,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
         return ['vinegar', 'asian']
         break
       case 'Pisces':
-        return ['wine', 'eastern europe']
+        return ['fish', 'eastern europe']
         break
       case 'trine':
         return 'salt'
@@ -219,9 +219,9 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
               <Recipes
                 query={`${getFood(transit.planet)[0]},${
                   getFood(transit.sign)[0]
-                },${getFood(transit.aspect ?? '')},${
-                  getFood(transit.transitingPlanet)[0] ?? ''
-                },${getFood(transit.transitingSign)[0] ?? ''}`}
+                },${getFood(transit.transitingPlanet)[0] ?? ''},${
+                  getFood(transit.transitingSign)[0] ?? ''
+                },${getFood(transit.aspect)}`}
                 cuisineType={getFood(transit.planet)[1] ?? ''}
               />
             </View>
