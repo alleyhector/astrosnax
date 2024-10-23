@@ -9,22 +9,10 @@ import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import 'react-native-reanimated'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
-
+import { ApolloProvider } from '@apollo/client'
+import { client } from '@/API/ContentfulAPI'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
-
-const cache = new InMemoryCache()
-
-const client = new ApolloClient({
-  uri: `https://graphql.contentful.com/content/v1/spaces/125gutb64ghd/environments/master`,
-  cache,
-  credentials: 'same-origin',
-  headers: {
-    Authorization: `Bearer 9FWSJEan0TbEEPrW6g9FVA93wNsGPK47DVKQGVXIbVg`,
-  },
-})
 
 export {
   // Catch any errors thrown by the Layout component.
