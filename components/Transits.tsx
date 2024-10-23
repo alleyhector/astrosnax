@@ -134,12 +134,6 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                       }
                     />
                   </View>
-                  <Recipes
-                    query={`${getFood(transit.planet)[0]},${
-                      getFood(transit.sign)[0]
-                    },${getFood(transit.aspect)}`}
-                    cuisineType={getFood(transit.planet)[1] ?? ''}
-                  />
                 </>
               ) : (
                 <>
@@ -215,15 +209,23 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                   </View>
                 </>
               )}
-
-              <Recipes
-                query={`${getFood(transit.planet)[0]},${
-                  getFood(transit.sign)[0]
-                },${getFood(transit.transitingPlanet)[0] ?? ''},${
-                  getFood(transit.transitingSign)[0] ?? ''
-                },${getFood(transit.aspect)}`}
-                cuisineType={getFood(transit.planet)[1] ?? ''}
-              />
+              {transit.aspect === 'ingress' ? (
+                <Recipes
+                  query={`${getFood(transit.planet)[0]},${
+                    getFood(transit.sign)[0]
+                  },${getFood(transit.aspect)}`}
+                  cuisineType={getFood(transit.planet)[1] ?? ''}
+                />
+              ) : (
+                <Recipes
+                  query={`${getFood(transit.planet)[0]},${
+                    getFood(transit.sign)[0]
+                  },${getFood(transit.transitingPlanet)[0] ?? ''},${
+                    getFood(transit.transitingSign)[0] ?? ''
+                  },${getFood(transit.aspect)}`}
+                  cuisineType={getFood(transit.planet)[1] ?? ''}
+                />
+              )}
             </View>
           )
         })}
@@ -239,24 +241,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 30,
   },
   transitText: {
     marginTop: 5,
     marginBottom: 15,
     fontFamily: 'NimbusBold',
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'center',
   },
   image: {
     width: 40,
     height: 40,
-    resizeMode: 'contain',
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
-  recipeimage: {
-    width: 100,
-    height: 100,
     resizeMode: 'contain',
     flex: 1,
     backgroundColor: 'transparent',

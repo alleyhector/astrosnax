@@ -33,6 +33,7 @@ const AboutScreen = () => {
       style={{
         paddingTop: insets.top,
         backgroundColor: '#fff',
+        display: 'flex',
       }}
     >
       <ScrollView>

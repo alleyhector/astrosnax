@@ -106,11 +106,13 @@ const Today: FC = () => {
           also worked but I didn't like it as much without the string literal 
           href={('/' + post?.slug) as Href} */}
           <Link href={`/${post?.slug as Href}`} style={styles.title}>
-            {post.title}
+            <Text style={styles.menu}>{date}</Text>
           </Link>
-          <Text style={styles.menu}>{date}</Text>
           <Text style={styles.menu}>On today's astrological menu:</Text>
-          <Transits transits={post.transitCollection.items} />
+          {post.transitCollection && (
+            <Transits transits={post.transitCollection.items} />
+          )}
+
           {post.body && (
             <Markdown rules={rules} style={markdownStyles}>
               {post.body}

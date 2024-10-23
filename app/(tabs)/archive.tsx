@@ -59,6 +59,7 @@ const ArchiveScreen = () => {
       style={{
         paddingTop: insets.top,
         backgroundColor: '#fff',
+        display: 'flex',
       }}
     >
       <FlatList

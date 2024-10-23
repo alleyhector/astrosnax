@@ -1,4 +1,3 @@
-import React from 'react'
 import { Image, StyleSheet, ScrollView } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { gql, useQuery } from '@apollo/client'
@@ -47,11 +46,7 @@ const PostDetails = () => {
     fetchPolicy: 'no-cache',
     variables: { slug },
   })
-  let post
-  if (!loading) {
-    post = data?.blogPostCollection?.items[0]
-  }
-  console.log(post)
+  const post = data?.blogPostCollection?.items[0]
 
   return (
     <ScrollView>

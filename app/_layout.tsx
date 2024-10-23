@@ -42,10 +42,10 @@ SplashScreen.preventAutoHideAsync()
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     Courier: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    Nimbus: require('../assets/fonts/Nimbus/NimbusSans-Regular.ttf'),
-    NimbusBold: require('../assets/fonts/Nimbus/NimbusSans-Bold.ttf'),
-    NimbusItalic: require('../assets/fonts/Nimbus/NimbusSans-Italic.ttf'),
-    NimbusBoldItalic: require('../assets/fonts/Nimbus/NimbusSans-BoldItalic.ttf'),
+    Nimbus: require('../assets/fonts/Nimbus/NimbusSans-Regular.otf'),
+    NimbusBold: require('../assets/fonts/Nimbus/NimbusSans-Bold.otf'),
+    NimbusItalic: require('../assets/fonts/Nimbus/NimbusSans-Italic.otf'),
+    NimbusBoldItalic: require('../assets/fonts/Nimbus/NimbusSans-BoldItalic.otf'),
     AngelClub: require('../assets/fonts/AngelClub/AngelClub.otf'),
     ...FontAwesome.font,
   })

@@ -19,6 +19,13 @@ const HomeScreen = () => {
         <View style={styles.container}>
           <Text style={styles.title}>AstroSnax</Text>
           <Text style={styles.subtitle}>Food for celestial thought</Text>
+          <Text style={styles.p}>
+            What's the astrological weather report for today? Below you will
+            find a list of today's transits. Interpret them how you will. I have
+            done so by providing recipes created with the mashup of these
+            cosmological characters and dishes that express how their powers
+            combine...for better or worse...
+          </Text>
           <Today />
         </View>
       </ScrollView>
@@ -30,7 +37,7 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -47,6 +54,12 @@ const styles = StyleSheet.create({
     margin: 10,
     textAlign: 'center',
     ...textShadow,
+  },
+  p: {
+    fontFamily: 'NimbusRegular',
+    fontSize: 16,
+    margin: 30,
+    marginTop: 20,
   },
   separator: {
     marginVertical: 30,

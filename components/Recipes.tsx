@@ -3,6 +3,7 @@ import { Image, StyleSheet } from 'react-native'
 import { View, Text } from './Themed'
 import { searchRecipe } from '@/API/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
+import { Link } from 'expo-router'
 
 const Recipes = ({ query, cuisineType }: RecipeProps) => {
   console.log(query, cuisineType)
@@ -12,8 +13,6 @@ const Recipes = ({ query, cuisineType }: RecipeProps) => {
   // Function to fetch the recipe based on the query
   const displayRecipe = async ({ query, cuisineType }: RecipeProps) => {
     const data = await searchRecipe({ query, cuisineType })
-
-    // console.log(recipes[0].recipe.ingredients[0].text)
 
     if (data) {
       setRecipes(data.hits.slice(0, 2))
@@ -31,19 +30,21 @@ const Recipes = ({ query, cuisineType }: RecipeProps) => {
     <View style={styles.container}>
       {recipes &&
         recipes.map((recipe, index) => (
-          <View key={index}>
-            <Text style={styles.recipeTitle}>{recipe.recipe.label}</Text>
-            <Image
-              source={{ uri: recipe.recipe.image }}
-              style={styles.recipeImage}
-            />
-            {/* <Text>Ingredients:</Text>
-            {recipe.recipe.ingredients.map((ingredient, index) => (
-              <View style={styles.ingredients} key={index}>
-                <Text style={styles.bullet}>•</Text>
-                <Text style={styles.itemText}>{ingredient.text}</Text>
-              </View>
-            ))} */}
+          <View style={styles.flex} key={index}>
+            <View>
+              <Image
+                source={{ uri: recipe.recipe.image }}
+                style={styles.recipeImage}
+              />
+            </View>
+            <View style={styles.recipeTextContainer}>
+              <Link style={styles.recipeTitle} href={recipe.recipe.url}>
+                <Text>{recipe.recipe.label}</Text>
+              </Link>
+              <Link href={recipe.recipe.url}>
+                <Text>View Recipe</Text>
+              </Link>
+            </View>
           </View>
         ))}
     </View>
@@ -56,32 +57,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'transparent',
+    backgroundColor: '#f2ead8',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  flex: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 10,
+    backgroundColor: '#f2ead8',
+  },
+
+  recipeImageContainer: {
+    flex: 1,
+  },
+  recipeImage: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  recipeTextContainer: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#f2ead8',
+    marginTop: 5,
+    marginBottom: 15,
+    fontFamily: 'NimbusBold',
+    textAlign: 'center',
   },
   recipeTitle: {
     marginTop: 5,
     marginBottom: 15,
     fontFamily: 'NimbusBold',
-    fontSize: 18,
-    textAlign: 'center',
-  },
-  recipeImage: {
-    width: 300,
-    height: 300,
-    resizeMode: 'contain',
-    alignSelf: 'center',
-  },
-  ingredients: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  bullet: {
-    fontSize: 18,
-    marginRight: 10, // Spacing between bullet and text
-  },
-  itemText: {
     fontSize: 16,
+    textAlign: 'left',
   },
 })
