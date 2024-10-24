@@ -1,9 +1,8 @@
 import { Image, StyleSheet, ScrollView } from 'react-native'
-import { Text, View, useThemeColor } from '@/components/Themed'
+import { Text, View } from '@/components/Themed'
 import { gql, useQuery } from '@apollo/client'
 import Markdown from 'react-native-markdown-display'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { dropShadow } from '@/constants/Styles'
 
 const QUERY_ABOUT = gql`
   {
@@ -22,7 +21,7 @@ const QUERY_ABOUT = gql`
 
 const AboutScreen = () => {
   const insets = useSafeAreaInsets()
-  const { data, refetch } = useQuery(QUERY_ABOUT, {
+  const { data } = useQuery(QUERY_ABOUT, {
     fetchPolicy: 'no-cache',
   })
 
