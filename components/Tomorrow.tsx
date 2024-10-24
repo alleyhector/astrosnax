@@ -56,7 +56,7 @@ const rules = {
     node: RenderMarkdownNode,
     children: ReactNode[],
     parent: any,
-    styles: MarkdownStyles
+    styles: MarkdownStyles,
   ) => {
     const { src, alt } = node.attributes
 
@@ -82,7 +82,7 @@ const Tomorrow: FC = () => {
     today.getUTCDate() + 1,
     8,
     0,
-    0
+    0,
   )
 
   const { data, loading, refetch } = useQuery<
@@ -95,7 +95,7 @@ const Tomorrow: FC = () => {
 
   const post: BlogPost | undefined = data?.blogPostCollection?.items[0]
   const date: string | undefined = new Date(
-    post?.sys?.publishedAt!
+    post?.sys?.publishedAt!,
   ).toLocaleDateString('en-us', {
     weekday: 'long',
     year: 'numeric',

@@ -1,6 +1,5 @@
 import { ImageSourcePropType } from 'react-native'
 
-/* eslint-disable @typescript-eslint/no-var-requires */
 const Sun = require('@/assets/glyphs/planets/Sun.png')
 const Moon = require('@/assets/glyphs/planets/Moon.png')
 const Mercury = require('@/assets/glyphs/planets/Mercury.png')
