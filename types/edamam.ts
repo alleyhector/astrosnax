@@ -49,13 +49,13 @@ export interface Recipe {
   healthLabels: string[]
   cautions: string[]
   ingredientLines: string[]
-  ingredients: Array<{
+  ingredients: {
     text: string
     weight: number
     foodCategory: string
     foodId: string
     image?: string
-  }>
+  }[]
   calories: number
   totalWeight: number
   cuisineType: string[]

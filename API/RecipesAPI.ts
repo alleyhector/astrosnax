@@ -11,7 +11,7 @@ export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
     q: query, // Search query (e.g., "chicken")
     app_id: appId,
     app_key: appKey,
-    // cuisineType: cuisineType, // Optional parameter
+    cuisineType: cuisineType, // Optional parameter
   }
 
   try {
