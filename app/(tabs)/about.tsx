@@ -1,9 +1,9 @@
 import { Image, StyleSheet, ScrollView } from 'react-native'
-import { Text, View, useThemeColor } from '@/components/Themed'
-import { gql, useQuery } from '@apollo/client'
+import { View } from '@/components/Themed'
+import { gql, OperationVariables, useQuery } from '@apollo/client'
 import Markdown from 'react-native-markdown-display'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { dropShadow } from '@/constants/Styles'
+import { AboutCollectionQueryResponse } from '@/types/contentful'
 
 const QUERY_ABOUT = gql`
   {
@@ -22,9 +22,12 @@ const QUERY_ABOUT = gql`
 
 const AboutScreen = () => {
   const insets = useSafeAreaInsets()
-  const { data, refetch } = useQuery(QUERY_ABOUT, {
-    fetchPolicy: 'no-cache',
-  })
+  const { data } = useQuery<AboutCollectionQueryResponse, OperationVariables>(
+    QUERY_ABOUT,
+    {
+      fetchPolicy: 'no-cache',
+    },
+  )
 
   const about = data?.aboutCollection?.items[0]
 
@@ -46,7 +49,6 @@ const AboutScreen = () => {
                   source={{ uri: about.profile.url }}
                 />
               )}
-              <Text style={styles.title}>{about.title}</Text>
               <Markdown style={styles}>{about.aboutMe}</Markdown>
             </>
           )}

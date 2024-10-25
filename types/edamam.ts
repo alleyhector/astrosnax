@@ -49,13 +49,13 @@ export interface Recipe {
   healthLabels: string[]
   cautions: string[]
   ingredientLines: string[]
-  ingredients: Array<{
+  ingredients: {
     text: string
     weight: number
     foodCategory: string
     foodId: string
     image?: string
-  }>
+  }[]
   calories: number
   totalWeight: number
   cuisineType: string[]
@@ -63,7 +63,7 @@ export interface Recipe {
   dishType: string[]
   totalNutrients: Record<string, Nutrient>
   totalDaily: Record<string, Nutrient>
-  digest: Array<{
+  digest: {
     label: string
     tag: string
     schemaOrgTag?: string
@@ -71,7 +71,7 @@ export interface Recipe {
     hasRDI: boolean
     daily: number
     unit: string
-    sub?: Array<{
+    sub?: {
       label: string
       tag: string
       schemaOrgTag?: string
@@ -79,8 +79,8 @@ export interface Recipe {
       hasRDI: boolean
       daily: number
       unit: string
-    }>
-  }>
+    }[]
+  }[]
 }
 
 export interface Nutrient {

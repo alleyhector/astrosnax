@@ -1,10 +1,10 @@
 import { StyleSheet, FlatList } from 'react-native'
-import { gql, useQuery } from '@apollo/client'
-import Markdown from 'react-native-markdown-display'
+import { gql, OperationVariables, useQuery } from '@apollo/client'
 import { View } from '@/components/Themed'
 import { Link } from 'expo-router'
 import Transits from '@/components/Transits'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { BlogPostQueryResponse } from '@/types/contentful'
 
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!) {
@@ -47,10 +47,13 @@ const ArchiveScreen = () => {
   const insets = useSafeAreaInsets()
   const today = new Date().toString()
 
-  const { data, loading, refetch } = useQuery(QUERY_POSTS, {
-    fetchPolicy: 'no-cache',
-    variables: { today: new Date(today) },
-  })
+  const { data } = useQuery<BlogPostQueryResponse, OperationVariables>(
+    QUERY_POSTS,
+    {
+      fetchPolicy: 'no-cache',
+      variables: { today: new Date(today) },
+    },
+  )
 
   const posts = data?.blogPostCollection.items
 
