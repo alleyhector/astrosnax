@@ -24,7 +24,7 @@ const Recipes = ({ query, cuisineType }: RecipeProps) => {
     if (query) {
       displayRecipe({ query, cuisineType })
     }
-  }, [query])
+  }, [query, cuisineType])
 
   return (
     <View style={styles.container}>

@@ -2,7 +2,7 @@ import { Dimensions, Platform } from 'react-native'
 
 export const dropShadow = {
   shadowColor:
-    Platform.OS == 'android' ? 'rgb(0, 0, 0)' : 'rgba(42, 42, 43, 0.2)',
+    Platform.OS === 'android' ? 'rgb(0, 0, 0)' : 'rgba(42, 42, 43, 0.2)',
   shadowOffset: {
     width: -4,
     height: 4,

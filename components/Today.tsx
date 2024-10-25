@@ -1,7 +1,7 @@
 import { Image, StyleSheet } from 'react-native'
 import { Text, View } from '@/components/Themed'
 import { Href, Link } from 'expo-router'
-import { gql, useQuery } from '@apollo/client'
+import { gql, OperationVariables, useQuery } from '@apollo/client'
 import Transits from '@/components/Transits'
 import Markdown from 'react-native-markdown-display'
 import FitImage from 'react-native-fit-image'
@@ -10,7 +10,6 @@ import { FC, ReactNode } from 'react'
 import {
   BlogPost,
   BlogPostQueryResponse,
-  BlogPostQueryVariables,
   RenderMarkdownNode,
   MarkdownStyles,
 } from '@/types/contentful'
@@ -77,13 +76,13 @@ const rules = {
 const Today: FC = () => {
   const today = new Date().toString()
 
-  const { data, loading, refetch } = useQuery<
-    BlogPostQueryResponse,
-    BlogPostQueryVariables
-  >(QUERY_TODAY_POST, {
-    fetchPolicy: 'no-cache',
-    variables: { today: new Date(today) },
-  })
+  const { data } = useQuery<BlogPostQueryResponse, OperationVariables>(
+    QUERY_TODAY_POST,
+    {
+      fetchPolicy: 'no-cache',
+      variables: { today: new Date(today) },
+    },
+  )
 
   const post: BlogPost | undefined = data?.blogPostCollection?.items[0]
   const date: string | undefined = new Date(

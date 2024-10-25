@@ -3,7 +3,6 @@ import { textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Text, View } from '@/components/Themed'
 import Today from '@/components/Today'
-import Tomorrow from '@/components/Tomorrow'
 
 const HomeScreen = () => {
   const insets = useSafeAreaInsets()

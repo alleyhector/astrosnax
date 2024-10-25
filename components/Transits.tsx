@@ -35,37 +35,26 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
 
       case 'Pluto':
         return ['mushroom', 'asian']
-        break
       case 'Aries':
         return ['beans', 'american']
-
       case 'Taurus':
         return ['butter', 'french']
-
       case 'Gemini':
         return ['onion', 'middle eastern']
-
       case 'Cancer':
         return ['bread', 'italian']
-
       case 'Leo':
         return ['honey', 'mexican']
-
       case 'Virgo':
         return ['tomato', 'nordic']
-
       case 'Libra':
         return ['oregano', 'south american']
-
       case 'Scorpio':
         return ['oil', 'indian']
-
       case 'Sagittarius':
         return ['pepper', 'caribbean']
-
       case 'Capricorn':
         return ['garlic', 'british']
-
       case 'Aquarius':
         return ['vinegar', 'asian']
       case 'Pisces':

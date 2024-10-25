@@ -1,3 +1,21 @@
+export interface AboutCollectionQueryResponse {
+  aboutCollection: {
+    items: About[]
+  }
+}
+
+export interface About {
+  sys: {
+    publishedAt: string
+  }
+  name: string
+  description: string
+  aboutMe: string
+  profile: {
+    url: string
+  }
+}
+
 export interface BlogPostQueryResponse {
   blogPostCollection: {
     items: BlogPost[]
@@ -33,13 +51,8 @@ export interface Transit {
   foods?: string
 }
 
-export interface BlogPostQueryVariables {
-  today?: Date // DateTime from GraphQL is typically sent as a string in ISO format
-  tomorrow?: Date
-}
-
 export interface TransitsProps {
-  transits: Transit[]
+  transits: Transit[] | undefined
 }
 
 export interface RenderMarkdownNode {

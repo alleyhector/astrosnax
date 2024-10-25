@@ -1,19 +1,9 @@
-import { Image, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Text, View } from '@/components/Themed'
-import { Href, Link } from 'expo-router'
-import { gql, useQuery } from '@apollo/client'
+import { gql, OperationVariables, useQuery } from '@apollo/client'
 import Transits from '@/components/Transits'
-import Markdown from 'react-native-markdown-display'
-import FitImage from 'react-native-fit-image'
-import { markdownStyles } from '@/constants/Styles'
-import { FC, ReactNode } from 'react'
-import {
-  BlogPost,
-  BlogPostQueryResponse,
-  BlogPostQueryVariables,
-  RenderMarkdownNode,
-  MarkdownStyles,
-} from '@/types/contentful'
+import { FC } from 'react'
+import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
 
 const QUERY_TODAY_POST = gql`
   query blogPost($tomorrow: DateTime!) {
@@ -51,28 +41,6 @@ const QUERY_TODAY_POST = gql`
     }
   }
 `
-const rules = {
-  image: (
-    node: RenderMarkdownNode,
-    children: ReactNode[],
-    parent: any,
-    styles: MarkdownStyles,
-  ) => {
-    const { src, alt } = node.attributes
-
-    const imageProps = {
-      indicator: true,
-      key: node.key,
-      style: styles._VIEW_SAFE_image,
-      source: {
-        uri: `https:${src}`,
-        alt,
-      },
-    }
-
-    return <FitImage {...imageProps} />
-  },
-}
 
 const Tomorrow: FC = () => {
   const today = new Date()
@@ -85,13 +53,13 @@ const Tomorrow: FC = () => {
     0,
   )
 
-  const { data, loading, refetch } = useQuery<
-    BlogPostQueryResponse,
-    BlogPostQueryVariables
-  >(QUERY_TODAY_POST, {
-    fetchPolicy: 'no-cache',
-    variables: { tomorrow: new Date(tomorrow) },
-  })
+  const { data } = useQuery<BlogPostQueryResponse, OperationVariables>(
+    QUERY_TODAY_POST,
+    {
+      fetchPolicy: 'no-cache',
+      variables: { tomorrow: new Date(tomorrow) },
+    },
+  )
 
   const post: BlogPost | undefined = data?.blogPostCollection?.items[0]
   const date: string | undefined = new Date(
@@ -108,6 +76,7 @@ const Tomorrow: FC = () => {
       {post && (
         <View>
           <Text style={styles.menu}>On tomorrow's astrological menu: </Text>
+          <Text>{date}</Text>
           <Transits transits={post.transitCollection.items} />
         </View>
       )}
