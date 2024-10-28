@@ -186,13 +186,12 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                 </>
               )}
               {transit.foods !== undefined && transit.foods !== null ? (
-                <Recipes query={transit.foods.toString()} cuisineType='world' />
+                <Recipes query={transit.foods.toString()} />
               ) : transit.aspect === 'ingress' ? (
                 <Recipes
                   query={`${getFood(transit.planet)[0]},${
                     getFood(transit.sign)[0]
                   },${getFood(transit.aspect)}`}
-                  cuisineType={getFood(transit.planet)[1] ?? ''}
                 />
               ) : (
                 <Recipes
@@ -201,7 +200,6 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                   },${getFood(transit.transitingPlanet)[0] ?? ''},${
                     getFood(transit.transitingSign)[0] ?? ''
                   },${getFood(transit.aspect)}`}
-                  cuisineType={getFood(transit.planet)[1] ?? ''}
                 />
               )}
             </View>

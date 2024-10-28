@@ -5,14 +5,14 @@ import { searchRecipe } from '@/API/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
 import { Link } from 'expo-router'
 
-const Recipes = ({ query, cuisineType }: RecipeProps) => {
-  console.log(query, cuisineType)
+const Recipes = ({ query }: RecipeProps) => {
+  console.log(query)
   // State to store the fetched recipe data
   const [recipes, setRecipes] = useState<RecipeSearchResponse[]>([])
 
   // Function to fetch the recipe based on the query
-  const displayRecipe = async ({ query, cuisineType }: RecipeProps) => {
-    const data = await searchRecipe({ query, cuisineType })
+  const displayRecipe = async ({ query }: RecipeProps) => {
+    const data = await searchRecipe({ query })
 
     if (data) {
       setRecipes(data.hits.slice(0, 2))
@@ -22,9 +22,9 @@ const Recipes = ({ query, cuisineType }: RecipeProps) => {
   // Call the API when the query changes
   useEffect(() => {
     if (query) {
-      displayRecipe({ query, cuisineType })
+      displayRecipe({ query })
     }
-  }, [query, cuisineType])
+  }, [query])
 
   return (
     <View style={styles.container}>
