@@ -185,7 +185,9 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                   </View>
                 </>
               )}
-              {transit.aspect === 'ingress' ? (
+              {transit.foods !== undefined && transit.foods !== null ? (
+                <Recipes query={transit.foods.toString()} cuisineType='world' />
+              ) : transit.aspect === 'ingress' ? (
                 <Recipes
                   query={`${getFood(transit.planet)[0]},${
                     getFood(transit.sign)[0]
