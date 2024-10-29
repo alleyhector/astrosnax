@@ -19,7 +19,7 @@ const QUERY_TODAY_POST = gql`
     blogPostCollection(
       where: { sys: { publishedAt_lte: $today } }
       order: sys_publishedAt_DESC
-      limit: 1
+      limit: 2
     ) {
       items {
         sys {
@@ -75,6 +75,12 @@ const rules = {
 
 const Today: FC = () => {
   const today = new Date().toString()
+  const formattedToday = new Date(today).toLocaleDateString('en-us', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  })
 
   const { data } = useQuery<BlogPostQueryResponse, OperationVariables>(
     QUERY_TODAY_POST,
@@ -96,6 +102,17 @@ const Today: FC = () => {
 
   return (
     <View style={styles.container}>
+      {date !== formattedToday ? (
+        <>
+          <Text style={styles.menu}>
+            There may not be any direct transits today but you (and your
+            stomach) are probably still feeling the weight these recently
+            transiting bodies.{' '}
+          </Text>
+        </>
+      ) : (
+        <Text style={styles.menu}>On today's astrological menu:</Text>
+      )}
       {post && (
         <View>
           {post.heroImage && (
@@ -107,7 +124,7 @@ const Today: FC = () => {
           <Link href={`/${post?.slug as Href}`} style={styles.title}>
             <Text style={styles.menu}>{date}</Text>
           </Link>
-          <Text style={styles.menu}>On today's astrological menu:</Text>
+
           {post.transitCollection && (
             <Transits transits={post.transitCollection.items} />
           )}

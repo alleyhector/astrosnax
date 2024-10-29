@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, Image } from 'react-native'
 import { textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Text, View } from '@/components/Themed'
@@ -25,6 +25,10 @@ const HomeScreen = () => {
             cosmological characters and dishes that express how their powers
             combine...for better or worse...
           </Text>
+          <Image
+            style={styles.logo}
+            source={require('../../assets/images/icon.png')}
+          />
           <Today />
         </View>
       </ScrollView>
@@ -57,8 +61,14 @@ const styles = StyleSheet.create({
   p: {
     fontFamily: 'NimbusRegular',
     fontSize: 16,
-    margin: 30,
+    marginHorizontal: 30,
     marginTop: 20,
+    marginBottom: 0,
+  },
+  logo: {
+    width: 300,
+    height: 250,
+    resizeMode: 'cover',
   },
   separator: {
     marginVertical: 30,
