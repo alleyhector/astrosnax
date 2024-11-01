@@ -10,33 +10,30 @@ import {
   Linking,
   ActivityIndicator,
 } from 'react-native'
-import {
-  getPublicAccessToken,
-  searchPlaylistsByParams,
-} from '../API/SpotifyAPI'
+import { getPublicAccessToken, searchPlaylistsByParams } from '@/API/SpotifyAPI'
 
-const SpotifyPlaylist = () => {
+const PlaylistSearchByParams = () => {
   const [accessToken, setAccessToken] = useState(null)
   const [artist, setArtist] = useState('')
   const [genre, setGenre] = useState('')
-  const [playlists, setPlaylists] = useState<
-    {
-      id: string
-      name: string
-      images: { url: string }[]
-      external_urls: { spotify: string }
-    }[]
-  >([])
+  const [playlists, setPlaylists] = useState([])
   const [loading, setLoading] = useState(false)
 
-  const fetchPlaylists = async () => {
-    setLoading(true)
+  const fetchAccessToken = async () => {
     if (!accessToken) {
       const token = await getPublicAccessToken()
       setAccessToken(token)
+      return token
     }
+    return accessToken
+  }
+
+  const fetchPlaylists = async () => {
+    setLoading(true)
+
     try {
-      const results = await searchPlaylistsByParams(accessToken, artist, genre)
+      const token = await fetchAccessToken()
+      const results = await searchPlaylistsByParams(token, artist, genre)
       setPlaylists(results)
     } catch (error) {
       console.error(error)
@@ -98,4 +95,4 @@ const SpotifyPlaylist = () => {
   )
 }
 
-export default SpotifyPlaylist
+export default PlaylistSearchByParams

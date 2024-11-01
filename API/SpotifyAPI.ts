@@ -24,9 +24,9 @@ export const getPublicAccessToken = async () => {
 
 // Search for playlists by artist and/or genre
 export const searchPlaylistsByParams = async (
-  accessToken: any,
-  artist = '',
-  genre = '',
+  accessToken: string,
+  artist: string,
+  genre: string,
 ) => {
   console.log('accessToken:', accessToken)
   try {
