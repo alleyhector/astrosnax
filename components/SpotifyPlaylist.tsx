@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
-  View,
-  Text,
   TextInput,
   Button,
   FlatList,
@@ -10,12 +8,15 @@ import {
   Linking,
   ActivityIndicator,
 } from 'react-native'
+import { View, Text } from '@/components/Themed'
 import { getPublicAccessToken, searchPlaylistsByParams } from '@/API/SpotifyAPI'
+import { PlaylistItem } from '@/types/spotify'
 
 const PlaylistSearchByParams = () => {
   const [accessToken, setAccessToken] = useState(null)
   const [artist, setArtist] = useState('')
   const [genre, setGenre] = useState('')
+  const [query, setQuery] = useState('')
   const [playlists, setPlaylists] = useState([])
   const [loading, setLoading] = useState(false)
 
@@ -32,8 +33,13 @@ const PlaylistSearchByParams = () => {
     setLoading(true)
 
     try {
-      const token = await fetchAccessToken()
-      const results = await searchPlaylistsByParams(token, artist, genre)
+      const accessToken = await fetchAccessToken()
+      const results = await searchPlaylistsByParams({
+        accessToken,
+        query,
+        artist,
+        genre,
+      })
       setPlaylists(results)
     } catch (error) {
       console.error(error)
@@ -44,6 +50,12 @@ const PlaylistSearchByParams = () => {
 
   return (
     <View style={{ padding: 20 }}>
+      <TextInput
+        placeholder='Enter search term'
+        value={query}
+        onChangeText={setQuery}
+        style={{ padding: 8, borderWidth: 1, marginBottom: 10 }}
+      />
       <TextInput
         placeholder='Enter artist name'
         value={artist}
@@ -67,7 +79,7 @@ const PlaylistSearchByParams = () => {
       ) : (
         <FlatList
           data={playlists}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item: PlaylistItem) => item.id}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => Linking.openURL(item.external_urls.spotify)}

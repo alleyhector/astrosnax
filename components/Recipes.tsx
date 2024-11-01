@@ -3,7 +3,7 @@ import { Image, StyleSheet } from 'react-native'
 import { View, Text } from './Themed'
 import { searchRecipe } from '@/API/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
-import { Link } from 'expo-router'
+import { TouchableOpacity, Linking } from 'react-native'
 
 const Recipes = ({ query }: RecipeProps) => {
   console.log(query)
@@ -38,12 +38,16 @@ const Recipes = ({ query }: RecipeProps) => {
               />
             </View>
             <View style={styles.recipeTextContainer}>
-              <Link style={styles.recipeTitle} href={recipe.recipe.url}>
-                <Text>{recipe.recipe.label}</Text>
-              </Link>
-              <Link href={recipe.recipe.url}>
+              <TouchableOpacity
+                onPress={() => Linking.openURL(recipe.recipe.url)}
+              >
+                <Text style={styles.recipeTitle}>{recipe.recipe.label}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => Linking.openURL(recipe.recipe.url)}
+              >
                 <Text>View Recipe</Text>
-              </Link>
+              </TouchableOpacity>
             </View>
           </View>
         ))}

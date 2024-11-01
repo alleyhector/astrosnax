@@ -1,3 +1,5 @@
+import { PlaylistProps } from '@/types/spotify'
+
 const clientId = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID
 const clientSecret = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET
 
@@ -23,17 +25,19 @@ export const getPublicAccessToken = async () => {
 }
 
 // Search for playlists by artist and/or genre
-export const searchPlaylistsByParams = async (
-  accessToken: string,
-  artist: string,
-  genre: string,
-) => {
+export const searchPlaylistsByParams = async ({
+  accessToken,
+  query,
+  artist,
+  genre,
+}: PlaylistProps) => {
   console.log('accessToken:', accessToken)
   try {
-    const query =
-      `${artist ? `artist:${artist}` : ''} ${genre ? `genre:${genre}` : ''}`.trim()
+    const q =
+      `${query} ${artist ? `artist:${artist}` : ''} ${genre ? `genre:${genre}` : ''}`.trim()
+    console.log('query:', q)
     const response = await fetch(
-      `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=playlist`,
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=playlist`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
