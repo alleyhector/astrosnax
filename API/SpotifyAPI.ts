@@ -1,12 +1,10 @@
-import { PlaylistProps } from '@/types/spotify'
+import { ExtendedPlaylistProps } from '@/types/spotify'
 
 const clientId = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID
 const clientSecret = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET
 
 // Get access token using Client Credentials Flow
 export const getPublicAccessToken = async () => {
-  console.log('clientId:', clientId)
-  console.log('clientSecret:', clientSecret)
   try {
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
@@ -30,12 +28,10 @@ export const searchPlaylistsByParams = async ({
   query,
   artist,
   genre,
-}: PlaylistProps) => {
-  console.log('accessToken:', accessToken)
+}: ExtendedPlaylistProps) => {
   try {
     const q =
       `${query} ${artist ? `artist:${artist}` : ''} ${genre ? `genre:${genre}` : ''}`.trim()
-    console.log('query:', q)
     const response = await fetch(
       `https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=playlist`,
       {
@@ -46,7 +42,7 @@ export const searchPlaylistsByParams = async ({
     )
 
     const data = await response.json()
-    return data.playlists.items
+    return data
   } catch (error) {
     console.error('Failed to search playlists:', error)
     throw error

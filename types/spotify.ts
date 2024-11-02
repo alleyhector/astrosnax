@@ -1,8 +1,11 @@
 export interface PlaylistProps {
-  accessToken: string
   query?: string
   artist?: string
   genre?: string
+}
+
+export interface ExtendedPlaylistProps extends PlaylistProps {
+  accessToken: string
 }
 
 export interface SpotifySearchResponse {

@@ -1,23 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
-  TextInput,
-  Button,
-  FlatList,
   Image,
   TouchableOpacity,
   Linking,
   ActivityIndicator,
+  StyleSheet,
 } from 'react-native'
 import { View, Text } from '@/components/Themed'
 import { getPublicAccessToken, searchPlaylistsByParams } from '@/API/SpotifyAPI'
-import { PlaylistItem } from '@/types/spotify'
+import { PlaylistItem, PlaylistProps } from '@/types/spotify'
 
-const PlaylistSearchByParams = () => {
+const Playlists = ({ query }: PlaylistProps) => {
   const [accessToken, setAccessToken] = useState(null)
-  const [artist, setArtist] = useState('')
-  const [genre, setGenre] = useState('')
-  const [query, setQuery] = useState('')
-  const [playlists, setPlaylists] = useState([])
+  const [playlists, setPlaylists] = useState<PlaylistItem[]>([])
   const [loading, setLoading] = useState(false)
 
   const fetchAccessToken = async () => {
@@ -29,18 +24,18 @@ const PlaylistSearchByParams = () => {
     return accessToken
   }
 
-  const fetchPlaylists = async () => {
+  const getPlaylists = async () => {
     setLoading(true)
-
     try {
       const accessToken = await fetchAccessToken()
-      const results = await searchPlaylistsByParams({
+      const data = await searchPlaylistsByParams({
         accessToken,
         query,
-        artist,
-        genre,
       })
-      setPlaylists(results)
+
+      if (data) {
+        setPlaylists(data.playlists.items)
+      }
     } catch (error) {
       console.error(error)
     } finally {
@@ -48,28 +43,15 @@ const PlaylistSearchByParams = () => {
     }
   }
 
+  // Call the API when the query changes
+  useEffect(() => {
+    if (query) {
+      getPlaylists()
+    }
+  }, [query])
+
   return (
     <View style={{ padding: 20 }}>
-      <TextInput
-        placeholder='Enter search term'
-        value={query}
-        onChangeText={setQuery}
-        style={{ padding: 8, borderWidth: 1, marginBottom: 10 }}
-      />
-      <TextInput
-        placeholder='Enter artist name'
-        value={artist}
-        onChangeText={setArtist}
-        style={{ padding: 8, borderWidth: 1, marginBottom: 10 }}
-      />
-      <TextInput
-        placeholder='Enter genre'
-        value={genre}
-        onChangeText={setGenre}
-        style={{ padding: 8, borderWidth: 1, marginBottom: 10 }}
-      />
-      <Button title='Search Playlists' onPress={fetchPlaylists} />
-
       {loading ? (
         <ActivityIndicator
           size='large'
@@ -77,34 +59,83 @@ const PlaylistSearchByParams = () => {
           style={{ marginTop: 20 }}
         />
       ) : (
-        <FlatList
-          data={playlists}
-          keyExtractor={(item: PlaylistItem) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => Linking.openURL(item.external_urls.spotify)}
-            >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingVertical: 5,
-                }}
-              >
-                {item.images[0] && (
+        <>
+          {playlists &&
+            playlists.map((playlist, index) => (
+              <View style={styles.flex} key={index}>
+                <View>
                   <Image
-                    source={{ uri: item.images[0].url }}
-                    style={{ width: 50, height: 50, marginRight: 10 }}
+                    source={{ uri: playlist.images[0].url }}
+                    style={styles.recipeImage}
                   />
-                )}
-                <Text style={{ fontSize: 16 }}>{item.name}</Text>
+                </View>
+                <View style={styles.recipeTextContainer}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      Linking.openURL(playlist.external_urls.spotify)
+                    }
+                  >
+                    <Text style={styles.recipeTitle}>
+                      {playlist.name} by {playlist.owner.display_name}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      Linking.openURL(playlist.external_urls.spotify)
+                    }
+                  >
+                    <Text>View Recipe</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </TouchableOpacity>
-          )}
-        />
+            ))}
+        </>
       )}
     </View>
   )
 }
 
-export default PlaylistSearchByParams
+export default Playlists
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#f2ead8',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  flex: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 10,
+    backgroundColor: '#f2ead8',
+  },
+
+  recipeImageContainer: {
+    flex: 1,
+  },
+  recipeImage: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  recipeTextContainer: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#f2ead8',
+    marginTop: 5,
+    marginBottom: 15,
+    fontFamily: 'NimbusBold',
+    textAlign: 'center',
+  },
+  recipeTitle: {
+    marginTop: 5,
+    marginBottom: 15,
+    fontFamily: 'NimbusBold',
+    fontSize: 16,
+    textAlign: 'left',
+  },
+})
