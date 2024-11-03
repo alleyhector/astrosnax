@@ -1,9 +1,18 @@
 import { useEffect, useState } from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { Image } from 'react-native'
 import { View, Text } from './Themed'
 import { searchRecipe } from '@/API/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
 import { TouchableOpacity, Linking } from 'react-native'
+import {
+  card,
+  backgroundColorVar1,
+  column,
+  apiImage,
+  apiTextContainer,
+  row,
+  apiTitle,
+} from '@/constants/Styles'
 
 const Recipes = ({ query }: RecipeProps) => {
   console.log(query)
@@ -27,21 +36,18 @@ const Recipes = ({ query }: RecipeProps) => {
   }, [query])
 
   return (
-    <View style={styles.container}>
+    <View style={[column, card, backgroundColorVar1]}>
       {recipes &&
         recipes.map((recipe, index) => (
-          <View style={styles.flex} key={index}>
+          <View style={[row, backgroundColorVar1]} key={index}>
             <View>
-              <Image
-                source={{ uri: recipe.recipe.image }}
-                style={styles.recipeImage}
-              />
+              <Image source={{ uri: recipe.recipe.image }} style={apiImage} />
             </View>
-            <View style={styles.recipeTextContainer}>
+            <View style={[apiTextContainer, backgroundColorVar1]}>
               <TouchableOpacity
                 onPress={() => Linking.openURL(recipe.recipe.url)}
               >
-                <Text style={styles.recipeTitle}>{recipe.recipe.label}</Text>
+                <Text style={apiTitle}>{recipe.recipe.label}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => Linking.openURL(recipe.recipe.url)}
@@ -56,46 +62,3 @@ const Recipes = ({ query }: RecipeProps) => {
 }
 
 export default Recipes
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#f2ead8',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  flex: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: 10,
-    backgroundColor: '#f2ead8',
-  },
-
-  recipeImageContainer: {
-    flex: 1,
-  },
-  recipeImage: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain',
-    alignSelf: 'center',
-  },
-  recipeTextContainer: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#f2ead8',
-    marginTop: 5,
-    marginBottom: 15,
-    fontFamily: 'NimbusBold',
-    textAlign: 'center',
-  },
-  recipeTitle: {
-    marginTop: 5,
-    marginBottom: 15,
-    fontFamily: 'NimbusBold',
-    fontSize: 16,
-    textAlign: 'left',
-  },
-})

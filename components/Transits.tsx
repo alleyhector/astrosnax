@@ -2,7 +2,7 @@ import { Image, ImageSourcePropType, StyleSheet } from 'react-native'
 import { FC } from 'react'
 import { Text, View } from '@/components/Themed'
 import { imagesMap } from '@/assets/glyphs/exports'
-import { card } from '@/constants/Styles'
+import { backgroundColor, card } from '@/constants/Styles'
 import { TransitsProps } from '@/types/contentful'
 import Recipes from './Recipes'
 import Playlists from './SpotifyPlaylist'
@@ -83,7 +83,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
       {transits &&
         transits.map((transit, index) => {
           return (
-            <View style={card} key={index}>
+            <View style={[card, backgroundColor]} key={index}>
               {transit.aspect === 'ingress' ? (
                 <>
                   <Text

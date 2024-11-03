@@ -4,11 +4,19 @@ import {
   TouchableOpacity,
   Linking,
   ActivityIndicator,
-  StyleSheet,
 } from 'react-native'
 import { View, Text } from '@/components/Themed'
 import { getPublicAccessToken, searchPlaylistsByParams } from '@/API/SpotifyAPI'
 import { PlaylistItem, PlaylistProps } from '@/types/spotify'
+import {
+  card,
+  backgroundColorVar2,
+  column,
+  apiImage,
+  apiTextContainer,
+  row,
+  apiTitle,
+} from '@/constants/Styles'
 
 const Playlists = ({ query }: PlaylistProps) => {
   const [accessToken, setAccessToken] = useState(null)
@@ -51,7 +59,7 @@ const Playlists = ({ query }: PlaylistProps) => {
   }, [query, getPlaylists])
 
   return (
-    <View style={{ padding: 20 }}>
+    <View style={[column, card, backgroundColorVar2]}>
       {loading ? (
         <ActivityIndicator
           size='large'
@@ -62,20 +70,20 @@ const Playlists = ({ query }: PlaylistProps) => {
         <>
           {playlists &&
             playlists.map((playlist, index) => (
-              <View style={styles.flex} key={index}>
+              <View style={[row, backgroundColorVar2]} key={index}>
                 <View>
                   <Image
                     source={{ uri: playlist.images[0].url }}
-                    style={styles.recipeImage}
+                    style={[apiImage, backgroundColorVar2]}
                   />
                 </View>
-                <View style={styles.recipeTextContainer}>
+                <View style={[apiTextContainer, backgroundColorVar2]}>
                   <TouchableOpacity
                     onPress={() =>
                       Linking.openURL(playlist.external_urls.spotify)
                     }
                   >
-                    <Text style={styles.recipeTitle}>
+                    <Text style={apiTitle}>
                       {playlist.name} by {playlist.owner.display_name}
                     </Text>
                   </TouchableOpacity>
@@ -84,7 +92,7 @@ const Playlists = ({ query }: PlaylistProps) => {
                       Linking.openURL(playlist.external_urls.spotify)
                     }
                   >
-                    <Text>View Recipe</Text>
+                    <Text>Open playlist</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -96,46 +104,3 @@ const Playlists = ({ query }: PlaylistProps) => {
 }
 
 export default Playlists
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#f2ead8',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  flex: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: 10,
-    backgroundColor: '#f2ead8',
-  },
-
-  recipeImageContainer: {
-    flex: 1,
-  },
-  recipeImage: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain',
-    alignSelf: 'center',
-  },
-  recipeTextContainer: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#f2ead8',
-    marginTop: 5,
-    marginBottom: 15,
-    fontFamily: 'NimbusBold',
-    textAlign: 'center',
-  },
-  recipeTitle: {
-    marginTop: 5,
-    marginBottom: 15,
-    fontFamily: 'NimbusBold',
-    fontSize: 16,
-    textAlign: 'left',
-  },
-})
