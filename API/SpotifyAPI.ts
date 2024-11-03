@@ -44,6 +44,7 @@ export const searchPlaylistsByParams = async ({
       params: {
         q: query,
         type: 'playlist',
+        limit: 2,
       },
     })
     return response.data
