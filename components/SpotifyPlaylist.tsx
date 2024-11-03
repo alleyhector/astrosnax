@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import {
   Image,
   TouchableOpacity,
@@ -15,16 +15,16 @@ const Playlists = ({ query }: PlaylistProps) => {
   const [playlists, setPlaylists] = useState<PlaylistItem[]>([])
   const [loading, setLoading] = useState(false)
 
-  const fetchAccessToken = async () => {
+  const fetchAccessToken = useCallback(async () => {
     if (!accessToken) {
       const token = await getPublicAccessToken()
       setAccessToken(token)
       return token
     }
     return accessToken
-  }
+  }, [accessToken])
 
-  const getPlaylists = async () => {
+  const getPlaylists = useCallback(async () => {
     setLoading(true)
     try {
       const accessToken = await fetchAccessToken()
@@ -41,14 +41,14 @@ const Playlists = ({ query }: PlaylistProps) => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [query, fetchAccessToken])
 
   // Call the API when the query changes
   useEffect(() => {
     if (query) {
       getPlaylists()
     }
-  }, [query])
+  }, [query, getPlaylists])
 
   return (
     <View style={{ padding: 20 }}>
