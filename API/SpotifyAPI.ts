@@ -1,21 +1,30 @@
 import { ExtendedPlaylistProps } from '@/types/spotify'
+import axios from 'axios'
 
 const clientId = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID
 const clientSecret = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET
 
+// Create an Axios instance
+const axiosInstance = axios.create({
+  baseURL: 'https://accounts.spotify.com',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+})
+
 // Get access token using Client Credentials Flow
 export const getPublicAccessToken = async () => {
   try {
-    const response = await fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
+    const response = await axiosInstance.post(
+      '/api/token',
+      'grant_type=client_credentials',
+      {
+        headers: {
+          Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
+        },
       },
-      body: 'grant_type=client_credentials',
-    })
-    const data = await response.json()
-    return data.access_token
+    )
+    return response.data.access_token
   } catch (error) {
     console.error('Failed to get access token:', error)
     throw error
@@ -26,23 +35,18 @@ export const getPublicAccessToken = async () => {
 export const searchPlaylistsByParams = async ({
   accessToken,
   query,
-  artist,
-  genre,
 }: ExtendedPlaylistProps) => {
   try {
-    const q =
-      `${query} ${artist ? `artist:${artist}` : ''} ${genre ? `genre:${genre}` : ''}`.trim()
-    const response = await fetch(
-      `https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=playlist`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    const response = await axios.get('https://api.spotify.com/v1/search', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-    )
-
-    const data = await response.json()
-    return data
+      params: {
+        q: query,
+        type: 'playlist',
+      },
+    })
+    return response.data
   } catch (error) {
     console.error('Failed to search playlists:', error)
     throw error
