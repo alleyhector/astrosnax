@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-native'
-import { Text, View } from '@/components/Themed'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
-import Transits from '@/components/Transits'
 import { FC } from 'react'
+import { Text, View } from '@/components/Themed'
+import Transits from '@/components/Transits'
 import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
+import { StyleSheet } from 'react-native'
 
 const QUERY_TODAY_POST = gql`
   query blogPost($tomorrow: DateTime!) {
@@ -56,7 +56,7 @@ const Tomorrow: FC = () => {
   const { data } = useQuery<BlogPostQueryResponse, OperationVariables>(
     QUERY_TODAY_POST,
     {
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'cache-and-network',
       variables: { tomorrow: new Date(tomorrow) },
     },
   )

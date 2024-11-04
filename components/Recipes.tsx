@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Image } from 'react-native'
 import { View, Text } from './Themed'
+import { Image, TouchableOpacity, Linking } from 'react-native'
 import { searchRecipe } from '@/API/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
-import { TouchableOpacity, Linking } from 'react-native'
 import {
   card,
   backgroundColorVar1,
@@ -15,7 +14,6 @@ import {
 } from '@/constants/Styles'
 
 const Recipes = ({ query }: RecipeProps) => {
-  console.log(query)
   // State to store the fetched recipe data
   const [recipes, setRecipes] = useState<RecipeSearchResponse[]>([])
 

@@ -1,9 +1,9 @@
-import { Image, ImageSourcePropType, StyleSheet } from 'react-native'
+import { Image, StyleSheet } from 'react-native'
 import { FC } from 'react'
 import { Text, View } from '@/components/Themed'
 import { imagesMap } from '@/assets/glyphs/exports'
 import { backgroundColor, card } from '@/constants/Styles'
-import { TransitsProps } from '@/types/contentful'
+import { Transit, TransitsProps } from '@/types/contentful'
 import Recipes from './Recipes'
 import Playlists from './SpotifyPlaylist'
 
@@ -24,16 +24,12 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
         return ['cheese', 'italian']
       case 'Jupiter':
         return ['chicken', 'greek']
-
       case 'Saturn':
         return ['potato', 'central europe']
-
       case 'Uranus':
         return ['spicy', 'caribbean']
-
       case 'Neptune':
         return ['oil', 'mediterranean']
-
       case 'Pluto':
         return ['mushroom', 'asian']
       case 'Aries':
@@ -77,6 +73,26 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
     }
   }
 
+  const renderComponent = (
+    transit: Transit,
+    Component: FC<{ query: string }>,
+  ) => {
+    if (transit.foods !== undefined && transit.foods !== null) {
+      return <Component query={transit.foods.toString()} />
+    } else {
+      const planetFood = getFood(transit.planet)
+      const signFood = getFood(transit.sign)
+      const transitingPlanetFood = getFood(transit.transitingPlanet)
+      const transitingSignFood = getFood(transit.transitingSign)
+      const aspectFood = getFood(transit.aspect)
+      const query =
+        transit.aspect === 'ingress'
+          ? `${planetFood[0]},${signFood[0]},${aspectFood}`
+          : `${planetFood[0]},${signFood[0]},${transitingPlanetFood[0] ?? ''},${transitingSignFood[0] ?? ''},${aspectFood}`
+      return <Component query={query} />
+    }
+  }
+
   return (
     <>
       {/* Ingresses, i.e. don't have a transiting planet */}
@@ -93,22 +109,16 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                   <View style={styles.container}>
                     <Image
                       style={styles.image}
-                      source={
-                        imagesMap[transit?.planet ?? ''] as ImageSourcePropType
-                      }
+                      source={imagesMap[transit?.planet ?? '']}
                     />
 
                     <Image
                       style={styles.image}
-                      source={
-                        imagesMap[transit?.aspect ?? ''] as ImageSourcePropType
-                      }
+                      source={imagesMap[transit?.aspect ?? '']}
                     />
                     <Image
                       style={styles.image}
-                      source={
-                        imagesMap[transit?.sign ?? ''] as ImageSourcePropType
-                      }
+                      source={imagesMap[transit?.sign ?? '']}
                     />
                   </View>
                 </>
@@ -127,100 +137,43 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                       <>
                         <Image
                           style={styles.image}
-                          source={imagesMap['Moon'] as ImageSourcePropType}
+                          source={imagesMap['Moon']}
                         />
                         <Image
                           style={styles.image}
-                          source={
-                            imagesMap[
-                              transit?.sign ?? ''
-                            ] as ImageSourcePropType
-                          }
+                          source={imagesMap[transit?.sign ?? '']}
                         />
                       </>
                     ) : (
                       <>
                         <Image
                           style={styles.image}
-                          source={
-                            imagesMap[
-                              transit?.planet ?? ''
-                            ] as ImageSourcePropType
-                          }
+                          source={imagesMap[transit?.planet ?? '']}
                         />
 
                         <Image
                           style={styles.image}
-                          source={
-                            imagesMap[
-                              transit?.sign ?? ''
-                            ] as ImageSourcePropType
-                          }
+                          source={imagesMap[transit?.sign ?? '']}
                         />
                         <Image
                           style={styles.image}
-                          source={
-                            imagesMap[
-                              transit?.aspect ?? ''
-                            ] as ImageSourcePropType
-                          }
+                          source={imagesMap[transit?.aspect ?? '']}
                         />
                         <Image
                           style={styles.image}
-                          source={
-                            imagesMap[
-                              transit?.transitingPlanet ?? ''
-                            ] as ImageSourcePropType
-                          }
+                          source={imagesMap[transit?.transitingPlanet ?? '']}
                         />
                         <Image
                           style={styles.image}
-                          source={
-                            imagesMap[
-                              transit?.transitingSign ?? ''
-                            ] as ImageSourcePropType
-                          }
+                          source={imagesMap[transit?.transitingSign ?? '']}
                         />
                       </>
                     )}
                   </View>
                 </>
               )}
-              {transit.foods !== undefined && transit.foods !== null ? (
-                <Recipes query={transit.foods.toString()} />
-              ) : transit.aspect === 'ingress' ? (
-                <Recipes
-                  query={`${getFood(transit.planet)[0]},${
-                    getFood(transit.sign)[0]
-                  },${getFood(transit.aspect)}`}
-                />
-              ) : (
-                <Recipes
-                  query={`${getFood(transit.planet)[0]},${
-                    getFood(transit.sign)[0]
-                  },${getFood(transit.transitingPlanet)[0] ?? ''},${
-                    getFood(transit.transitingSign)[0] ?? ''
-                  },${getFood(transit.aspect)}`}
-                />
-              )}
-
-              {transit.foods !== undefined && transit.foods !== null ? (
-                <Playlists query={transit.foods.toString()} />
-              ) : transit.aspect === 'ingress' ? (
-                <Playlists
-                  query={`${getFood(transit.planet)[0]},${
-                    getFood(transit.sign)[0]
-                  },${getFood(transit.aspect)}`}
-                />
-              ) : (
-                <Playlists
-                  query={`${getFood(transit.planet)[0]},${
-                    getFood(transit.sign)[0]
-                  },${getFood(transit.transitingPlanet)[0] ?? ''},${
-                    getFood(transit.transitingSign)[0] ?? ''
-                  },${getFood(transit.aspect)}`}
-                />
-              )}
+              {renderComponent(transit, Recipes)}
+              {renderComponent(transit, Playlists)}
             </View>
           )
         })}

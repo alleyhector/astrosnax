@@ -1,8 +1,15 @@
 import { ExtendedPlaylistProps } from '@/types/spotify'
 import axios from 'axios'
+import { Buffer } from 'buffer'
 
 const clientId = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID
+if (!clientId) {
+  throw new Error('SPOTIFY_CLIENT_ID is not set')
+}
 const clientSecret = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET
+if (!clientSecret) {
+  throw new Error('SPOTIFY_CLIENT_SECRET is not set')
+}
 
 // Create an Axios instance
 const axiosInstance = axios.create({
@@ -20,7 +27,7 @@ export const getPublicAccessToken = async () => {
       'grant_type=client_credentials',
       {
         headers: {
-          Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
+          Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
         },
       },
     )
@@ -36,16 +43,17 @@ export const searchPlaylistsByParams = async ({
   accessToken,
   query,
 }: ExtendedPlaylistProps) => {
+  const url = 'https://api.spotify.com/v1/search'
+  const headers = { Authorization: `Bearer ${accessToken}` }
+  const params = {
+    q: query,
+    type: 'playlist',
+    limit: 2,
+  }
   try {
-    const response = await axios.get('https://api.spotify.com/v1/search', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        q: query,
-        type: 'playlist',
-        limit: 2,
-      },
+    const response = await axios.get(url, {
+      headers,
+      params,
     })
     return response.data
   } catch (error) {
