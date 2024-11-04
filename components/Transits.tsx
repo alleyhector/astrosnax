@@ -2,9 +2,10 @@ import { Image, ImageSourcePropType, StyleSheet } from 'react-native'
 import { FC } from 'react'
 import { Text, View } from '@/components/Themed'
 import { imagesMap } from '@/assets/glyphs/exports'
-import { card } from '@/constants/Styles'
+import { backgroundColor, card } from '@/constants/Styles'
 import { TransitsProps } from '@/types/contentful'
 import Recipes from './Recipes'
+import Playlists from './SpotifyPlaylist'
 
 const Transits: FC<TransitsProps> = ({ transits }) => {
   const getFood = (foods: string) => {
@@ -82,7 +83,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
       {transits &&
         transits.map((transit, index) => {
           return (
-            <View style={card} key={index}>
+            <View style={[card, backgroundColor]} key={index}>
               {transit.aspect === 'ingress' ? (
                 <>
                   <Text
@@ -195,6 +196,24 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                 />
               ) : (
                 <Recipes
+                  query={`${getFood(transit.planet)[0]},${
+                    getFood(transit.sign)[0]
+                  },${getFood(transit.transitingPlanet)[0] ?? ''},${
+                    getFood(transit.transitingSign)[0] ?? ''
+                  },${getFood(transit.aspect)}`}
+                />
+              )}
+
+              {transit.foods !== undefined && transit.foods !== null ? (
+                <Playlists query={transit.foods.toString()} />
+              ) : transit.aspect === 'ingress' ? (
+                <Playlists
+                  query={`${getFood(transit.planet)[0]},${
+                    getFood(transit.sign)[0]
+                  },${getFood(transit.aspect)}`}
+                />
+              ) : (
+                <Playlists
                   query={`${getFood(transit.planet)[0]},${
                     getFood(transit.sign)[0]
                   },${getFood(transit.transitingPlanet)[0] ?? ''},${

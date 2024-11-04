@@ -1,6 +1,12 @@
-import { Dimensions, Platform } from 'react-native'
+import {
+  Dimensions,
+  ImageStyle,
+  Platform,
+  TextStyle,
+  ViewStyle,
+} from 'react-native'
 
-export const dropShadow = {
+const dropShadow = {
   shadowColor:
     Platform.OS === 'android' ? 'rgb(0, 0, 0)' : 'rgba(42, 42, 43, 0.2)',
   shadowOffset: {
@@ -27,12 +33,56 @@ export const dimensions = {
   fullWidth: Dimensions.get('window').width,
 }
 
+export const borderRadius = {
+  borderRadius: 10,
+}
+
 export const card = {
-  backgroundColor: '#f2ead8',
   marginVertical: 15,
   padding: 15,
-  borderRadius: 10,
+  ...borderRadius,
   ...dropShadow,
+}
+
+export const backgroundColor = { backgroundColor: '#d2c4b2' }
+export const backgroundColorVar1 = { backgroundColor: '#fff' }
+export const backgroundColorVar2 = { backgroundColor: '#8e9d46' }
+
+export const column: ViewStyle = {
+  flex: 1,
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+}
+
+export const row: ViewStyle = {
+  flexDirection: 'row',
+  alignItems: 'center',
+  margin: 10,
+}
+
+export const apiImage: ImageStyle = {
+  width: 100,
+  height: 100,
+  resizeMode: 'contain',
+  alignSelf: 'center',
+}
+
+export const apiTextContainer = {
+  flex: 1,
+  padding: 10,
+  marginTop: 5,
+  marginBottom: 15,
+  fontFamily: 'NimbusBold',
+  textAlign: 'center',
+}
+
+export const apiTitle: TextStyle = {
+  marginTop: 5,
+  marginBottom: 15,
+  fontFamily: 'NimbusBold',
+  fontSize: 16,
+  textAlign: 'left',
 }
 
 export const markdownStyles = {

@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     ...textShadow,
   },
   p: {
-    fontFamily: 'NimbusRegular',
+    fontFamily: 'Nimbus',
     fontSize: 16,
     marginHorizontal: 30,
     marginTop: 20,
