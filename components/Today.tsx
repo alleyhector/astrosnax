@@ -1,12 +1,12 @@
-import { Image, StyleSheet } from 'react-native'
-import { Text, View } from '@/components/Themed'
-import { Href, Link } from 'expo-router'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
-import Transits from '@/components/Transits'
+import { Link } from 'expo-router'
+import { FC, ReactNode } from 'react'
+import { Image, StyleSheet } from 'react-native'
 import Markdown from 'react-native-markdown-display'
 import FitImage from 'react-native-fit-image'
+import { Text, View } from '@/components/Themed'
+import Transits from '@/components/Transits'
 import { markdownStyles } from '@/constants/Styles'
-import { FC, ReactNode } from 'react'
 import {
   BlogPost,
   BlogPostQueryResponse,
@@ -85,7 +85,7 @@ const Today: FC = () => {
   const { data } = useQuery<BlogPostQueryResponse, OperationVariables>(
     QUERY_TODAY_POST,
     {
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'cache-and-network',
       variables: { today: new Date(today) },
     },
   )
@@ -118,10 +118,7 @@ const Today: FC = () => {
           {post.heroImage && (
             <Image style={styles.hero} source={{ uri: post.heroImage.url }} />
           )}
-          {/* Before changing the underlying LinkComponent type in expo itself this 
-          also worked but I didn't like it as much without the string literal 
-          href={('/' + post?.slug) as Href} */}
-          <Link href={`/${post?.slug as Href}`} style={styles.title}>
+          <Link href={`/${post?.slug}`} style={styles.title}>
             <Text style={styles.menu}>{date}</Text>
           </Link>
 

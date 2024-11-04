@@ -1,4 +1,3 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome'
 import {
   DarkTheme,
   DefaultTheme,
@@ -10,16 +9,17 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import 'react-native-reanimated'
 import { ApolloProvider } from '@apollo/client'
-import { client } from '@/API/ContentfulAPI'
+import { client as apolloClient } from '@/API/ContentfulAPI'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router'
 
-export const unstable_settings = {
+export const unstableSettings = {
   // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: 'Home',
 }
@@ -28,17 +28,8 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    Courier: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    Nimbus: require('../assets/fonts/Nimbus/NimbusSans-Regular.otf'),
-    NimbusBold: require('../assets/fonts/Nimbus/NimbusSans-Bold.otf'),
-    NimbusItalic: require('../assets/fonts/Nimbus/NimbusSans-Italic.otf'),
-    NimbusBoldItalic: require('../assets/fonts/Nimbus/NimbusSans-BoldItalic.otf'),
-    AngelClub: require('../assets/fonts/AngelClub/AngelClub.otf'),
-    ...FontAwesome.font,
-  })
+  const { loaded, error } = useCustomFonts()
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error
   }, [error])
@@ -56,12 +47,26 @@ export default function RootLayout() {
   return <RootLayoutNav />
 }
 
+const useCustomFonts = () => {
+  const [loaded, error] = useFonts({
+    Courier: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    Nimbus: require('../assets/fonts/Nimbus/NimbusSans-Regular.otf'),
+    NimbusBold: require('../assets/fonts/Nimbus/NimbusSans-Bold.otf'),
+    NimbusItalic: require('../assets/fonts/Nimbus/NimbusSans-Italic.otf'),
+    NimbusBoldItalic: require('../assets/fonts/Nimbus/NimbusSans-BoldItalic.otf'),
+    AngelClub: require('../assets/fonts/AngelClub/AngelClub.otf'),
+    ...FontAwesome.font,
+  })
+
+  return { loaded, error }
+}
+
 const RootLayoutNav = () => {
   const colorScheme = useColorScheme()
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <ApolloProvider client={client}>
+      <ApolloProvider client={apolloClient}>
         <Stack
           screenOptions={{
             headerStyle: {
