@@ -11,7 +11,11 @@
     "preview": {
       "distribution": "internal",
       "ios": {
-        "enterpriseProvisioning": "universal"
+        "enterpriseProvisioning": "universal",
+        "image": "latest"
+      },
+      "android": {
+        "image": "latest"
       }
     },
     "production": {
@@ -19,6 +23,13 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "image": "latest"
+      },
+      "ios": {
+        "image": "latest"
+      }
+    }
   }
 }
