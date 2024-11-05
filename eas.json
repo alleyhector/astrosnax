@@ -17,7 +17,6 @@
     "preview": {
       "distribution": "internal",
       "ios": {
-        "enterpriseProvisioning": "universal",
         "image": "latest"
       },
       "android": {
