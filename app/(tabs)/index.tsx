@@ -8,31 +8,30 @@ const HomeScreen = () => {
   const insets = useSafeAreaInsets()
 
   return (
-    <View
+    <ScrollView
       style={{
         paddingTop: insets.top,
         backgroundColor: '#fff',
+        display: 'flex',
       }}
     >
-      <ScrollView>
-        <View style={styles.container}>
-          <Text style={styles.title}>AstroSnax</Text>
-          <Text style={styles.subtitle}>Food for celestial thought</Text>
-          <Text style={styles.p}>
-            What's the astrological weather report for today? Below you will
-            find a list of today's transits. Interpret them how you will. I have
-            done so by providing recipes created with the mashup of these
-            cosmological characters and dishes that express how their powers
-            combine...for better or worse...
-          </Text>
-          <Image
-            style={styles.logo}
-            source={require('../../assets/images/icon.png')}
-          />
-          <Today />
-        </View>
-      </ScrollView>
-    </View>
+      <View style={styles.container}>
+        <Text style={styles.title}>AstroSnax</Text>
+        <Text style={styles.subtitle}>Food for celestial thought</Text>
+        <Text style={styles.p}>
+          What's the astrological weather report for today? Below you will find
+          a list of today's transits. Interpret them how you will. I have done
+          so by providing recipes created with the mashup of these cosmological
+          characters and dishes that express how their powers combine...for
+          better or worse...
+        </Text>
+        <Image
+          style={styles.logo}
+          source={require('../../assets/images/icon.png')}
+        />
+        <Today />
+      </View>
+    </ScrollView>
   )
 }
 
@@ -40,9 +39,9 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flex: 1,
+    fontFamily: 'Nimbus',
+    padding: 20,
   },
   title: {
     fontFamily: 'AngelClub',
@@ -61,7 +60,6 @@ const styles = StyleSheet.create({
   p: {
     fontFamily: 'Nimbus',
     fontSize: 16,
-    marginHorizontal: 30,
     marginTop: 20,
     marginBottom: 0,
   },
@@ -69,6 +67,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 250,
     resizeMode: 'cover',
+    alignSelf: 'center',
   },
   separator: {
     marginVertical: 30,
