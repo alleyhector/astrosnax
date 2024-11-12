@@ -114,7 +114,7 @@ const Today: FC = () => {
         <Text style={styles.menu}>On today's astrological menu:</Text>
       )}
       {post && (
-        <View>
+        <>
           {post.heroImage && (
             <Image style={styles.hero} source={{ uri: post.heroImage.url }} />
           )}
@@ -131,7 +131,7 @@ const Today: FC = () => {
               {post.body}
             </Markdown>
           )}
-        </View>
+        </>
       )}
     </View>
   )

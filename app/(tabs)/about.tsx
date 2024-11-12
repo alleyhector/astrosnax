@@ -32,29 +32,24 @@ const AboutScreen = () => {
   const about = data?.aboutCollection?.items[0]
 
   return (
-    <View
+    <ScrollView
       style={{
         paddingTop: insets.top,
         backgroundColor: '#fff',
         display: 'flex',
       }}
     >
-      <ScrollView>
-        <View style={styles.container}>
-          {about && (
-            <>
-              {about.profile && (
-                <Image
-                  style={styles.hero}
-                  source={{ uri: about.profile.url }}
-                />
-              )}
-              <Markdown style={styles}>{about.aboutMe}</Markdown>
-            </>
-          )}
-        </View>
-      </ScrollView>
-    </View>
+      <View style={styles.container}>
+        {about && (
+          <>
+            {about.profile && (
+              <Image style={styles.hero} source={{ uri: about.profile.url }} />
+            )}
+            <Markdown style={styles}>{about.aboutMe}</Markdown>
+          </>
+        )}
+      </View>
+    </ScrollView>
   )
 }
 
