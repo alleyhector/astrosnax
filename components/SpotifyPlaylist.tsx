@@ -66,7 +66,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
       // Fetch data from the main query
       const mainResults = transitQuery ? await fetchPlaylists(transitQuery) : []
       let combinedResults = mainResults
-      if (foodQuery) {
+      if (foodQuery && foodQuery.trim()) {
         const foodResults = await fetchPlaylists(foodQuery)
 
         // Combine the results and remove duplicates (by playlist name in this example)
