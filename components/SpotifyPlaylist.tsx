@@ -22,7 +22,7 @@ import {
   apiTitle,
 } from '@/constants/Styles'
 
-const Playlists = ({ query }: PlaylistProps) => {
+const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [playlists, setPlaylists] = useState<PlaylistItem[]>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -37,34 +37,60 @@ const Playlists = ({ query }: PlaylistProps) => {
   }, [accessToken])
 
   // Fetches playlists based on the provided query and updates the state
-  const getPlaylists = useCallback(async () => {
+  const getPlaylists = useCallback(
+    async (query: string) => {
+      setLoading(true)
+      try {
+        const accessToken = await fetchAccessToken()
+        const data: SpotifySearchResponse = await searchPlaylistsByParams({
+          accessToken,
+          query,
+        })
+
+        console.log('data:', data)
+        return data.playlists.items || []
+      } catch (error) {
+        // Log the error to the console for debugging purposes
+        console.error('Failed to fetch playlists:', error)
+        return []
+      }
+    },
+    [fetchAccessToken],
+  )
+
+  const fetchAndCombinePlaylists = useCallback(async () => {
     setLoading(true)
     try {
-      const accessToken = await fetchAccessToken()
-      const data: SpotifySearchResponse = await searchPlaylistsByParams({
-        accessToken,
-        query,
-      })
+      // Fetch data from the main query
+      const mainResults = await getPlaylists(transitQuery || '')
+      let combinedResults = mainResults
+      if (foodQuery) {
+        const foodResults = await getPlaylists(foodQuery)
 
-      if (data) {
-        setPlaylists(data.playlists.items)
+        // Combine the results and remove duplicates (by playlist name in this example)
+        const uniqueResults = [
+          ...mainResults,
+          ...foodResults.filter(
+            (item) => !mainResults.some((mainItem) => mainItem.id === item.id),
+          ),
+        ]
+        combinedResults = uniqueResults
       }
+
+      setPlaylists(combinedResults)
     } catch (error) {
-      // Log the error to the console for debugging purposes
-      console.error('Failed to fetch playlists:', error)
-      // Optionally, you could set an error state here to display an error message to the user
-      console.error(error)
+      console.error('Error combining playlists:', error)
     } finally {
       setLoading(false)
     }
-  }, [query, fetchAccessToken])
+  }, [foodQuery, transitQuery, getPlaylists])
 
   // Call the API when the query changes
   useEffect(() => {
-    if (query) {
-      getPlaylists()
+    if (transitQuery || foodQuery) {
+      fetchAndCombinePlaylists()
     }
-  }, [query, getPlaylists])
+  }, [transitQuery, foodQuery, getPlaylists, fetchAndCombinePlaylists])
 
   return (
     <View style={[column, card, backgroundColorVar2]}>

@@ -1,4 +1,4 @@
-import { ExtendedPlaylistProps } from '@/types/spotify'
+import { PlaylistFetchProps } from '@/types/spotify'
 import axios from 'axios'
 import { Buffer } from 'buffer'
 
@@ -42,13 +42,13 @@ export const getPublicAccessToken = async () => {
 export const searchPlaylistsByParams = async ({
   accessToken,
   query,
-}: ExtendedPlaylistProps) => {
+}: PlaylistFetchProps) => {
   const url = 'https://api.spotify.com/v1/search'
   const headers = { Authorization: `Bearer ${accessToken}` }
   const params = {
     q: query,
     type: 'playlist',
-    limit: 2,
+    limit: 1,
   }
   try {
     const response = await axios.get(url, {
