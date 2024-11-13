@@ -64,7 +64,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
     setLoading(true)
     try {
       // Fetch data from the main query
-      const mainResults = await fetchPlaylists(transitQuery || '')
+      const mainResults = transitQuery ? await fetchPlaylists(transitQuery) : []
       let combinedResults = mainResults
       if (foodQuery) {
         const foodResults = await fetchPlaylists(foodQuery)
