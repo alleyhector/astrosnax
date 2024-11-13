@@ -73,12 +73,9 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
     }
   }
 
-  const renderComponent = (
-    transit: Transit,
-    Component: FC<{ query: string }>,
-  ) => {
+  const buildQuery = (transit: Transit) => {
     if (transit.foods !== undefined && transit.foods !== null) {
-      return <Component query={transit.foods.toString()} />
+      return transit.foods.toString()
     } else {
       const planetFood = getFood(transit.planet)
       const signFood = getFood(transit.sign)
@@ -89,7 +86,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
         transit.aspect === 'ingress'
           ? `${planetFood[0]},${signFood[0]},${aspectFood}`
           : `${planetFood[0]},${signFood[0]},${transitingPlanetFood[0] ?? ''},${transitingSignFood[0] ?? ''},${aspectFood}`
-      return <Component query={query} />
+      return query
     }
   }
 
@@ -172,8 +169,11 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                   </View>
                 </>
               )}
-              {renderComponent(transit, Recipes)}
-              {renderComponent(transit, Playlists)}
+              <Recipes query={buildQuery(transit)} />
+              <Playlists
+                foodQuery={buildQuery(transit)}
+                transitQuery={`${transit.planet} in ${transit.sign} ${transit?.aspect} ${transit?.transitingPlanet} in ${transit?.transitingSign}`}
+              />
             </View>
           )
         })}

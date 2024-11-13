@@ -1,10 +1,11 @@
-import { StyleSheet, FlatList } from 'react-native'
+import { FC, memo } from 'react'
+import { StyleSheet, FlatList, ListRenderItem } from 'react-native'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
 import { View } from '@/components/Themed'
 import { Link } from 'expo-router'
 import Transits from '@/components/Transits'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { BlogPostQueryResponse } from '@/types/contentful'
+import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
 
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!) {
@@ -57,6 +58,21 @@ const ArchiveScreen = () => {
 
   const posts = data?.blogPostCollection.items
 
+  const keyExtractor = (item: BlogPost, index: number) => index.toString()
+  const renderItem: ListRenderItem<BlogPost> = ({ item }) => (
+    <Item item={item} />
+  )
+
+  const Item: FC<{ item: BlogPost }> = memo(({ item }) => (
+    <View style={styles.container}>
+      <Link href={`/${item.slug}`} style={styles.title}>
+        {item.title}
+      </Link>
+      <Transits transits={item.transitCollection.items} />
+    </View>
+  ))
+  Item.displayName = 'Blog Post Item'
+
   return (
     <View
       style={{
@@ -67,15 +83,8 @@ const ArchiveScreen = () => {
     >
       <FlatList
         data={posts}
-        renderItem={({ item }) => (
-          <View style={styles.container}>
-            <Link href={`/${item.slug}`} style={styles.title}>
-              {item.title}
-            </Link>
-            <Transits transits={item.transitCollection.items} />
-          </View>
-        )}
-        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
       />
     </View>
   )

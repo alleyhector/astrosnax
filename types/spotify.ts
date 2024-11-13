@@ -1,10 +1,12 @@
 export interface PlaylistProps {
-  query?: string
+  transitQuery?: string
+  foodQuery?: string
   artist?: string
   genre?: string
 }
 
-export interface ExtendedPlaylistProps extends PlaylistProps {
+export interface PlaylistFetchProps {
+  query: string
   accessToken: string
 }
 
