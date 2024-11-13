@@ -6,7 +6,10 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import { View, Text } from '@/components/Themed'
-import { getPublicAccessToken, searchPlaylistsByParams } from '@/API/SpotifyAPI'
+import {
+  fetchPublicAccessToken,
+  searchPlaylistsByParams,
+} from '@/API/SpotifyAPI'
 import {
   PlaylistItem,
   PlaylistProps,
@@ -29,7 +32,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
 
   const fetchAccessToken = useCallback(async () => {
     if (!accessToken) {
-      const token = await getPublicAccessToken()
+      const token = await fetchPublicAccessToken()
       setAccessToken(token)
       return token
     }

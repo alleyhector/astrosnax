@@ -20,7 +20,7 @@ const axiosInstance = axios.create({
 })
 
 // Get access token using Client Credentials Flow
-export const getPublicAccessToken = async () => {
+export const fetchPublicAccessToken = async () => {
   try {
     const response = await axiosInstance.post(
       '/api/token',
