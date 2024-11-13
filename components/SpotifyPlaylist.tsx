@@ -50,7 +50,6 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
           query,
         })
 
-        console.log('data:', data)
         return data.playlists.items || []
       } catch (error) {
         // Log the error to the console for debugging purposes
