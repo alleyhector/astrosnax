@@ -18,7 +18,7 @@ const Recipes = ({ query }: RecipeProps) => {
   const [recipes, setRecipes] = useState<RecipeSearchResponse[]>([])
 
   // Function to fetch the recipe based on the query
-  const getRecipe = async ({ query }: RecipeProps) => {
+  const fetchRecipe = async ({ query }: RecipeProps) => {
     const data = await searchRecipe({ query })
 
     if (data) {
@@ -29,7 +29,7 @@ const Recipes = ({ query }: RecipeProps) => {
   // Call the API when the query changes
   useEffect(() => {
     if (query) {
-      getRecipe({ query })
+      fetchRecipe({ query })
     }
   }, [query])
 

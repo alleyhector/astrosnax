@@ -37,7 +37,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
   }, [accessToken])
 
   // Fetches playlists based on the provided query and updates the state
-  const getPlaylists = useCallback(
+  const fetchPlaylists = useCallback(
     async (query: string) => {
       setLoading(true)
       try {
@@ -62,10 +62,10 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
     setLoading(true)
     try {
       // Fetch data from the main query
-      const mainResults = await getPlaylists(transitQuery || '')
+      const mainResults = await fetchPlaylists(transitQuery || '')
       let combinedResults = mainResults
       if (foodQuery) {
-        const foodResults = await getPlaylists(foodQuery)
+        const foodResults = await fetchPlaylists(foodQuery)
 
         // Combine the results and remove duplicates (by playlist name in this example)
         const uniqueResults = [
@@ -83,14 +83,14 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
     } finally {
       setLoading(false)
     }
-  }, [foodQuery, transitQuery, getPlaylists])
+  }, [foodQuery, transitQuery, fetchPlaylists])
 
   // Call the API when the query changes
   useEffect(() => {
     if (transitQuery || foodQuery) {
       fetchAndCombinePlaylists()
     }
-  }, [transitQuery, foodQuery, getPlaylists, fetchAndCombinePlaylists])
+  }, [transitQuery, foodQuery, fetchPlaylists, fetchAndCombinePlaylists])
 
   return (
     <View style={[column, card, backgroundColorVar2]}>
