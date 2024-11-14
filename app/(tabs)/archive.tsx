@@ -65,7 +65,7 @@ const ArchiveScreen: FC = () => {
   )
 
   const Item: FC<{ item: BlogPost }> = memo(({ item }) => (
-    <View style={container}>
+    <View style={styles.container}>
       <Link href={`/${item.slug}`} style={styles.title}>
         {item.title}
       </Link>
@@ -79,6 +79,7 @@ const ArchiveScreen: FC = () => {
       style={{
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
+        backgroundColor: '#fff',
         display: 'flex',
       }}
     >
@@ -94,6 +95,11 @@ const ArchiveScreen: FC = () => {
 export default ArchiveScreen
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    fontFamily: 'Nimbus',
+    padding: 20,
+  },
   title: {
     fontSize: 22,
     fontFamily: 'AngelClub',
