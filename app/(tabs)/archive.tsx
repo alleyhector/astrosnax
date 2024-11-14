@@ -44,7 +44,7 @@ const QUERY_POSTS = gql`
   }
 `
 
-const ArchiveScreen = () => {
+const ArchiveScreen: FC = () => {
   const insets = useSafeAreaInsets()
   const today = new Date().toString()
 
@@ -71,7 +71,7 @@ const ArchiveScreen = () => {
       <Transits transits={item.transitCollection.items} />
     </View>
   ))
-  Item.displayName = 'Blog Post Item'
+  Item.displayName = 'BlogPostItem'
 
   return (
     <View
