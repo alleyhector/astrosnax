@@ -6,6 +6,7 @@ import { Link } from 'expo-router'
 import Transits from '@/components/Transits'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
+import { container } from '@/constants/Styles'
 
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!) {
@@ -64,7 +65,7 @@ const ArchiveScreen: FC = () => {
   )
 
   const Item: FC<{ item: BlogPost }> = memo(({ item }) => (
-    <View style={styles.container}>
+    <View style={container}>
       <Link href={`/${item.slug}`} style={styles.title}>
         {item.title}
       </Link>
@@ -77,7 +78,7 @@ const ArchiveScreen: FC = () => {
     <View
       style={{
         paddingTop: insets.top,
-        backgroundColor: '#fff',
+        paddingBottom: insets.bottom,
         display: 'flex',
       }}
     >
@@ -93,11 +94,6 @@ const ArchiveScreen: FC = () => {
 export default ArchiveScreen
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    fontFamily: 'Nimbus',
-    padding: 20,
-  },
   title: {
     fontSize: 22,
     fontFamily: 'AngelClub',
