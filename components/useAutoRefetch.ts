@@ -9,7 +9,7 @@ interface UseAutoRefetchOptions {
 
 export function useAutoRefetch({
   refetch,
-  interval = 30 * 60 * 1000, // 30 minutes in ms
+  interval = 60 * 60 * 1000, // 60 minutes
 }: UseAutoRefetchOptions) {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [lastRefetchDate, setLastRefetchDate] = useState(
