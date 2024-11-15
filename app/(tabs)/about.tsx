@@ -5,6 +5,9 @@ import Markdown from 'react-native-markdown-display'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AboutCollectionQueryResponse } from '@/types/contentful'
 import { container } from '@/constants/Styles'
+import Colors from '@/constants/Colors'
+import { useColorScheme } from '@/components/useColorScheme'
+import { DefaultTheme } from '@react-navigation/native'
 
 const QUERY_ABOUT = gql`
   {
@@ -23,6 +26,7 @@ const QUERY_ABOUT = gql`
 
 const AboutScreen = () => {
   const insets = useSafeAreaInsets()
+  const colorScheme = useColorScheme()
   const { data } = useQuery<AboutCollectionQueryResponse, OperationVariables>(
     QUERY_ABOUT,
     {
@@ -38,6 +42,9 @@ const AboutScreen = () => {
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
         display: 'flex',
+        backgroundColor: colorScheme
+          ? Colors[colorScheme].background
+          : DefaultTheme.colors.background,
       }}
     >
       <View style={container}>

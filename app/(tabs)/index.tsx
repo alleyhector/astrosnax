@@ -1,11 +1,15 @@
 import { ScrollView, StyleSheet, Image } from 'react-native'
 import { container, textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Colors from '@/constants/Colors'
+import { useColorScheme } from '@/components/useColorScheme'
+import { DefaultTheme } from '@react-navigation/native'
 import { Text, View } from '@/components/Themed'
 import Today from '@/components/Today'
 
 const HomeScreen = () => {
   const insets = useSafeAreaInsets()
+  const colorScheme = useColorScheme()
 
   return (
     <ScrollView
@@ -13,6 +17,9 @@ const HomeScreen = () => {
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
         display: 'flex',
+        backgroundColor: colorScheme
+          ? Colors[colorScheme].background
+          : DefaultTheme.colors.background,
       }}
     >
       <View style={container}>

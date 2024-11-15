@@ -6,6 +6,9 @@ import { Link } from 'expo-router'
 import Transits from '@/components/Transits'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
+import Colors from '@/constants/Colors'
+import { useColorScheme } from '@/components/useColorScheme'
+import { DefaultTheme } from '@react-navigation/native'
 
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!) {
@@ -46,6 +49,7 @@ const QUERY_POSTS = gql`
 
 const ArchiveScreen: FC = () => {
   const insets = useSafeAreaInsets()
+  const colorScheme = useColorScheme()
   const today = new Date().toString()
 
   const { data } = useQuery<BlogPostQueryResponse, OperationVariables>(
@@ -78,8 +82,10 @@ const ArchiveScreen: FC = () => {
       style={{
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
-        backgroundColor: '#fff',
         display: 'flex',
+        backgroundColor: colorScheme
+          ? Colors[colorScheme].background
+          : DefaultTheme.colors.background,
       }}
     >
       <FlatList
