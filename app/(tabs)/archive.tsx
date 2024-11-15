@@ -6,7 +6,6 @@ import { Link } from 'expo-router'
 import Transits from '@/components/Transits'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
-import { container } from '@/constants/Styles'
 
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!) {
