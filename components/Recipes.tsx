@@ -52,7 +52,7 @@ const Recipes = ({ query }: RecipeProps) => {
         <ActivityIndicator size='large' />
       ) : (
         <>
-          {recipes &&
+          {recipes.length > 1 ? (
             recipes.map((recipe, index) => (
               <View style={[row, backgroundColorVar1]} key={index}>
                 <View>
@@ -74,7 +74,12 @@ const Recipes = ({ query }: RecipeProps) => {
                   </TouchableOpacity>
                 </View>
               </View>
-            ))}
+            ))
+          ) : (
+            <Text style={apiTitle}>
+              Oof I guess today's transit means you're going hungry...
+            </Text>
+          )}
         </>
       )}
     </View>
