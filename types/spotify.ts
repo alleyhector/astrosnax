@@ -46,7 +46,7 @@ export interface TrackItem {
   href: string
   id: string
   is_playable: boolean
-  linked_from?: {}
+  linked_from?: object
   restrictions?: { reason: string }
   name: string
   popularity: number

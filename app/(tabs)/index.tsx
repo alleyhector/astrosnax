@@ -1,21 +1,28 @@
 import { ScrollView, StyleSheet, Image } from 'react-native'
-import { textShadow } from '@/constants/Styles'
+import { container, textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Colors from '@/constants/Colors'
+import { useColorScheme } from '@/components/useColorScheme'
+import { DefaultTheme } from '@react-navigation/native'
 import { Text, View } from '@/components/Themed'
 import Today from '@/components/Today'
 
 const HomeScreen = () => {
   const insets = useSafeAreaInsets()
+  const colorScheme = useColorScheme()
 
   return (
     <ScrollView
       style={{
         paddingTop: insets.top,
-        backgroundColor: '#fff',
+        paddingBottom: insets.bottom,
         display: 'flex',
+        backgroundColor: colorScheme
+          ? Colors[colorScheme].background
+          : DefaultTheme.colors.background,
       }}
     >
-      <View style={styles.container}>
+      <View style={container}>
         <Text style={styles.title}>AstroSnax</Text>
         <Text style={styles.subtitle}>Food for celestial thought</Text>
         <Text style={styles.p}>
@@ -38,11 +45,6 @@ const HomeScreen = () => {
 export default HomeScreen
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    fontFamily: 'Nimbus',
-    padding: 20,
-  },
   title: {
     fontFamily: 'AngelClub',
     fontSize: 24,

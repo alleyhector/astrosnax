@@ -4,6 +4,10 @@ import { gql, OperationVariables, useQuery } from '@apollo/client'
 import Markdown from 'react-native-markdown-display'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AboutCollectionQueryResponse } from '@/types/contentful'
+import { container } from '@/constants/Styles'
+import Colors from '@/constants/Colors'
+import { useColorScheme } from '@/components/useColorScheme'
+import { DefaultTheme } from '@react-navigation/native'
 
 const QUERY_ABOUT = gql`
   {
@@ -22,6 +26,7 @@ const QUERY_ABOUT = gql`
 
 const AboutScreen = () => {
   const insets = useSafeAreaInsets()
+  const colorScheme = useColorScheme()
   const { data } = useQuery<AboutCollectionQueryResponse, OperationVariables>(
     QUERY_ABOUT,
     {
@@ -35,11 +40,14 @@ const AboutScreen = () => {
     <ScrollView
       style={{
         paddingTop: insets.top,
-        backgroundColor: '#fff',
+        paddingBottom: insets.bottom,
         display: 'flex',
+        backgroundColor: colorScheme
+          ? Colors[colorScheme].background
+          : DefaultTheme.colors.background,
       }}
     >
-      <View style={styles.container}>
+      <View style={container}>
         {about && (
           <>
             {about.profile && (
@@ -56,11 +64,6 @@ const AboutScreen = () => {
 export default AboutScreen
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    fontFamily: 'Nimbus',
-    padding: 20,
-  },
   hero: {
     marginTop: 20,
     width: 260,
