@@ -81,7 +81,6 @@ const ArchiveScreen: FC = () => {
     <View
       style={{
         paddingTop: insets.top,
-        paddingBottom: insets.bottom,
         display: 'flex',
         backgroundColor: colorScheme
           ? Colors[colorScheme].background
@@ -103,7 +102,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     fontFamily: 'Nimbus',
-    padding: 20,
+    padding: 30,
   },
   title: {
     fontSize: 22,

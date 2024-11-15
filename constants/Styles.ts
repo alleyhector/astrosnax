@@ -52,7 +52,7 @@ export const container = {
   flex: 1,
   fontFamily: 'Nimbus',
   padding: 20,
-  paddingBottom: 80,
+  paddingBottom: 30,
 }
 
 export const column: ViewStyle = {
