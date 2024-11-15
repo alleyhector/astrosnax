@@ -1,14 +1,21 @@
 import { FC, memo } from 'react'
-import { StyleSheet, FlatList, ListRenderItem } from 'react-native'
+import {
+  ActivityIndicator,
+  FlatList,
+  ListRenderItem,
+  RefreshControl,
+  StyleSheet,
+} from 'react-native'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
-import { View } from '@/components/Themed'
 import { Link } from 'expo-router'
 import Transits from '@/components/Transits'
+import { View, Text } from '@/components/Themed'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
 import Colors from '@/constants/Colors'
-import { useColorScheme } from '@/components/useColorScheme'
+import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { DefaultTheme } from '@react-navigation/native'
+import { useColorScheme } from '@/components/useColorScheme'
 
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!) {
@@ -52,21 +59,21 @@ const ArchiveScreen: FC = () => {
   const colorScheme = useColorScheme()
   const today = new Date().toString()
 
-  const { data } = useQuery<BlogPostQueryResponse, OperationVariables>(
-    QUERY_POSTS,
-    {
-      fetchPolicy: 'no-cache',
-      variables: { today: new Date(today) },
-    },
-  )
-
+  const { data, loading, error, refetch } = useQuery<
+    BlogPostQueryResponse,
+    OperationVariables
+  >(QUERY_POSTS, {
+    fetchPolicy: 'network-only',
+    variables: { today: new Date(today) },
+  })
+  const { onRefresh, isRefreshing } = useAutoRefetch({
+    refetch,
+  })
+  if (loading) return <ActivityIndicator size='large' />
+  if (error) return <Text>Error: {error.message}</Text>
   const posts = data?.blogPostCollection.items
 
-  const keyExtractor = (item: BlogPost, index: number) => index.toString()
-  const renderItem: ListRenderItem<BlogPost> = ({ item }) => (
-    <Item item={item} />
-  )
-
+  const keyExtractor = (_: BlogPost, index: number) => index.toString()
   const Item: FC<{ item: BlogPost }> = memo(({ item }) => (
     <View style={styles.container}>
       <Link href={`/${item.slug}`} style={styles.title}>
@@ -76,6 +83,10 @@ const ArchiveScreen: FC = () => {
     </View>
   ))
   Item.displayName = 'BlogPostItem'
+
+  const renderItem: ListRenderItem<BlogPost> = ({ item }) => (
+    <Item item={item} />
+  )
 
   return (
     <View
@@ -91,6 +102,9 @@ const ArchiveScreen: FC = () => {
         data={posts}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+        }
       />
     </View>
   )

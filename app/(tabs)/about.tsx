@@ -1,5 +1,11 @@
-import { Image, StyleSheet, ScrollView } from 'react-native'
-import { View } from '@/components/Themed'
+import {
+  Image,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native'
+import { View, Text } from '@/components/Themed'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
 import Markdown from 'react-native-markdown-display'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -8,6 +14,7 @@ import { container } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
 import { DefaultTheme } from '@react-navigation/native'
+import { useAutoRefetch } from '@/components/useAutoRefetch'
 
 const QUERY_ABOUT = gql`
   {
@@ -27,13 +34,17 @@ const QUERY_ABOUT = gql`
 const AboutScreen = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
-  const { data } = useQuery<AboutCollectionQueryResponse, OperationVariables>(
-    QUERY_ABOUT,
-    {
-      fetchPolicy: 'no-cache',
-    },
-  )
-
+  const { data, loading, error, refetch } = useQuery<
+    AboutCollectionQueryResponse,
+    OperationVariables
+  >(QUERY_ABOUT, {
+    fetchPolicy: 'network-only',
+  })
+  const { onRefresh, isRefreshing } = useAutoRefetch({
+    refetch,
+  })
+  if (loading) return <ActivityIndicator size='large' />
+  if (error) return <Text>Error: {error.message}</Text>
   const about = data?.aboutCollection?.items[0]
 
   return (
@@ -46,6 +57,9 @@ const AboutScreen = () => {
           ? Colors[colorScheme].background
           : DefaultTheme.colors.background,
       }}
+      refreshControl={
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+      }
     >
       <View style={container}>
         {about && (

@@ -1,4 +1,11 @@
-import { ScrollView, StyleSheet, Image } from 'react-native'
+import React from 'react'
+import {
+  ScrollView,
+  StyleSheet,
+  Image,
+  RefreshControl,
+  ActivityIndicator,
+} from 'react-native'
 import { container, textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Colors from '@/constants/Colors'
@@ -6,10 +13,63 @@ import { useColorScheme } from '@/components/useColorScheme'
 import { DefaultTheme } from '@react-navigation/native'
 import { Text, View } from '@/components/Themed'
 import Today from '@/components/Today'
+import { gql, useQuery, OperationVariables } from '@apollo/client'
+import { BlogPostQueryResponse } from '@/types/contentful'
+import { useAutoRefetch } from '@/components/useAutoRefetch'
+
+const QUERY_TODAY_POST = gql`
+  query blogPost($today: DateTime!) {
+    blogPostCollection(
+      where: { sys: { publishedAt_lte: $today } }
+      order: sys_publishedAt_DESC
+      limit: 2
+    ) {
+      items {
+        sys {
+          publishedAt
+        }
+        title
+        slug
+        author {
+          name
+        }
+        description
+        body
+        heroImage {
+          url
+        }
+        transitCollection {
+          items {
+            title
+            planet
+            sign
+            aspect
+            transitingPlanet
+            transitingSign
+            foods
+          }
+        }
+      }
+    }
+  }
+`
 
 const HomeScreen = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
+  const today = new Date().toString()
+
+  const { data, refetch, loading, error } = useQuery<
+    BlogPostQueryResponse,
+    OperationVariables
+  >(QUERY_TODAY_POST, {
+    fetchPolicy: 'network-only',
+    variables: { today: new Date(today) },
+  })
+
+  const { onRefresh, isRefreshing } = useAutoRefetch({ refetch })
+  if (loading) return <ActivityIndicator size='large' />
+  if (error) return <Text>Error: {error.message}</Text>
 
   return (
     <ScrollView
@@ -21,6 +81,9 @@ const HomeScreen = () => {
           ? Colors[colorScheme].background
           : DefaultTheme.colors.background,
       }}
+      refreshControl={
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+      }
     >
       <View style={container}>
         <Text style={styles.title}>AstroSnax</Text>
@@ -32,17 +95,19 @@ const HomeScreen = () => {
           characters and dishes that express how their powers combine...for
           better or worse...
         </Text>
+        <Text style={styles.p}>
+          Oh and why not have some music with dinner? Spotify will provide
+          playlists based on either the transits or the recipes. Enjoy!
+        </Text>
         <Image
           style={styles.logo}
           source={require('../../assets/images/icon.png')}
         />
-        <Today />
+        <Today data={data} />
       </View>
     </ScrollView>
   )
 }
-
-export default HomeScreen
 
 const styles = StyleSheet.create({
   title: {
@@ -77,3 +142,5 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 })
+
+export default HomeScreen
