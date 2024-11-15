@@ -5,7 +5,6 @@ import {
   ListRenderItem,
   RefreshControl,
   StyleSheet,
-  useColorScheme,
 } from 'react-native'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
 import { Link } from 'expo-router'
@@ -16,6 +15,7 @@ import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
 import Colors from '@/constants/Colors'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { DefaultTheme } from '@react-navigation/native'
+import { useColorScheme } from '@/components/useColorScheme'
 
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!) {
