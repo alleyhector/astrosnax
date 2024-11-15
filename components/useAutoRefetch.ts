@@ -43,24 +43,6 @@ export function useAutoRefetch({
     return () => clearInterval(intervalId)
   }, [refetch, interval])
 
-  // App state change effect to refetch data
-  useEffect(() => {
-    const handleAppStateChange = (nextAppState: string) => {
-      if (nextAppState === 'active') {
-        refetch()
-      }
-    }
-
-    const subscription = AppState.addEventListener(
-      'change',
-      handleAppStateChange,
-    )
-
-    return () => {
-      subscription.remove()
-    }
-  }, [refetch])
-
   // Daily auto-refresh based on date change
   useEffect(() => {
     const checkDateChange = () => {
@@ -78,7 +60,7 @@ export function useAutoRefetch({
       'change',
       (nextAppState) => {
         if (nextAppState === 'active') {
-          checkDateChange()
+          refetch()
         }
       },
     )

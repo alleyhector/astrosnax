@@ -14,42 +14,6 @@ import {
   MarkdownStyles,
 } from '@/types/contentful'
 
-const QUERY_TODAY_POST = gql`
-  query blogPost($today: DateTime!) {
-    blogPostCollection(
-      where: { sys: { publishedAt_lte: $today } }
-      order: sys_publishedAt_DESC
-      limit: 2
-    ) {
-      items {
-        sys {
-          publishedAt
-        }
-        title
-        slug
-        author {
-          name
-        }
-        description
-        body
-        heroImage {
-          url
-        }
-        transitCollection {
-          items {
-            title
-            planet
-            sign
-            aspect
-            transitingPlanet
-            transitingSign
-            foods
-          }
-        }
-      }
-    }
-  }
-`
 const rules = {
   image: (
     node: RenderMarkdownNode,
@@ -73,7 +37,7 @@ const rules = {
   },
 }
 
-const Today: FC = () => {
+const Today: FC<{ data: BlogPostQueryResponse | undefined }> = ({ data }) => {
   const today = new Date().toString()
   const formattedToday = new Date(today).toLocaleDateString('en-us', {
     weekday: 'long',
@@ -81,14 +45,6 @@ const Today: FC = () => {
     month: 'short',
     day: 'numeric',
   })
-
-  const { data } = useQuery<BlogPostQueryResponse, OperationVariables>(
-    QUERY_TODAY_POST,
-    {
-      fetchPolicy: 'cache-and-network',
-      variables: { today: new Date(today) },
-    },
-  )
 
   const post: BlogPost | undefined = data?.blogPostCollection?.items[0]
   const date: string | undefined = new Date(
