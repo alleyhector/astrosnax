@@ -1,4 +1,3 @@
-import { gql, OperationVariables, useQuery } from '@apollo/client'
 import { Link } from 'expo-router'
 import { FC, ReactNode } from 'react'
 import { Image, StyleSheet } from 'react-native'
