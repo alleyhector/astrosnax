@@ -87,11 +87,3 @@ export const apiTitle: TextStyle = {
   fontSize: 16,
   textAlign: 'left',
 }
-
-export const markdownStyles = {
-  h1: { fontFamily: 'AngelClub', fontSize: 24 },
-  h2: { fontFamily: 'AngelClub', fontSize: 22 },
-  h3: { fontFamily: 'AngelClub', fontSize: 20 },
-  strong: { fontFamily: 'AngelClub', fontSize: 18 },
-  paragraph: { fontFamily: 'Nimbus', fontsize: 16 },
-}

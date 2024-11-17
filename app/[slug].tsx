@@ -3,8 +3,7 @@ import { useLocalSearchParams } from 'expo-router'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
 import Markdown from 'react-native-markdown-display'
 import Transits from '@/components/Transits'
-import { markdownStyles } from '@/constants/Styles'
-import { Text, View } from '@/components/Themed'
+import { CreateMarkdownStyles, Text, View } from '@/components/Themed'
 import { BlogPostQueryResponse } from '@/types/contentful'
 
 const QUERY_POST = gql`
@@ -42,6 +41,7 @@ const QUERY_POST = gql`
 
 const PostDetails = () => {
   const { slug } = useLocalSearchParams()
+  const markdownStyles = CreateMarkdownStyles()
 
   const { data, loading } = useQuery<BlogPostQueryResponse, OperationVariables>(
     QUERY_POST,
