@@ -5,7 +5,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native'
-import { View, Text, CreateMarkdownStyles } from '@/components/Themed'
+import { View, Text } from '@/components/Themed'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
 import Markdown from 'react-native-markdown-display'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -15,6 +15,7 @@ import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
 import { DefaultTheme } from '@react-navigation/native'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
+import { useMarkdownStyles } from '@/components/useMarkdown'
 
 const QUERY_ABOUT = gql`
   {
@@ -34,7 +35,8 @@ const QUERY_ABOUT = gql`
 const AboutScreen = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
-  const markdownStyles = CreateMarkdownStyles()
+  const markdownStyles = useMarkdownStyles()
+
   const { data, loading, error, refetch } = useQuery<
     AboutCollectionQueryResponse,
     OperationVariables

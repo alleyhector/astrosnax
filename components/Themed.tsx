@@ -53,33 +53,3 @@ export function View(props: ViewProps) {
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />
 }
-
-// export function Markdown(props: ExtendedMarkdownProps) {
-//   const { style, lightColor, darkColor, ...otherProps } = props
-//   const backgroundColor = useThemeColor(
-//     { light: lightColor, dark: darkColor },
-//     'background',
-//   )
-
-//   return (
-//     <DefaultMarkdown style={[{ backgroundColor }, style]} {...otherProps} />
-//   )
-// }
-
-export function CreateMarkdownStyles() {
-  // const textColor = useThemeColor({}, 'text')
-  // const linkColor = useThemeColor({}, 'tint')
-  // const backgroundColor = useThemeColor({}, 'background')
-  // const headingColor = useThemeColor({}, 'cardBackgroundVar1')
-
-  const colorScheme = useColorScheme()
-  const textColor = Colors[colorScheme ?? 'light'].text
-
-  return StyleSheet.create({
-    h1: { fontFamily: 'AngelClub', fontSize: 24, color: textColor },
-    h2: { fontFamily: 'AngelClub', fontSize: 22, color: textColor },
-    h3: { fontFamily: 'AngelClub', fontSize: 20, color: textColor },
-    strong: { fontFamily: 'AngelClub', fontSize: 18, color: textColor },
-    paragraph: { fontFamily: 'Nimbus', fontsize: 16, color: textColor },
-  })
-}

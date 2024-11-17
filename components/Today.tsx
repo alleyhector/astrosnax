@@ -5,36 +5,13 @@ import Markdown from 'react-native-markdown-display'
 import FitImage from 'react-native-fit-image'
 import { Text, View } from '@/components/Themed'
 import Transits from '@/components/Transits'
-import { markdownStyles } from '@/constants/Styles'
 import {
   BlogPost,
   BlogPostQueryResponse,
   RenderMarkdownNode,
   MarkdownStyles,
 } from '@/types/contentful'
-
-const rules = {
-  image: (
-    node: RenderMarkdownNode,
-    children: ReactNode[],
-    parent: any,
-    styles: MarkdownStyles,
-  ) => {
-    const { src, alt } = node.attributes
-
-    const imageProps = {
-      indicator: true,
-      key: node.key,
-      style: styles._VIEW_SAFE_image,
-      source: {
-        uri: `https:${src}`,
-        alt,
-      },
-    }
-
-    return <FitImage {...imageProps} />
-  },
-}
+import { useMarkdownStyles } from './useMarkdown'
 
 const Today: FC<{ data: BlogPostQueryResponse | undefined }> = ({ data }) => {
   const today = new Date().toString()
@@ -54,6 +31,29 @@ const Today: FC<{ data: BlogPostQueryResponse | undefined }> = ({ data }) => {
     month: 'short',
     day: 'numeric',
   })
+  const markdownStyles = useMarkdownStyles()
+  const markdownRules = {
+    image: (
+      node: RenderMarkdownNode,
+      children: ReactNode[],
+      parent: any,
+      styles: MarkdownStyles,
+    ) => {
+      const { src, alt } = node.attributes
+
+      const imageProps = {
+        indicator: true,
+        key: node.key,
+        style: styles._VIEW_SAFE_image,
+        source: {
+          uri: `https:${src}`,
+          alt,
+        },
+      }
+
+      return <FitImage {...imageProps} />
+    },
+  }
 
   return (
     <View style={styles.container}>
@@ -82,7 +82,7 @@ const Today: FC<{ data: BlogPostQueryResponse | undefined }> = ({ data }) => {
           )}
 
           {post.body && (
-            <Markdown rules={rules} style={markdownStyles}>
+            <Markdown style={markdownStyles} rules={markdownRules}>
               {post.body}
             </Markdown>
           )}
