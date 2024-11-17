@@ -1,13 +1,20 @@
-import { Image, StyleSheet } from 'react-native'
+import { Image, StyleSheet, ViewStyle } from 'react-native'
 import { FC } from 'react'
 import { Text, View } from '@/components/Themed'
 import { imagesMap } from '@/assets/glyphs/exports'
-import { backgroundColor, card } from '@/constants/Styles'
+import { card } from '@/constants/Styles'
 import { Transit, TransitsProps } from '@/types/contentful'
 import Recipes from './Recipes'
 import Playlists from './SpotifyPlaylist'
+import Colors from '@/constants/Colors'
+import { useColorScheme } from '@/components/useColorScheme'
 
 const Transits: FC<TransitsProps> = ({ transits }) => {
+  // const colors = useThemeColor({}, 'background')
+  const colorScheme = useColorScheme()
+  const cardBackground = {
+    backgroundColor: Colors[colorScheme ?? 'light'].cardBackground,
+  }
   const getFood = (foods: string) => {
     switch (foods) {
       case 'Sun':
@@ -96,7 +103,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
       {transits &&
         transits.map((transit, index) => {
           return (
-            <View style={[card, backgroundColor]} key={index}>
+            <View style={[card, cardBackground]} key={index}>
               {transit.aspect === 'ingress' ? (
                 <>
                   <Text

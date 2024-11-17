@@ -44,10 +44,6 @@ export const card = {
   ...dropShadow,
 }
 
-export const backgroundColor = { backgroundColor: '#d2c4b2' }
-export const backgroundColorVar1 = { backgroundColor: '#fff' }
-export const backgroundColorVar2 = { backgroundColor: '#8e9d46' }
-
 export const container = {
   flex: 1,
   fontFamily: 'Nimbus',
