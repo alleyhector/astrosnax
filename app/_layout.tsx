@@ -65,7 +65,7 @@ const RootLayoutNav = () => {
   const colorScheme = useColorScheme()
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DefaultTheme : DefaultTheme}>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <ApolloProvider client={apolloClient}>
         <Stack
           screenOptions={{
