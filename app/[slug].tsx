@@ -3,8 +3,9 @@ import { useLocalSearchParams } from 'expo-router'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
 import Markdown from 'react-native-markdown-display'
 import Transits from '@/components/Transits'
-import { CreateMarkdownStyles, Text, View } from '@/components/Themed'
+import { Text, View } from '@/components/Themed'
 import { BlogPostQueryResponse } from '@/types/contentful'
+import { useMarkdownStyles } from '@/components/useMarkdown'
 
 const QUERY_POST = gql`
   query blogPost($slug: String) {
@@ -41,7 +42,7 @@ const QUERY_POST = gql`
 
 const PostDetails = () => {
   const { slug } = useLocalSearchParams()
-  const markdownStyles = CreateMarkdownStyles()
+  const markdownStyles = useMarkdownStyles()
 
   const { data, loading } = useQuery<BlogPostQueryResponse, OperationVariables>(
     QUERY_POST,
@@ -64,7 +65,7 @@ const PostDetails = () => {
         )}
         <Text style={styles.menu}>On the astrological menu:</Text>
         <Transits transits={post?.transitCollection.items} />
-        <Markdown style={markdownStyles}>{post?.body}</Markdown>
+        {post?.body && <Markdown style={markdownStyles}>{post?.body}</Markdown>}
       </View>
     </ScrollView>
   )
