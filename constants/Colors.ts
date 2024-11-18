@@ -5,7 +5,7 @@ const cardBackgroundLight = '#E96950'
 const cardBackgroundFoodLight = '#FACF55'
 const cardBackgroundMusicLight = '#74B27B'
 
-const tintColorDark = '#fefae0'
+const tintColorDark = '#fff'
 const textDark = '#fefae0'
 const backgroundDark = '#283618'
 const cardBackgroundDark = '#dda15e'
