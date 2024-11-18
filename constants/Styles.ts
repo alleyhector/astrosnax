@@ -67,8 +67,10 @@ export const row: ViewStyle = {
 export const apiImage: ImageStyle = {
   width: 100,
   height: 100,
-  resizeMode: 'contain',
+  resizeMode: 'cover',
   alignSelf: 'center',
+  borderLeftWidth: 3,
+  borderTopWidth: 3,
 }
 
 export const apiTextContainer = {
