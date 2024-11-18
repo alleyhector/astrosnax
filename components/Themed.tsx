@@ -4,11 +4,6 @@
  */
 
 import { Text as DefaultText, View as DefaultView } from 'react-native'
-// import {
-//   Markdown as DefaultMarkdown,
-//   MarkdownProps,
-// } from 'react-native-markdown-display'
-import { StyleSheet } from 'react-native'
 
 import Colors from '@/constants/Colors'
 import { useColorScheme } from './useColorScheme'

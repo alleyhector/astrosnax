@@ -10,7 +10,6 @@ import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
 
 const Transits: FC<TransitsProps> = ({ transits }) => {
-  // const colors = useThemeColor({}, 'background')
   const colorScheme = useColorScheme()
   const cardBackground = {
     backgroundColor: Colors[colorScheme ?? 'light'].cardBackground,
@@ -204,6 +203,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NimbusBold',
     fontSize: 20,
     textAlign: 'center',
+    color: Colors.light.text,
   },
   image: {
     width: 40,
