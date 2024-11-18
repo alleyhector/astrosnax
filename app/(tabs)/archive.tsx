@@ -76,7 +76,10 @@ const ArchiveScreen: FC = () => {
   const keyExtractor = (_: BlogPost, index: number) => index.toString()
   const Item: FC<{ item: BlogPost }> = memo(({ item }) => (
     <View style={styles.container}>
-      <Link href={`/${item.slug}`} style={styles.title}>
+      <Link
+        href={`/${item.slug}`}
+        style={[styles.title, { color: Colors[colorScheme ?? 'light'].text }]}
+      >
         {item.title}
       </Link>
       <Transits transits={item.transitCollection.items} />

@@ -5,20 +5,26 @@ import {
   TouchableOpacity,
   Linking,
   ActivityIndicator,
+  useColorScheme,
 } from 'react-native'
 import { searchRecipe } from '@/API/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
 import {
   card,
-  backgroundColorVar1,
   column,
   apiImage,
   apiTextContainer,
   row,
   apiTitle,
 } from '@/constants/Styles'
+import Colors from '@/constants/Colors'
 
 const Recipes = ({ query }: RecipeProps) => {
+  const colorScheme = useColorScheme()
+  const cardBackground = {
+    backgroundColor: Colors[colorScheme ?? 'light'].cardBackgroundFood,
+  }
+
   // State to store the fetched recipe data
   const [recipes, setRecipes] = useState<RecipeSearchResponse[]>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -47,21 +53,21 @@ const Recipes = ({ query }: RecipeProps) => {
   }, [query])
 
   return (
-    <View style={[column, card, backgroundColorVar1]}>
+    <View style={[column, card, cardBackground]}>
       {loading ? (
         <ActivityIndicator size='large' />
       ) : (
         <>
           {recipes.length > 1 ? (
             recipes.map((recipe, index) => (
-              <View style={[row, backgroundColorVar1]} key={index}>
+              <View style={[row, cardBackground]} key={index}>
                 <View>
                   <Image
                     source={{ uri: recipe.recipe.image }}
                     style={apiImage}
                   />
                 </View>
-                <View style={[apiTextContainer, backgroundColorVar1]}>
+                <View style={[apiTextContainer, cardBackground]}>
                   <TouchableOpacity
                     onPress={() => Linking.openURL(recipe.recipe.url)}
                   >

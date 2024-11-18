@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   Linking,
   ActivityIndicator,
+  useColorScheme,
 } from 'react-native'
 import { View, Text } from '@/components/Themed'
 import {
@@ -17,18 +18,22 @@ import {
 } from '@/types/spotify'
 import {
   card,
-  backgroundColorVar2,
   column,
   apiImage,
   apiTextContainer,
   row,
   apiTitle,
 } from '@/constants/Styles'
+import Colors from '@/constants/Colors'
 
 const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
   const [playlists, setPlaylists] = useState<PlaylistItem[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const colorScheme = useColorScheme()
+  const cardBackground = {
+    backgroundColor: Colors[colorScheme ?? 'light'].cardBackgroundMusic,
+  }
 
   const fetchAccessToken = useCallback(async () => {
     if (!accessToken) {
@@ -95,23 +100,23 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
   }, [transitQuery, foodQuery, fetchPlaylists, fetchAndCombinePlaylists])
 
   return (
-    <View style={[column, card, backgroundColorVar2]}>
+    <View style={[column, card, cardBackground]}>
       {loading ? (
         <ActivityIndicator size='large' />
       ) : (
         <>
           {playlists &&
             playlists.map((playlist, index) => (
-              <View style={[row, backgroundColorVar2]} key={index}>
+              <View style={[row, cardBackground]} key={index}>
                 <View>
                   {playlist.images.length > 0 && (
                     <Image
                       source={{ uri: playlist.images[0].url }}
-                      style={[apiImage, backgroundColorVar2]}
+                      style={[apiImage, cardBackground]}
                     />
                   )}
                 </View>
-                <View style={[apiTextContainer, backgroundColorVar2]}>
+                <View style={[apiTextContainer, cardBackground]}>
                   <TouchableOpacity
                     onPress={() =>
                       Linking.openURL(playlist.external_urls.spotify)

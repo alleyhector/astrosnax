@@ -44,10 +44,6 @@ export const card = {
   ...dropShadow,
 }
 
-export const backgroundColor = { backgroundColor: '#d2c4b2' }
-export const backgroundColorVar1 = { backgroundColor: '#fff' }
-export const backgroundColorVar2 = { backgroundColor: '#8e9d46' }
-
 export const container = {
   flex: 1,
   fontFamily: 'Nimbus',
@@ -71,8 +67,10 @@ export const row: ViewStyle = {
 export const apiImage: ImageStyle = {
   width: 100,
   height: 100,
-  resizeMode: 'contain',
+  resizeMode: 'cover',
   alignSelf: 'center',
+  borderLeftWidth: 3,
+  borderTopWidth: 3,
 }
 
 export const apiTextContainer = {
@@ -90,12 +88,4 @@ export const apiTitle: TextStyle = {
   fontFamily: 'NimbusBold',
   fontSize: 16,
   textAlign: 'left',
-}
-
-export const markdownStyles = {
-  h1: { fontFamily: 'AngelClub', fontSize: 24 },
-  h2: { fontFamily: 'AngelClub', fontSize: 22 },
-  h3: { fontFamily: 'AngelClub', fontSize: 20 },
-  strong: { fontFamily: 'AngelClub', fontSize: 18 },
-  paragraph: { fontFamily: 'Nimbus', fontsize: 16 },
 }

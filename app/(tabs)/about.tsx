@@ -15,6 +15,7 @@ import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
 import { DefaultTheme } from '@react-navigation/native'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
+import { useMarkdownStyles } from '@/components/useMarkdown'
 
 const QUERY_ABOUT = gql`
   {
@@ -34,6 +35,8 @@ const QUERY_ABOUT = gql`
 const AboutScreen = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
+  const markdownStyles = useMarkdownStyles()
+
   const { data, loading, error, refetch } = useQuery<
     AboutCollectionQueryResponse,
     OperationVariables
@@ -67,7 +70,7 @@ const AboutScreen = () => {
             {about.profile && (
               <Image style={styles.hero} source={{ uri: about.profile.url }} />
             )}
-            <Markdown style={styles}>{about.aboutMe}</Markdown>
+            <Markdown style={markdownStyles}>{about.aboutMe}</Markdown>
           </>
         )}
       </View>

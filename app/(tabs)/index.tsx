@@ -101,7 +101,7 @@ const HomeScreen = () => {
         </Text>
         <Image
           style={styles.logo}
-          source={require('../../assets/images/icon.png')}
+          source={require('../../assets/images/logo.png')}
         />
         <Today data={data} />
       </View>
