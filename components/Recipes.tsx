@@ -72,10 +72,6 @@ const Recipes = ({ query }: RecipeProps) => {
                     onPress={() => Linking.openURL(recipe.recipe.url)}
                   >
                     <Text style={apiTitle}>{recipe.recipe.label}</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => Linking.openURL(recipe.recipe.url)}
-                  >
                     <Text>View Recipe</Text>
                   </TouchableOpacity>
                 </View>

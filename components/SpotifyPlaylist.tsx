@@ -125,12 +125,6 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
                     <Text style={apiTitle}>
                       {playlist.name} by {playlist.owner.display_name}
                     </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() =>
-                      Linking.openURL(playlist.external_urls.spotify)
-                    }
-                  >
                     <Text>Open playlist</Text>
                   </TouchableOpacity>
                 </View>
