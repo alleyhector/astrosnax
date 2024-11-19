@@ -20,8 +20,8 @@ import { useAutoRefetch } from '@/components/useAutoRefetch'
 const QUERY_TODAY_POST = gql`
   query blogPost($today: DateTime!) {
     blogPostCollection(
-      where: { sys: { publishedAt_lte: $today } }
-      order: sys_publishedAt_DESC
+      where: { publishDate_lte: $today }
+      order: publishDate_DESC
       limit: 2
     ) {
       items {
@@ -33,6 +33,7 @@ const QUERY_TODAY_POST = gql`
         author {
           name
         }
+        publishDate
         description
         body
         heroImage {

@@ -8,8 +8,8 @@ import { StyleSheet } from 'react-native'
 const QUERY_TODAY_POST = gql`
   query blogPost($tomorrow: DateTime!) {
     blogPostCollection(
-      where: { sys: { publishedAt_lte: $tomorrow } }
-      order: sys_publishedAt_DESC
+      where: { publishDate_lte: $today }
+      order: publishDate_DESC
       limit: 1
     ) {
       items {
@@ -21,6 +21,7 @@ const QUERY_TODAY_POST = gql`
         author {
           name
         }
+        publishDate
         description
         body
         heroImage {

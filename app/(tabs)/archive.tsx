@@ -20,8 +20,8 @@ import { useColorScheme } from '@/components/useColorScheme'
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!) {
     blogPostCollection(
-      where: { sys: { publishedAt_lte: $today } }
-      order: sys_publishedAt_DESC
+      where: { publishDate_lte: $today }
+      order: publishDate_DESC
     ) {
       items {
         sys {
