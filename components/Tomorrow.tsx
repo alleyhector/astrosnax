@@ -8,7 +8,7 @@ import { StyleSheet } from 'react-native'
 const QUERY_TODAY_POST = gql`
   query blogPost($tomorrow: DateTime!) {
     blogPostCollection(
-      where: { publishDate_lte: $today }
+      where: { publishDate_lte: $tomorrow }
       order: publishDate_DESC
       limit: 1
     ) {
