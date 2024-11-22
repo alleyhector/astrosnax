@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react'
 import { View, Text } from './Themed'
-import {
-  Image,
-  TouchableOpacity,
-  Linking,
-  ActivityIndicator,
-  useColorScheme,
-} from 'react-native'
+import { Image, ActivityIndicator, useColorScheme } from 'react-native'
 import { searchRecipe } from '@/API/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
 import {
@@ -18,6 +12,7 @@ import {
   apiTitle,
 } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
+import { ExternalLink } from './ExternalLink'
 
 const Recipes = ({ query }: RecipeProps) => {
   const colorScheme = useColorScheme()
@@ -68,12 +63,12 @@ const Recipes = ({ query }: RecipeProps) => {
                   />
                 </View>
                 <View style={[apiTextContainer, cardBackground]}>
-                  <TouchableOpacity
-                    onPress={() => Linking.openURL(recipe.recipe.url)}
-                  >
-                    <Text style={apiTitle}>{recipe.recipe.label}</Text>
+                  <ExternalLink href={recipe.recipe.url}>
+                    <View style={cardBackground}>
+                      <Text style={apiTitle}>{recipe.recipe.label}</Text>
+                    </View>
                     <Text>View Recipe</Text>
-                  </TouchableOpacity>
+                  </ExternalLink>
                 </View>
               </View>
             ))
