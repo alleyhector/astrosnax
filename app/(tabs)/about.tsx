@@ -16,6 +16,7 @@ import { useColorScheme } from '@/components/useColorScheme'
 import { DefaultTheme } from '@react-navigation/native'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { useMarkdownStyles } from '@/components/useMarkdown'
+import Attribution from '@/components/Attribution'
 
 const QUERY_ABOUT = gql`
   {
@@ -74,6 +75,7 @@ const AboutScreen = () => {
           </>
         )}
       </View>
+      <Attribution />
     </ScrollView>
   )
 }
