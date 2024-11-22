@@ -49,6 +49,7 @@ export const container = {
   fontFamily: 'Nimbus',
   padding: 20,
   paddingBottom: 30,
+  backgroundColor: 'transparent',
 }
 
 export const column: ViewStyle = {
@@ -56,6 +57,7 @@ export const column: ViewStyle = {
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+  backgroundColor: 'transparent',
 }
 
 export const row: ViewStyle = {

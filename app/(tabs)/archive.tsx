@@ -16,6 +16,7 @@ import Colors from '@/constants/Colors'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { DefaultTheme } from '@react-navigation/native'
 import { useColorScheme } from '@/components/useColorScheme'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!) {
@@ -92,24 +93,33 @@ const ArchiveScreen: FC = () => {
   )
 
   return (
-    <View
-      style={{
-        paddingTop: insets.top,
-        display: 'flex',
-        backgroundColor: colorScheme
+    <LinearGradient
+      colors={[
+        colorScheme
           ? Colors[colorScheme].background
           : DefaultTheme.colors.background,
-      }}
+        colorScheme === 'dark' ? '#000' : '#fac7b0',
+      ]}
+      start={{ x: 0.5, y: 0.6 }}
     >
-      <FlatList
-        data={posts}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-        }
-      />
-    </View>
+      <View
+        style={{
+          paddingTop: insets.top,
+          display: 'flex',
+          backgroundColor: 'transparent',
+        }}
+      >
+        <FlatList
+          style={{ backgroundColor: 'transparent' }}
+          data={posts}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          refreshControl={
+            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+          }
+        />
+      </View>
+    </LinearGradient>
   )
 }
 
@@ -120,6 +130,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'Nimbus',
     padding: 30,
+    backgroundColor: 'transparent',
   },
   title: {
     fontSize: 22,

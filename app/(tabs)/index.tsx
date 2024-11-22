@@ -16,6 +16,7 @@ import Today from '@/components/Today'
 import { gql, useQuery, OperationVariables } from '@apollo/client'
 import { BlogPostQueryResponse } from '@/types/contentful'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const QUERY_TODAY_POST = gql`
   query blogPost($today: DateTime!) {
@@ -73,40 +74,47 @@ const HomeScreen = () => {
   if (error) return <Text>Error: {error.message}</Text>
 
   return (
-    <ScrollView
-      style={{
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom,
-        display: 'flex',
-        backgroundColor: colorScheme
+    <LinearGradient
+      colors={[
+        colorScheme
           ? Colors[colorScheme].background
           : DefaultTheme.colors.background,
-      }}
-      refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-      }
+        colorScheme === 'dark' ? '#000' : '#fac7b0',
+      ]}
+      start={{ x: 0.5, y: 0.6 }}
     >
-      <View style={container}>
-        <Text style={styles.title}>AstroSnax</Text>
-        <Text style={styles.subtitle}>Food for celestial thought</Text>
-        <Text style={styles.p}>
-          What's the astrological weather report for today? Below you will find
-          a list of today's transits. Interpret them how you will. I have done
-          so by providing recipes created with the mashup of these cosmological
-          characters and dishes that express how their powers combine...for
-          better or worse...
-        </Text>
-        <Text style={styles.p}>
-          Oh and why not have some music with dinner? Spotify will provide
-          playlists based on either the transits or the recipes. Enjoy!
-        </Text>
-        <Image
-          style={styles.logo}
-          source={require('../../assets/images/logo.png')}
-        />
-        <Today data={data} />
-      </View>
-    </ScrollView>
+      <ScrollView
+        style={{
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          display: 'flex',
+        }}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={container}>
+          <Text style={styles.title}>AstroSnax</Text>
+          <Text style={styles.subtitle}>Food for celestial thought</Text>
+          <Text style={styles.p}>
+            What's the astrological weather report for today? Below you will
+            find a list of today's transits. Interpret them how you will. I have
+            done so by providing recipes created with the mashup of these
+            cosmological characters and dishes that express how their powers
+            combine...for better or worse...
+          </Text>
+          <Text style={styles.p}>
+            Oh and why not have some music with dinner? Spotify will provide
+            playlists based on either the transits or the recipes. Enjoy!
+          </Text>
+          <Image
+            style={styles.logo}
+            source={require('../../assets/images/logo.png')}
+          />
+          <Today data={data} />
+        </View>
+      </ScrollView>
+    </LinearGradient>
   )
 }
 

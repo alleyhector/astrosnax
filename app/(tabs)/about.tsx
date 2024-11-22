@@ -17,6 +17,7 @@ import { DefaultTheme } from '@react-navigation/native'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { useMarkdownStyles } from '@/components/useMarkdown'
 import Attribution from '@/components/Attribution'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const QUERY_ABOUT = gql`
   {
@@ -52,31 +53,41 @@ const AboutScreen = () => {
   const about = data?.aboutCollection?.items[0]
 
   return (
-    <ScrollView
-      style={{
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom,
-        display: 'flex',
-        backgroundColor: colorScheme
+    <LinearGradient
+      colors={[
+        colorScheme
           ? Colors[colorScheme].background
           : DefaultTheme.colors.background,
-      }}
-      refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-      }
+        colorScheme === 'dark' ? '#000' : '#fac7b0',
+      ]}
+      start={{ x: 0.5, y: 0.6 }}
     >
-      <View style={container}>
-        {about && (
-          <>
-            {about.profile && (
-              <Image style={styles.hero} source={{ uri: about.profile.url }} />
-            )}
-            <Markdown style={markdownStyles}>{about.aboutMe}</Markdown>
-          </>
-        )}
-      </View>
-      <Attribution />
-    </ScrollView>
+      <ScrollView
+        style={{
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          display: 'flex',
+        }}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={container}>
+          {about && (
+            <>
+              {about.profile && (
+                <Image
+                  style={styles.hero}
+                  source={{ uri: about.profile.url }}
+                />
+              )}
+              <Markdown style={markdownStyles}>{about.aboutMe}</Markdown>
+            </>
+          )}
+        </View>
+        <Attribution />
+      </ScrollView>
+    </LinearGradient>
   )
 }
 
