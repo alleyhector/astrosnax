@@ -25,6 +25,7 @@ import {
   apiTitle,
 } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
+import { ExternalLink } from './ExternalLink'
 
 const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
   const [accessToken, setAccessToken] = useState<string | null>(null)
@@ -117,22 +118,14 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
                   )}
                 </View>
                 <View style={[apiTextContainer, cardBackground]}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      Linking.openURL(playlist.external_urls.spotify)
-                    }
-                  >
-                    <Text style={apiTitle}>
-                      {playlist.name} by {playlist.owner.display_name}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() =>
-                      Linking.openURL(playlist.external_urls.spotify)
-                    }
-                  >
-                    <Text>Open playlist</Text>
-                  </TouchableOpacity>
+                  <ExternalLink href={playlist.external_urls.spotify}>
+                    <View style={cardBackground}>
+                      <Text style={apiTitle}>
+                        {playlist.name} by {playlist.owner.display_name}
+                      </Text>
+                      <Text>Open playlist</Text>
+                    </View>
+                  </ExternalLink>
                 </View>
               </View>
             ))}

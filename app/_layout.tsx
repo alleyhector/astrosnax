@@ -13,6 +13,7 @@ import { client as apolloClient } from '@/API/ContentfulAPI'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { StatusBar } from 'expo-status-bar'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -67,6 +68,7 @@ const RootLayoutNav = () => {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <ApolloProvider client={apolloClient}>
+        <StatusBar translucent backgroundColor='transparent' />
         <Stack
           screenOptions={{
             headerStyle: {

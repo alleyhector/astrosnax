@@ -6,6 +6,11 @@ import Transits from '@/components/Transits'
 import { Text, View } from '@/components/Themed'
 import { BlogPostQueryResponse } from '@/types/contentful'
 import { useMarkdownStyles } from '@/components/useMarkdown'
+import { LinearGradient } from 'expo-linear-gradient'
+import { useColorScheme } from '@/components/useColorScheme'
+import Colors from '@/constants/Colors'
+import { DefaultTheme } from '@react-navigation/native'
+import { dimensions } from '@/constants/Styles'
 
 const QUERY_POST = gql`
   query blogPost($slug: String) {
@@ -43,6 +48,7 @@ const QUERY_POST = gql`
 const PostDetails = () => {
   const { slug } = useLocalSearchParams()
   const markdownStyles = useMarkdownStyles()
+  const colorScheme = useColorScheme()
 
   const { data, loading } = useQuery<BlogPostQueryResponse, OperationVariables>(
     QUERY_POST,
@@ -58,16 +64,29 @@ const PostDetails = () => {
   }
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        {post?.heroImage && (
-          <Image style={styles.hero} source={{ uri: post.heroImage.url }} />
-        )}
-        <Text style={styles.menu}>On the astrological menu:</Text>
-        <Transits transits={post?.transitCollection.items} />
-        {post?.body && <Markdown style={markdownStyles}>{post?.body}</Markdown>}
-      </View>
-    </ScrollView>
+    <LinearGradient
+      colors={[
+        colorScheme
+          ? Colors[colorScheme].background
+          : DefaultTheme.colors.background,
+        colorScheme === 'dark' ? '#000' : '#fac7b0',
+      ]}
+      start={{ x: 0.5, y: 0.6 }}
+      style={{ height: dimensions.fullHeight }}
+    >
+      <ScrollView>
+        <View style={styles.container}>
+          {post?.heroImage && (
+            <Image style={styles.hero} source={{ uri: post.heroImage.url }} />
+          )}
+          <Text style={styles.menu}>On the astrological menu:</Text>
+          <Transits transits={post?.transitCollection.items} />
+          {post?.body && (
+            <Markdown style={markdownStyles}>{post?.body}</Markdown>
+          )}
+        </View>
+      </ScrollView>
+    </LinearGradient>
   )
 }
 
@@ -77,6 +96,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: 'transparent',
   },
   hero: {
     width: 300,
