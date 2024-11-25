@@ -25,18 +25,16 @@ export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
   try {
     // Attempt to retrieve cached data
     const cachedData = await AsyncStorage.getItem(`edamam-${query}`)
-
     if (cachedData) {
       console.warn('Using cached recipe data.')
-      console.log('CACHED DATA: ', JSON.parse(cachedData).hits[0].recipe.label)
+
       return JSON.parse(cachedData)
     } else {
       const response = await axios.get(url, { params })
-      console.log('API called')
-      console.log('NEW DATA: ', response.data.hits[0].recipe.label)
-      const CACHE_KEY = `edamam-${query}`
       // Store the fetched data in AsyncStorage
+      const CACHE_KEY = `edamam-${query}`
       await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(response.data))
+
       return response.data
     }
   } catch (error) {
