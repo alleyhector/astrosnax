@@ -63,17 +63,17 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
       case 'Pisces':
         return ['fish', 'eastern europe']
       case 'trine':
-        return 'salt'
+        return 'orange'
       case 'sextile':
         return 'sweet'
       case 'square':
-        return 'bitter'
+        return 'salt'
       case 'opposition':
-        return 'sour'
+        return 'nut'
       case 'conjunction':
-        return 'hash'
+        return 'sandwich'
       case 'ingress':
-        return 'spicy'
+        return 'salad'
       default:
         return ''
     }
@@ -175,7 +175,10 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                   </View>
                 </>
               )}
-              <Recipes query={buildQuery(transit)} />
+              <Recipes
+                fallbackFood={getFood(transit.aspect)}
+                query={buildQuery(transit)}
+              />
               <Playlists
                 foodQuery={buildQuery(transit)}
                 transitQuery={`${transit.planet} in ${transit.sign} ${transit?.aspect} ${transit?.transitingPlanet} in ${transit?.transitingSign}`}
