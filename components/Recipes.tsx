@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { View, Text } from './Themed'
 import { Image, ActivityIndicator, useColorScheme } from 'react-native'
 import { searchRecipe } from '@/API/RecipesAPI'
@@ -132,4 +132,4 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
   )
 }
 
-export default Recipes
+export default memo(Recipes)

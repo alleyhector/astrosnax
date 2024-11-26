@@ -1,5 +1,5 @@
 import { Image, StyleSheet, ViewStyle } from 'react-native'
-import { FC } from 'react'
+import { FC, memo } from 'react'
 import { Text, View } from '@/components/Themed'
 import { imagesMap } from '@/assets/glyphs/exports'
 import { card } from '@/constants/Styles'
@@ -190,7 +190,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
   )
 }
 
-export default Transits
+export default memo(Transits)
 
 const styles = StyleSheet.create({
   container: {
