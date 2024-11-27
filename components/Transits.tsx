@@ -23,7 +23,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
       case 'Full Moon':
         return ['rice', 'indian']
       case 'Mercury':
-        return ['coffee', 'american']
+        return ['quick', 'american']
       case 'Venus':
         return ['egg', 'french']
       case 'Mars':
@@ -35,7 +35,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
       case 'Uranus':
         return ['spicy', 'caribbean']
       case 'Neptune':
-        return ['oil', 'mediterranean']
+        return ['seafood', 'mediterranean']
       case 'Pluto':
         return ['mushroom', 'asian']
       case 'Aries':

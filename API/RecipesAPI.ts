@@ -1,5 +1,6 @@
 import { RecipeProps } from '@/types/edamam'
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const appId = process.env.EXPO_PUBLIC_EDAMAM_ID
 if (!appId) {
@@ -22,14 +23,27 @@ export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
   }
 
   try {
-    const response = await axios.get(url, { params })
-    return response.data
+    // Attempt to retrieve cached data
+    const cachedData = await AsyncStorage.getItem(`edamam-${query}`)
+    if (cachedData) {
+      console.warn('Using cached recipe data.')
+
+      return JSON.parse(cachedData)
+    } else {
+      const response = await axios.get(url, { params })
+      // Store the fetched data in AsyncStorage
+      const CACHE_KEY = `edamam-${query}`
+      await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(response.data))
+
+      return response.data
+    }
   } catch (error) {
     console.error('Error fetching recipe data:', error)
+
     if (axios.isAxiosError(error)) {
       throw new Error(`Error fetching recipe data: ${error.message}`)
     } else {
-      throw new Error('Error fetching recipe data')
+      throw new Error('Error fetching recipe data and no cached data available')
     }
   }
 }
