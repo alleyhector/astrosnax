@@ -80,7 +80,7 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
       ) : (
         <>
           {recipes.length > 0 ? (
-            // Render actual recipes
+            // Render recipes
             recipes.map((recipe, index) => (
               <View style={[row, cardBackground]} key={index}>
                 <View>

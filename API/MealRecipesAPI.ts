@@ -1,8 +1,11 @@
-import { RecipeProps } from '@/types/edamam'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export const searchRecipe = async ({ fallbackFood }: any) => {
+interface SearchMealParams {
+  fallbackFood?: string | string[]
+}
+
+export const searchRecipe = async ({ fallbackFood }: SearchMealParams) => {
   const url = 'https://www.themealdb.com/api/json/v1/1/search.php'
   const params = {
     s: fallbackFood, // Search query (e.g., "chicken")
