@@ -70,9 +70,6 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
     }
   }, [query, fallbackFood])
 
-  console.log('RC: ', recipes.length)
-  console.log('FBRC: ', fallbackRecipes.length)
-
   return (
     <View style={[column, card, cardBackground]}>
       {loading ? (

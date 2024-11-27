@@ -64,6 +64,7 @@ export const row: ViewStyle = {
   flexDirection: 'row',
   alignItems: 'center',
   margin: 10,
+  paddingBottom: 10,
 }
 
 export const apiImage: ImageStyle = {
@@ -77,7 +78,7 @@ export const apiImage: ImageStyle = {
 
 export const apiTextContainer = {
   flex: 1,
-  padding: 10,
+  paddingLeft: 10,
   marginTop: 5,
   marginBottom: 15,
   fontFamily: 'NimbusBold',
@@ -90,4 +91,5 @@ export const apiTitle: TextStyle = {
   fontFamily: 'NimbusBold',
   fontSize: 16,
   textAlign: 'left',
+  flexWrap: 'wrap',
 }
