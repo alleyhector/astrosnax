@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, memo } from 'react'
 import { Image, ActivityIndicator, useColorScheme } from 'react-native'
 import { View, Text } from '@/components/Themed'
 import {
@@ -129,4 +129,4 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
   )
 }
 
-export default Playlists
+export default memo(Playlists)
