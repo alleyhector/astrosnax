@@ -82,43 +82,38 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
           {recipes.length > 0 ? (
             // Render recipes
             recipes.map((recipe, index) => (
-              <View style={[row, cardBackground]} key={index}>
-                <View>
-                  <Image
-                    source={{ uri: recipe.recipe.image }}
-                    style={apiImage}
-                  />
+              <ExternalLink key={index} href={recipe.recipe.url}>
+                <View style={[row, cardBackground]}>
+                  <View>
+                    <Image
+                      source={{ uri: recipe.recipe.image }}
+                      style={apiImage}
+                    />
+                  </View>
+                  <View style={[apiTextContainer, cardBackground]}>
+                    <Text style={apiTitle}>{recipe.recipe.label}</Text>
+                    <Text>View Recipe</Text>
+                  </View>
                 </View>
-                <View style={[apiTextContainer, cardBackground]}>
-                  <ExternalLink href={recipe.recipe.url}>
-                    <View style={cardBackground}>
-                      <Text style={apiTitle}>{recipe.recipe.label}</Text>
-                    </View>
-                    <View style={cardBackground}>
-                      <Text>View Recipe</Text>
-                    </View>
-                  </ExternalLink>
-                </View>
-              </View>
+              </ExternalLink>
             ))
           ) : fallbackRecipes.length > 0 ? (
             // Render fallback recipes
             fallbackRecipes.map((meal, index) => (
-              <View style={[row, cardBackground]} key={index}>
-                <View>
-                  <Image source={{ uri: meal.strMealThumb }} style={apiImage} />
+              <ExternalLink key={index} href={meal.strYoutube}>
+                <View style={[row, cardBackground]}>
+                  <View>
+                    <Image
+                      source={{ uri: meal.strMealThumb }}
+                      style={apiImage}
+                    />
+                  </View>
+                  <View style={[apiTextContainer, cardBackground]}>
+                    <Text style={apiTitle}>{meal.strMeal}</Text>
+                    <Text>View Recipe</Text>
+                  </View>
                 </View>
-                <View style={[apiTextContainer, cardBackground]}>
-                  <ExternalLink href={meal.strYoutube}>
-                    <View style={cardBackground}>
-                      <Text style={apiTitle}>{meal.strMeal}</Text>
-                    </View>
-                    <View style={cardBackground}>
-                      <Text>View Recipe</Text>
-                    </View>
-                  </ExternalLink>
-                </View>
-              </View>
+              </ExternalLink>
             ))
           ) : (
             // Last-resort fallback text

@@ -108,26 +108,26 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
         <>
           {playlists &&
             playlists.map((playlist, index) => (
-              <View style={[row, cardBackground]} key={index}>
-                <View>
-                  {playlist.images.length > 0 && (
-                    <Image
-                      source={{ uri: playlist.images[0].url }}
-                      style={[apiImage, cardBackground]}
-                    />
-                  )}
-                </View>
-                <View style={[apiTextContainer, cardBackground]}>
-                  <ExternalLink href={playlist.external_urls.spotify}>
+              <ExternalLink key={index} href={playlist.external_urls.spotify}>
+                <View style={[row, cardBackground]}>
+                  <View>
+                    {playlist.images.length > 0 && (
+                      <Image
+                        source={{ uri: playlist.images[0].url }}
+                        style={[apiImage, cardBackground]}
+                      />
+                    )}
+                  </View>
+                  <View style={[apiTextContainer, cardBackground]}>
                     <View style={cardBackground}>
                       <Text style={apiTitle}>
                         {playlist.name} by {playlist.owner.display_name}
                       </Text>
                       <Text>Open playlist</Text>
                     </View>
-                  </ExternalLink>
+                  </View>
                 </View>
-              </View>
+              </ExternalLink>
             ))}
         </>
       )}
