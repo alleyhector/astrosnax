@@ -8,7 +8,6 @@ export function ExternalLink(
 ) {
   return (
     <Link
-      style={{ marginBottom: 5 }}
       target='_blank'
       {...props}
       // @ts-expect-error: External URLs are not typed.
