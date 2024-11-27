@@ -10,22 +10,20 @@ export const searchRecipe = async ({ fallbackFood }: any) => {
 
   try {
     // Attempt to retrieve cached data
-    // const cachedData = await AsyncStorage.getItem(`mealdb-${query}`)
-    // if (cachedData) {
-    //   console.warn('Using cached meal recipe data.')
+    const cachedData = await AsyncStorage.getItem(`mealdb-${fallbackFood}`)
+    if (cachedData) {
+      console.warn('Using cached meal recipe data.')
 
-    //   return JSON.parse(cachedData)
-    // } else {
-    const response = await axios.get(url, { params })
-    // Store the fetched data in AsyncStorage
-    const CACHE_KEY = `mealdb-${fallbackFood}`
-    // await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(response.data))
-    console.log('MEAL API CALLED')
-    return response.data
-    // }
+      return JSON.parse(cachedData)
+    } else {
+      const response = await axios.get(url, { params })
+      // Store the fetched data in AsyncStorage
+      const CACHE_KEY = `mealdb-${fallbackFood}`
+      await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(response.data))
+      console.log('MEAL API CALLED')
+      return response.data
+    }
   } catch (error) {
-    // const response = await axios.get(url, { params })
-    // console.log('response.data:', response.data.error)
     console.error('Error fetching mealdb recipe data:', error)
 
     if (axios.isAxiosError(error)) {
