@@ -1,4 +1,4 @@
-import { Image, StyleSheet, ViewStyle } from 'react-native'
+import { Image, StyleSheet } from 'react-native'
 import { FC, memo } from 'react'
 import { Text, View } from '@/components/Themed'
 import { imagesMap } from '@/assets/glyphs/exports'

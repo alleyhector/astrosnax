@@ -1,11 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import {
-  Image,
-  TouchableOpacity,
-  Linking,
-  ActivityIndicator,
-  useColorScheme,
-} from 'react-native'
+import { Image, ActivityIndicator, useColorScheme } from 'react-native'
 import { View, Text } from '@/components/Themed'
 import {
   fetchPublicAccessToken,
