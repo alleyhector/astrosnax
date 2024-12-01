@@ -181,7 +181,10 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                 transitQuery={
                   transit.aspect === 'ingress'
                     ? `${transit.planet} enters ${transit.sign}`
-                    : `${transit.planet} in ${transit.sign} ${transit?.aspect} ${transit?.transitingPlanet} in ${transit?.transitingSign}`
+                    : transit.planet === 'New Moon' ||
+                        transit.planet === 'Full Moon'
+                      ? `${transit.planet} in ${transit.sign}`
+                      : `${transit.planet} in ${transit.sign} ${transit?.aspect} ${transit?.transitingPlanet} in ${transit?.transitingSign}`
                 }
               />
             </View>
