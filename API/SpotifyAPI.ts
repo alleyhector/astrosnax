@@ -58,6 +58,14 @@ export const searchPlaylistsByParams = async ({
     return response.data
   } catch (error) {
     console.error('Failed to search playlists:', error)
-    throw error
+
+    if (axios.isAxiosError(error)) {
+      console.log('AXIOS ERROR')
+      throw new Error(`Error fetching recipe data: ${error.message}`)
+    } else {
+      throw new Error(
+        `Error fetching recipe data and no cached data available: ${error}`,
+      )
+    }
   }
 }
