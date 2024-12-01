@@ -178,7 +178,11 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
               <Recipes query={buildQuery(transit)} />
               <Playlists
                 foodQuery={buildQuery(transit)}
-                transitQuery={`${transit.planet} in ${transit.sign} ${transit?.aspect} ${transit?.transitingPlanet} in ${transit?.transitingSign}`}
+                transitQuery={
+                  transit.aspect === 'ingress'
+                    ? `${transit.planet} enters ${transit.sign}`
+                    : `${transit.planet} in ${transit.sign} ${transit?.aspect} ${transit?.transitingPlanet} in ${transit?.transitingSign}`
+                }
               />
             </View>
           )
