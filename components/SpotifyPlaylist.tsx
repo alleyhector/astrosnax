@@ -83,10 +83,6 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
       const foodResultsArray = Array.isArray(foodResults)
         ? foodResults.filter(Boolean)
         : []
-      console.log('transitQuery', transitQuery)
-      console.log('mainResultsArray', mainResultsArray)
-      console.log('foodQuery', foodQuery)
-      console.log('foodResultsArray', foodResultsArray)
 
       // Combine the results and remove duplicates (by playlist id in this example)
       const combinedResults = [
@@ -97,7 +93,6 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
         ),
       ]
 
-      console.log('combinedResults', combinedResults.length)
       if (combinedResults.length > 0) {
         setPlaylists(combinedResults.slice(0, 2))
       } else {

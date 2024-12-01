@@ -61,7 +61,6 @@ export const searchPlaylistsByParams = async ({
     // Filter out null items
     const filteredPlaylists = playlists.filter((item: []) => item !== null)
 
-    console.log('SPOTIFY API CALLED ', filteredPlaylists)
     return {
       ...response.data,
       playlists: { ...response.data.playlists, items: filteredPlaylists },
