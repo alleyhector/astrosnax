@@ -55,7 +55,6 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
           accessToken,
           query,
         })
-        // console.log('SPOTIFY API CALLED ', data.playlists.items)
         return data.playlists.items || []
       } catch (error) {
         // Log the error to the console for debugging purposes
