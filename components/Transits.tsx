@@ -179,12 +179,11 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
               <Playlists
                 foodQuery={buildQuery(transit)}
                 transitQuery={
-                  transit.aspect === 'ingress'
+                  transit.aspect === 'ingress' ||
+                  transit.planet === 'New Moon' ||
+                  transit.planet === 'Full Moon'
                     ? `${transit.planet} enters ${transit.sign}`
-                    : transit.planet === 'New Moon' ||
-                        transit.planet === 'Full Moon'
-                      ? `${transit.planet} in ${transit.sign}`
-                      : `${transit.planet} in ${transit.sign} ${transit?.aspect} ${transit?.transitingPlanet} in ${transit?.transitingSign}`
+                    : `${transit.planet} in ${transit.sign} ${transit?.aspect} ${transit?.transitingPlanet} in ${transit?.transitingSign}`
                 }
               />
             </View>
