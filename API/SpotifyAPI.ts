@@ -48,14 +48,24 @@ export const searchPlaylistsByParams = async ({
   const params = {
     q: query,
     type: 'playlist',
-    limit: 1,
+    limit: 4,
   }
   try {
     const response = await axios.get(url, {
       headers,
       params,
     })
-    return response.data
+
+    const playlists = response.data.playlists.items
+
+    // Filter out null items
+    const filteredPlaylists = playlists.filter((item: []) => item !== null)
+
+    console.log('SPOTIFY API CALLED ', filteredPlaylists)
+    return {
+      ...response.data,
+      playlists: { ...response.data.playlists, items: filteredPlaylists },
+    }
   } catch (error) {
     console.error('Failed to search playlists:', error)
 
