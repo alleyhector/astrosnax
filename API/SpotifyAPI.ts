@@ -70,7 +70,7 @@ export const searchPlaylistsByParams = async ({
 
     if (axios.isAxiosError(error)) {
       console.log('AXIOS ERROR')
-      throw new Error(`Error fetching recipe data: ${error.message}`)
+      throw new Error(`Error fetching Spotify data: ${error.message}`)
     } else {
       throw new Error(
         `Error fetching recipe data and no cached data available: ${error}`,
