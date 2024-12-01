@@ -1,4 +1,4 @@
-import { PlaylistFetchProps } from '@/types/spotify'
+import { PlaylistFetchProps, PlaylistItem } from '@/types/spotify'
 import axios from 'axios'
 import { Buffer } from 'buffer'
 
@@ -59,7 +59,9 @@ export const searchPlaylistsByParams = async ({
     const playlists = response.data.playlists.items
 
     // Filter out null items
-    const filteredPlaylists = playlists.filter((item: []) => item !== null)
+    const filteredPlaylists = playlists.filter(
+      (item: PlaylistItem) => item !== null,
+    )
 
     return {
       ...response.data,
@@ -72,9 +74,7 @@ export const searchPlaylistsByParams = async ({
       console.log('AXIOS ERROR')
       throw new Error(`Error fetching Spotify data: ${error.message}`)
     } else {
-      throw new Error(
-        `Error fetching recipe data and no cached data available: ${error}`,
-      )
+      throw new Error(`Error fetching Spotify data: ${error}`)
     }
   }
 }
