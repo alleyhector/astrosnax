@@ -48,7 +48,7 @@ export const searchPlaylistsByParams = async ({
   const params = {
     q: query,
     type: 'playlist',
-    limit: 4,
+    limit: 10,
   }
   try {
     const response = await axios.get(url, {

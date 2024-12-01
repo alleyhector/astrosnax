@@ -99,7 +99,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
 
       console.log('combinedResults', combinedResults.length)
       if (combinedResults.length > 0) {
-        setPlaylists(combinedResults)
+        setPlaylists(combinedResults.slice(0, 2))
       } else {
         console.log('No results from either query')
         setPlaylists([])
