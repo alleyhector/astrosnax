@@ -49,7 +49,6 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
           accessToken,
           query,
         })
-
         return data.playlists.items || []
       } catch (error) {
         // Log the error to the console for debugging purposes
@@ -63,23 +62,36 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
   const fetchAndCombinePlaylists = useCallback(async () => {
     setLoading(true)
     try {
-      // Fetch data from the main query
-      const mainResults = transitQuery ? await fetchPlaylists(transitQuery) : []
-      let combinedResults = mainResults
-      if (foodQuery && foodQuery.trim()) {
-        const foodResults = await fetchPlaylists(foodQuery)
+      // Fetch data from both queries
+      const mainResults = transitQuery
+        ? await fetchPlaylists(transitQuery)
+        : null
+      const foodResults =
+        foodQuery && foodQuery.trim() ? await fetchPlaylists(foodQuery) : null
 
-        // Combine the results and remove duplicates (by playlist name in this example)
-        const uniqueResults = [
-          ...mainResults,
-          ...foodResults.filter(
-            (item) => !mainResults.some((mainItem) => mainItem.id === item.id),
-          ),
-        ]
-        combinedResults = uniqueResults
+      // Ensure both results are arrays and filter out null values
+      const mainResultsArray = Array.isArray(mainResults)
+        ? mainResults.filter(Boolean)
+        : []
+      const foodResultsArray = Array.isArray(foodResults)
+        ? foodResults.filter(Boolean)
+        : []
+
+      // Combine the results and remove duplicates (by playlist id in this example)
+      const combinedResults = [
+        ...mainResultsArray,
+        ...foodResultsArray.filter(
+          (item) =>
+            !mainResultsArray.some((mainItem) => mainItem.id === item.id),
+        ),
+      ]
+
+      if (combinedResults.length > 0) {
+        setPlaylists(combinedResults.slice(0, 2))
+      } else {
+        console.log('No results from either query')
+        setPlaylists([])
       }
-
-      setPlaylists(combinedResults)
     } catch (error) {
       console.error('Error combining playlists:', error)
     } finally {
@@ -124,6 +136,12 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
               </ExternalLink>
             ))}
         </>
+      )}
+      {playlists.length === 0 && (
+        // Last-resort fallback text
+        <Text style={apiTitle}>
+          Damn this transit is so weird, there are no playlists for it!
+        </Text>
       )}
     </View>
   )

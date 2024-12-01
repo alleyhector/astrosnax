@@ -1,4 +1,4 @@
-import { PlaylistFetchProps } from '@/types/spotify'
+import { PlaylistFetchProps, PlaylistItem } from '@/types/spotify'
 import axios from 'axios'
 import { Buffer } from 'buffer'
 
@@ -48,16 +48,33 @@ export const searchPlaylistsByParams = async ({
   const params = {
     q: query,
     type: 'playlist',
-    limit: 1,
+    limit: 10,
   }
   try {
     const response = await axios.get(url, {
       headers,
       params,
     })
-    return response.data
+
+    const playlists = response.data.playlists.items
+
+    // Filter out null items
+    const filteredPlaylists = playlists.filter(
+      (item: PlaylistItem) => item !== null,
+    )
+
+    return {
+      ...response.data,
+      playlists: { ...response.data.playlists, items: filteredPlaylists },
+    }
   } catch (error) {
     console.error('Failed to search playlists:', error)
-    throw error
+
+    if (axios.isAxiosError(error)) {
+      console.log('AXIOS ERROR')
+      throw new Error(`Error fetching Spotify data: ${error.message}`)
+    } else {
+      throw new Error(`Error fetching Spotify data: ${error}`)
+    }
   }
 }
