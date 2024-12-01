@@ -110,6 +110,7 @@ const ArchiveScreen: FC = () => {
         }}
       >
         <FlatList
+          removeClippedSubviews
           style={{ backgroundColor: 'transparent' }}
           data={posts}
           renderItem={renderItem}
