@@ -91,25 +91,10 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
 
       if (combinedResults.length > 1) {
         setPlaylists(combinedResults)
-        console.log('COMBO')
-        playlists.forEach((playlist, index) => {
-          console.log(index + 1)
-          console.log(playlist.name)
-        })
       } else if (mainResultsArray.length > 1) {
         setPlaylists(mainResultsArray.slice(0, 2))
-        console.log('TRANSIT')
-        playlists.forEach((playlist, index) => {
-          console.log(index + 1)
-          console.log(playlist.name)
-        })
       } else if (foodResultsArray.length > 1) {
         setPlaylists(foodResultsArray.slice(0, 2))
-        console.log('FOOD')
-        playlists.forEach((playlist, index) => {
-          console.log(index + 1)
-          console.log(playlist.name)
-        })
       } else {
         console.log('No results from either query')
         setPlaylists([])
