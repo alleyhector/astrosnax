@@ -1,6 +1,7 @@
-import { FC, memo, useState, useCallback } from 'react'
+import { FC, memo, useState, useCallback, useEffect } from 'react'
 import {
   ActivityIndicator,
+  Button,
   FlatList,
   ListRenderItem,
   RefreshControl,
@@ -53,6 +54,7 @@ const QUERY_POSTS = gql`
           }
         }
       }
+      total
     }
   }
 `
@@ -62,59 +64,22 @@ const ArchiveScreen: FC = () => {
   const colorScheme = useColorScheme()
   const today = new Date().toString()
   const PAGE_SIZE = 3
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1) // Update this dynamically if total posts are known.
 
-  const { data, loading, error, refetch, fetchMore } = useQuery<
+  const { data, loading, error, refetch } = useQuery<
     BlogPostQueryResponse,
     OperationVariables
   >(QUERY_POSTS, {
     fetchPolicy: 'network-only',
-    variables: { today: new Date(today), skip: 0, limit: PAGE_SIZE },
+    variables: {
+      today: new Date(today),
+      skip: (currentPage - 1) * PAGE_SIZE,
+      limit: PAGE_SIZE,
+    },
   })
-
   const posts = data?.blogPostCollection?.items || []
-  // console.log('posts:', posts)
-  const [isLoadingMore, setIsLoadingMore] = useState(false)
-
-  const loadMore = async () => {
-    if (isLoadingMore) return
-
-    setIsLoadingMore(true)
-    try {
-      await fetchMore({
-        variables: {
-          skip: posts.length, // Skip the number of posts already loaded
-          limit: PAGE_SIZE,
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult) return previousResult
-
-          return {
-            ...previousResult,
-            blogPostCollection: {
-              ...previousResult.blogPostCollection,
-              items: [
-                ...previousResult.blogPostCollection.items,
-                ...fetchMoreResult.blogPostCollection.items,
-              ],
-            },
-          }
-        },
-      })
-
-      console.log('loaded more')
-      console.log('Variables:', posts.length, PAGE_SIZE)
-    } catch (err) {
-      console.error('Error loading more:', err)
-    } finally {
-      setIsLoadingMore(false)
-    }
-  }
-
-  const { onRefresh, isRefreshing } = useAutoRefetch({
-    refetch,
-  })
-  if (loading) return <ActivityIndicator size='large' />
-  if (error) return <Text style={{ margin: 60 }}>Error: {error.message}</Text>
 
   const Item: FC<{ item: BlogPost }> = memo(({ item }) => (
     <View style={styles.container}>
@@ -132,6 +97,66 @@ const ArchiveScreen: FC = () => {
   const renderItem: ListRenderItem<BlogPost> = ({ item }) => (
     <Item item={item} />
   )
+
+  // Update total pages dynamically if your API provides the total count.
+  useEffect(() => {
+    if (data?.blogPostCollection) {
+      const totalItems = data.blogPostCollection.total || 1
+      setTotalPages(Math.ceil(totalItems / PAGE_SIZE))
+    }
+  }, [data])
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page)
+    }
+  }
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1)
+    }
+  }
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1)
+    }
+  }
+
+  const PaginationControls: FC = () => (
+    <View style={styles.paginationContainer}>
+      <Text>
+        Page {currentPage} of {totalPages}
+      </Text>
+      <View style={styles.paginationButtons}>
+        <Button
+          title='Previous'
+          onPress={goToPreviousPage}
+          disabled={currentPage === 1}
+        />
+        {Array.from({ length: totalPages }, (_, i) => (
+          <Button
+            key={i}
+            title={(i + 1).toString()}
+            onPress={() => goToPage(i + 1)}
+            color={currentPage === i + 1 ? 'blue' : 'gray'}
+          />
+        ))}
+        <Button
+          title='Next'
+          onPress={goToNextPage}
+          disabled={currentPage === totalPages}
+        />
+      </View>
+    </View>
+  )
+
+  const { onRefresh, isRefreshing } = useAutoRefetch({
+    refetch,
+  })
+  if (loading) return <ActivityIndicator size='large' />
+  if (error) return <Text style={{ margin: 60 }}>Error: {error.message}</Text>
 
   return (
     <LinearGradient
@@ -151,23 +176,15 @@ const ArchiveScreen: FC = () => {
         }}
       >
         <FlatList
+          removeClippedSubviews
+          style={{ backgroundColor: 'transparent' }}
           data={posts}
-          removeClippedSubviews={true}
-          windowSize={5} // Optimize rendering performance
-          keyExtractor={(item) => item.sys.publishedAt} // Ensure unique and stable keys
           renderItem={renderItem}
-          initialNumToRender={PAGE_SIZE} // Optimize initial rendering
+          keyExtractor={(item) => item.sys.publishedAt}
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
           }
-          onEndReachedThreshold={0.5}
-          onEndReached={loadMore}
-          maintainVisibleContentPosition={{
-            minIndexForVisible: 0, // Retain scroll position
-          }}
-          ListFooterComponent={
-            isLoadingMore ? <ActivityIndicator size='small' /> : null
-          }
+          ListFooterComponent={<PaginationControls />}
         />
       </View>
     </LinearGradient>
@@ -187,9 +204,13 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: 'AngelClub',
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  paginationContainer: {
+    marginVertical: 20,
+    alignItems: 'center',
+  },
+  paginationButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 10,
   },
 })
