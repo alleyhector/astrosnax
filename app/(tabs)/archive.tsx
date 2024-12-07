@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useState, useCallback } from 'react'
 import {
   ActivityIndicator,
   FlatList,
@@ -19,10 +19,12 @@ import { useColorScheme } from '@/components/useColorScheme'
 import { LinearGradient } from 'expo-linear-gradient'
 
 const QUERY_POSTS = gql`
-  query blogPosts($today: DateTime!) {
+  query blogPosts($today: DateTime!, $skip: Int, $limit: Int) {
     blogPostCollection(
       where: { publishDate_lte: $today }
       order: publishDate_DESC
+      skip: $skip
+      limit: $limit
     ) {
       items {
         sys {
@@ -59,22 +61,61 @@ const ArchiveScreen: FC = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
   const today = new Date().toString()
+  const PAGE_SIZE = 3
 
-  const { data, loading, error, refetch } = useQuery<
+  const { data, loading, error, refetch, fetchMore } = useQuery<
     BlogPostQueryResponse,
     OperationVariables
   >(QUERY_POSTS, {
     fetchPolicy: 'network-only',
-    variables: { today: new Date(today) },
+    variables: { today: new Date(today), skip: 0, limit: PAGE_SIZE },
   })
+
+  const posts = data?.blogPostCollection?.items || []
+  // console.log('posts:', posts)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+
+  const loadMore = async () => {
+    if (isLoadingMore) return
+
+    setIsLoadingMore(true)
+    try {
+      await fetchMore({
+        variables: {
+          skip: posts.length, // Skip the number of posts already loaded
+          limit: PAGE_SIZE,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return previousResult
+
+          return {
+            ...previousResult,
+            blogPostCollection: {
+              ...previousResult.blogPostCollection,
+              items: [
+                ...previousResult.blogPostCollection.items,
+                ...fetchMoreResult.blogPostCollection.items,
+              ],
+            },
+          }
+        },
+      })
+
+      console.log('loaded more')
+      console.log('Variables:', posts.length, PAGE_SIZE)
+    } catch (err) {
+      console.error('Error loading more:', err)
+    } finally {
+      setIsLoadingMore(false)
+    }
+  }
+
   const { onRefresh, isRefreshing } = useAutoRefetch({
     refetch,
   })
   if (loading) return <ActivityIndicator size='large' />
-  if (error) return <Text>Error: {error.message}</Text>
-  const posts = data?.blogPostCollection.items
+  if (error) return <Text style={{ margin: 60 }}>Error: {error.message}</Text>
 
-  const keyExtractor = (_: BlogPost, index: number) => index.toString()
   const Item: FC<{ item: BlogPost }> = memo(({ item }) => (
     <View style={styles.container}>
       <Link
@@ -110,13 +151,22 @@ const ArchiveScreen: FC = () => {
         }}
       >
         <FlatList
-          removeClippedSubviews
-          style={{ backgroundColor: 'transparent' }}
           data={posts}
+          removeClippedSubviews={true}
+          windowSize={5} // Optimize rendering performance
+          keyExtractor={(item) => item.sys.publishedAt} // Ensure unique and stable keys
           renderItem={renderItem}
-          keyExtractor={keyExtractor}
+          initialNumToRender={PAGE_SIZE} // Optimize initial rendering
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+          }
+          onEndReachedThreshold={0.5}
+          onEndReached={loadMore}
+          maintainVisibleContentPosition={{
+            minIndexForVisible: 0, // Retain scroll position
+          }}
+          ListFooterComponent={
+            isLoadingMore ? <ActivityIndicator size='small' /> : null
           }
         />
       </View>

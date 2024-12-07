@@ -40,9 +40,9 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
   const fetchRecipe = async ({ query, fallbackFood }: ExtendedRecipeProps) => {
     setLoading(true)
     try {
-      console.log('QUERY: ', query, fallbackFood)
+      // console.log('QUERY: ', query, fallbackFood)
       const data = await searchRecipe({ query })
-      console.log('data:', data.hits[0].recipe.label)
+      // console.log('data:', data.hits[0].recipe.label)
       if (data) {
         setRecipes(data.hits.slice(0, 2))
       }
@@ -52,7 +52,7 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
 
     try {
       const fallbackData = await searchMealRecipe({ fallbackFood })
-      console.log('fallbackData:', fallbackData.meals[0].strMeal)
+      // console.log('fallbackData:', fallbackData.meals[0].strMeal)
       if (fallbackData) {
         setFallbackRecipes(fallbackData.meals.slice(0, 2))
       }
