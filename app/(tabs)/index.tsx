@@ -6,7 +6,7 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from 'react-native'
-import { container, textShadow } from '@/constants/Styles'
+import { container, dimensions, textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
@@ -82,6 +82,7 @@ const HomeScreen = () => {
         colorScheme === 'dark' ? '#000' : '#fac7b0',
       ]}
       start={{ x: 0.5, y: 0.6 }}
+      style={{ height: dimensions.fullHeight }}
     >
       <ScrollView
         style={{
