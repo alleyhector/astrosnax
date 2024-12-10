@@ -6,7 +6,7 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from 'react-native'
-import { container, dimensions, textShadow } from '@/constants/Styles'
+import { container, textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
@@ -39,6 +39,7 @@ const QUERY_TODAY_POST = gql`
         body
         heroImage {
           url
+          description
         }
         transitCollection {
           items {
@@ -82,7 +83,6 @@ const HomeScreen = () => {
         colorScheme === 'dark' ? '#000' : '#fac7b0',
       ]}
       start={{ x: 0.5, y: 0.6 }}
-      style={{ height: dimensions.fullHeight }}
     >
       <ScrollView
         style={{
@@ -111,6 +111,7 @@ const HomeScreen = () => {
           <Image
             style={styles.logo}
             source={require('../../assets/images/logo.png')}
+            alt='AstroSnax logo'
           />
           <Today data={data} />
         </View>
@@ -145,11 +146,6 @@ const styles = StyleSheet.create({
     height: 250,
     resizeMode: 'cover',
     alignSelf: 'center',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
   },
 })
 

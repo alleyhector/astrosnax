@@ -113,15 +113,18 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                     <Image
                       style={styles.image}
                       source={imagesMap[transit?.planet ?? '']}
+                      alt={`${transit?.planet} glyph`}
                     />
 
                     <Image
                       style={styles.image}
                       source={imagesMap[transit?.aspect ?? '']}
+                      alt={`${transit?.aspect} glyph`}
                     />
                     <Image
                       style={styles.image}
                       source={imagesMap[transit?.sign ?? '']}
+                      alt={`${transit?.sign} glyph`}
                     />
                   </View>
                 </>
@@ -141,10 +144,12 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                         <Image
                           style={styles.image}
                           source={imagesMap['Moon']}
+                          alt={`${transit?.planet} glyph`}
                         />
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.sign ?? '']}
+                          alt={`${transit?.sign} glyph`}
                         />
                       </>
                     ) : (
@@ -152,23 +157,28 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.planet ?? '']}
+                          alt={`${transit?.planet} glyph`}
                         />
 
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.sign ?? '']}
+                          alt={`${transit?.sign} glyph`}
                         />
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.aspect ?? '']}
+                          alt={`${transit?.aspect} glyph`}
                         />
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.transitingPlanet ?? '']}
+                          alt={`${transit?.transitingPlanet} glyph`}
                         />
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.transitingSign ?? '']}
+                          alt={`${transit?.transitingSign} glyph`}
                         />
                       </>
                     )}

@@ -1,5 +1,12 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 
+if (
+  !process.env.EXPO_PUBLIC_CONTENTFUL_KEY ||
+  !process.env.EXPO_PUBLIC_CONTENTFUL_ENVIRONMENT
+) {
+  throw new Error('Required Contentful environment variables are not defined')
+}
+
 export const cache = new InMemoryCache()
 
 export const client = new ApolloClient({

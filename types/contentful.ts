@@ -36,6 +36,7 @@ export interface BlogPost {
   body: string
   heroImage: {
     url: string
+    description: string
   }
   transitCollection: {
     items: Transit[]

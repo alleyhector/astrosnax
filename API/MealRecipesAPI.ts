@@ -23,7 +23,7 @@ export const searchRecipe = async ({ fallbackFood }: SearchMealParams) => {
       // Store the fetched data in AsyncStorage
       const CACHE_KEY = `mealdb-${fallbackFood}`
       await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(response.data))
-      console.log('MEAL API CALLED')
+      console.log(`MEAL API CALLED for ${fallbackFood}`)
       return response.data
     }
   } catch (error) {

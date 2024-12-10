@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, memo } from 'react'
+import { useState, useEffect, useCallback, memo, useRef } from 'react'
 import { Image, ActivityIndicator, useColorScheme } from 'react-native'
 import { View, Text } from '@/components/Themed'
 import {
@@ -22,7 +22,7 @@ import Colors from '@/constants/Colors'
 import { ExternalLink } from './ExternalLink'
 
 const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
-  const [accessToken, setAccessToken] = useState<string | null>(null)
+  const accessTokenRef = useRef<string | null>(null)
   const [playlists, setPlaylists] = useState<PlaylistItem[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const colorScheme = useColorScheme()
@@ -31,13 +31,18 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
   }
 
   const fetchAccessToken = useCallback(async () => {
-    if (!accessToken) {
-      const token = await fetchPublicAccessToken()
-      setAccessToken(token)
-      return token
+    if (!accessTokenRef.current) {
+      try {
+        const token = await fetchPublicAccessToken()
+        accessTokenRef.current = token
+        return token
+      } catch (error) {
+        console.error('Failed to fetch access token:', error)
+        return null
+      }
     }
-    return accessToken
-  }, [accessToken])
+    return accessTokenRef.current
+  }, [])
 
   // Fetches playlists based on the provided query and updates the state
   const fetchPlaylists = useCallback(
@@ -51,8 +56,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
         })
         return data.playlists.items || []
       } catch (error) {
-        // Log the error to the console for debugging purposes
-        console.error('Failed to fetch playlists:', error)
+        console.error(`Failed to fetch playlists for query "${query}":`, error)
         return []
       }
     },
@@ -62,12 +66,13 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
   const fetchAndCombinePlaylists = useCallback(async () => {
     setLoading(true)
     try {
-      // Fetch data from both queries
-      const mainResults = transitQuery
-        ? await fetchPlaylists(transitQuery)
-        : null
-      const foodResults =
-        foodQuery && foodQuery.trim() ? await fetchPlaylists(foodQuery) : null
+      // Fetch data from both queries concurrently
+      const [mainResults, foodResults] = await Promise.all([
+        transitQuery ? fetchPlaylists(transitQuery) : Promise.resolve(null),
+        foodQuery && foodQuery.trim()
+          ? fetchPlaylists(foodQuery)
+          : Promise.resolve(null),
+      ])
 
       // Ensure both results are arrays and filter out null values
       const mainResultsArray = Array.isArray(mainResults)
@@ -89,15 +94,19 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
         ),
       ]
 
-      if (combinedResults.length > 1) {
-        setPlaylists(combinedResults)
-      } else if (mainResultsArray.length > 1) {
-        setPlaylists(mainResultsArray.slice(0, 2))
-      } else if (foodResultsArray.length > 1) {
-        setPlaylists(foodResultsArray.slice(0, 2))
+      const finalResults =
+        combinedResults.length > 1
+          ? combinedResults
+          : mainResultsArray.length > 1
+            ? mainResultsArray.slice(0, 2)
+            : foodResultsArray.length > 1
+              ? foodResultsArray.slice(0, 2)
+              : []
+
+      if (finalResults.length > 0) {
+        setPlaylists(finalResults)
       } else {
-        console.log('No results from either query')
-        setPlaylists([])
+        console.log('No playlists found for either of the provided queries.')
       }
     } catch (error) {
       console.error('Error combining playlists:', error)
@@ -106,12 +115,12 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
     }
   }, [foodQuery, transitQuery, fetchPlaylists])
 
-  // Call the API when the query changes
+  // Fetch playlists when transitQuery or foodQuery changes.
   useEffect(() => {
     if (transitQuery || foodQuery) {
       fetchAndCombinePlaylists()
     }
-  }, [transitQuery, foodQuery, fetchPlaylists, fetchAndCombinePlaylists])
+  }, [transitQuery, foodQuery, fetchAndCombinePlaylists])
 
   return (
     <View style={[column, card, cardBackground]}>
@@ -120,13 +129,17 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
       ) : (
         <>
           {playlists &&
-            playlists.map((playlist, index) => (
-              <ExternalLink key={index} href={playlist.external_urls.spotify}>
+            playlists.map((playlist) => (
+              <ExternalLink
+                key={playlist.id}
+                href={playlist.external_urls.spotify}
+              >
                 <View style={[row, cardBackground]}>
                   <View>
                     {playlist.images.length > 0 && (
                       <Image
                         source={{ uri: playlist.images[0].url }}
+                        alt={`Image for ${playlist.name} playlist`}
                         style={[apiImage, cardBackground]}
                       />
                     )}

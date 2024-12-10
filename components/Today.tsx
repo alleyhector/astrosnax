@@ -46,9 +46,9 @@ const Today: FC<{ data: BlogPostQueryResponse | undefined }> = ({ data }) => {
         key: node.key,
         style: styles._VIEW_SAFE_image,
         source: {
-          uri: `https:${src}`,
-          alt,
+          uri: src?.startsWith('http') ? src : `https:${src}`,
         },
+        alt,
       }
 
       return <FitImage {...imageProps} />
@@ -71,9 +71,13 @@ const Today: FC<{ data: BlogPostQueryResponse | undefined }> = ({ data }) => {
       {post && (
         <>
           {post.heroImage && (
-            <Image style={styles.hero} source={{ uri: post.heroImage.url }} />
+            <Image
+              style={styles.hero}
+              source={{ uri: post.heroImage.url }}
+              alt={post.heroImage.description}
+            />
           )}
-          <Link href={`/${post?.slug}`} style={styles.title}>
+          <Link href={`/${post.slug}`} style={styles.title}>
             <Text style={styles.menu}>{date}</Text>
           </Link>
 
