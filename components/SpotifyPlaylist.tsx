@@ -32,9 +32,14 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
 
   const fetchAccessToken = useCallback(async () => {
     if (!accessTokenRef.current) {
-      const token = await fetchPublicAccessToken()
-      accessTokenRef.current = token
-      return token
+      try {
+        const token = await fetchPublicAccessToken()
+        accessTokenRef.current = token
+        return token
+      } catch (error) {
+        console.error('Failed to fetch access token:', error)
+        return null
+      }
     }
     return accessTokenRef.current
   }, [])
@@ -51,8 +56,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
         })
         return data.playlists.items || []
       } catch (error) {
-        // Log the error to the console for debugging purposes
-        console.error('Failed to fetch playlists:', error)
+        console.error(`Failed to fetch playlists for query "${query}":`, error)
         return []
       }
     },
@@ -90,12 +94,17 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
         ),
       ]
 
-      if (combinedResults.length > 1) {
-        setPlaylists(combinedResults)
-      } else if (mainResultsArray.length > 1) {
-        setPlaylists(mainResultsArray.slice(0, 2))
-      } else if (foodResultsArray.length > 1) {
-        setPlaylists(foodResultsArray.slice(0, 2))
+      const finalResults =
+        combinedResults.length > 1
+          ? combinedResults
+          : mainResultsArray.length > 1
+            ? mainResultsArray.slice(0, 2)
+            : foodResultsArray.length > 1
+              ? foodResultsArray.slice(0, 2)
+              : []
+
+      if (finalResults.length > 0) {
+        setPlaylists(finalResults)
       } else {
         console.log('No playlists found for either of the provided queries.')
       }
@@ -106,13 +115,12 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
     }
   }, [foodQuery, transitQuery, fetchPlaylists])
 
-  // useEffect hook to call the API whenever the transitQuery or foodQuery changes.
-  // This ensures that the playlists are fetched and combined based on the latest queries.
+  // Fetch playlists when transitQuery or foodQuery changes.
   useEffect(() => {
     if (transitQuery || foodQuery) {
       fetchAndCombinePlaylists()
     }
-  }, [transitQuery, foodQuery, fetchPlaylists, fetchAndCombinePlaylists])
+  }, [transitQuery, foodQuery, fetchAndCombinePlaylists])
 
   return (
     <View style={[column, card, cardBackground]}>
