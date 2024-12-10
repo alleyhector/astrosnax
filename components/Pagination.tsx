@@ -19,7 +19,7 @@ const Pagination: FC<PaginationProps> = ({
   goToNextPage,
   goToPreviousPage,
 }) => {
-  const colorScheme = useColorScheme()
+  const colorScheme = useColorScheme() ?? 'light'
 
   return (
     <View style={styles.paginationContainer}>
@@ -30,8 +30,8 @@ const Pagination: FC<PaginationProps> = ({
           style={({ pressed }) => [
             styles.paginationButton,
             {
-              backgroundColor: Colors[colorScheme ?? 'light'].background,
-              color: Colors[colorScheme ?? 'light'].text,
+              backgroundColor: Colors[colorScheme].background,
+              color: Colors[colorScheme].text,
               opacity: currentPage === 1 ? 0.5 : pressed ? 0.7 : 1,
             },
           ]}
@@ -45,13 +45,13 @@ const Pagination: FC<PaginationProps> = ({
             style={({ pressed }) => [
               styles.paginationButton,
               {
-                color: Colors[colorScheme ?? 'light'].text,
+                color: Colors[colorScheme].text,
                 backgroundColor:
                   currentPage === i + 1
                     ? colorScheme === 'dark'
                       ? '#000'
                       : '#fac7b0'
-                    : Colors[colorScheme ?? 'light'].background,
+                    : Colors[colorScheme].background,
                 opacity: pressed ? 0.7 : 1,
               },
             ]}
@@ -65,8 +65,8 @@ const Pagination: FC<PaginationProps> = ({
           style={({ pressed }) => [
             styles.paginationButton,
             {
-              backgroundColor: Colors[colorScheme ?? 'light'].background,
-              color: Colors[colorScheme ?? 'light'].text,
+              backgroundColor: Colors[colorScheme].background,
+              color: Colors[colorScheme].text,
               opacity: currentPage === totalPages ? 0.5 : pressed ? 0.7 : 1,
             },
           ]}
