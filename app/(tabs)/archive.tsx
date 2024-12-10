@@ -18,6 +18,7 @@ import { DefaultTheme } from '@react-navigation/native'
 import { useColorScheme } from '@/components/useColorScheme'
 import { LinearGradient } from 'expo-linear-gradient'
 import Pagination from '@/components/Pagination'
+import { dimensions } from '@/constants/Styles'
 
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!, $skip: Int, $limit: Int) {
@@ -138,6 +139,7 @@ const ArchiveScreen: FC = () => {
         colorScheme === 'dark' ? '#000' : '#fac7b0',
       ]}
       start={{ x: 0.5, y: 0.6 }}
+      style={{ height: dimensions.fullHeight }}
     >
       <View
         style={{
