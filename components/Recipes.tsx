@@ -13,7 +13,6 @@ import {
 } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
 import { ExternalLink as ExternalLinkComponent } from './ExternalLink'
-import { memo as memoize } from 'react'
 import { searchRecipe as searchMealRecipe } from '@/API/MealRecipesAPI'
 
 interface ExtendedRecipeProps extends RecipeProps {
@@ -32,7 +31,7 @@ interface RecipeListProps {
   cardBackground: object
 }
 
-const ExternalLink = memoize(ExternalLinkComponent)
+const ExternalLink = memo(ExternalLinkComponent)
 
 const RecipeList: FC<RecipeListProps> = ({ recipes, cardBackground }) => (
   <>
