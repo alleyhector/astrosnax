@@ -97,8 +97,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
       } else if (foodResultsArray.length > 1) {
         setPlaylists(foodResultsArray.slice(0, 2))
       } else {
-        console.log('No results from either query')
-        console.log('No playlists found for the provided queries.')
+        console.log('No playlists found for either of the provided queries.')
       }
     } catch (error) {
       console.error('Error combining playlists:', error)

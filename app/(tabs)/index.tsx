@@ -82,7 +82,6 @@ const HomeScreen = () => {
         colorScheme === 'dark' ? '#000' : '#fac7b0',
       ]}
       start={{ x: 0.5, y: 0.6 }}
-      style={{ height: dimensions.fullHeight }}
     >
       <ScrollView
         style={{
