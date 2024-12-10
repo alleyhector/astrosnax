@@ -18,7 +18,6 @@ import { DefaultTheme } from '@react-navigation/native'
 import { useColorScheme } from '@/components/useColorScheme'
 import { LinearGradient } from 'expo-linear-gradient'
 import Pagination from '@/components/Pagination'
-import { dimensions } from '@/constants/Styles'
 
 const QUERY_POSTS = gql`
   query blogPosts($today: DateTime!, $skip: Int, $limit: Int) {

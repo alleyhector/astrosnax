@@ -18,6 +18,7 @@ import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { useMarkdownStyles } from '@/components/useMarkdown'
 import Attribution from '@/components/Attribution'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 
 const QUERY_ABOUT = gql`
   {
@@ -38,6 +39,7 @@ const AboutScreen = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
   const markdownStyles = useMarkdownStyles()
+  const bottomTabBarHeight = useBottomTabBarHeight()
 
   const { data, loading, error, refetch } = useQuery<
     AboutCollectionQueryResponse,
@@ -61,13 +63,16 @@ const AboutScreen = () => {
         colorScheme === 'dark' ? '#000' : '#fac7b0',
       ]}
       start={{ x: 0.5, y: 0.6 }}
-      style={{ height: dimensions.fullHeight }}
+      style={{
+        height: dimensions.fullHeight - bottomTabBarHeight,
+      }}
     >
       <ScrollView
         style={{
           paddingTop: insets.top,
           paddingBottom: insets.bottom,
           display: 'flex',
+          overflow: 'scroll',
         }}
         refreshControl={
           <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
@@ -85,8 +90,8 @@ const AboutScreen = () => {
               <Markdown style={markdownStyles}>{about.aboutMe}</Markdown>
             </>
           )}
+          <Attribution />
         </View>
-        <Attribution />
       </ScrollView>
     </LinearGradient>
   )
@@ -105,10 +110,5 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
   },
 })

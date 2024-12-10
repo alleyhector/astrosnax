@@ -6,7 +6,7 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from 'react-native'
-import { container, dimensions, textShadow } from '@/constants/Styles'
+import { container, textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
@@ -144,11 +144,6 @@ const styles = StyleSheet.create({
     height: 250,
     resizeMode: 'cover',
     alignSelf: 'center',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
   },
 })
 

@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react'
+import { FC, memo, useEffect, useState } from 'react'
 import { View, Text } from './Themed'
 import { Image, ActivityIndicator, useColorScheme } from 'react-native'
 import { searchRecipe } from '@/API/RecipesAPI'
@@ -12,7 +12,8 @@ import {
   apiTitle,
 } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
-import { ExternalLink } from './ExternalLink'
+import { ExternalLink as ExternalLinkComponent } from './ExternalLink'
+import { memo as memoize } from 'react'
 import { searchRecipe as searchMealRecipe } from '@/API/MealRecipesAPI'
 
 interface ExtendedRecipeProps extends RecipeProps {
@@ -20,10 +21,59 @@ interface ExtendedRecipeProps extends RecipeProps {
 }
 
 interface Meal {
+  idMeal: string
   strMeal: string
   strMealThumb: string
   strYoutube: string
 }
+interface RecipeListProps {
+  recipes?: RecipeSearchResponse[]
+  fallbackRecipes?: Meal[]
+  cardBackground: object
+}
+
+const ExternalLink = memoize(ExternalLinkComponent)
+
+const RecipeList: FC<RecipeListProps> = ({ recipes, cardBackground }) => (
+  <>
+    {recipes &&
+      recipes.map((recipe) => (
+        <ExternalLink key={recipe.recipe.uri} href={recipe.recipe.url}>
+          <View style={[row, cardBackground]}>
+            <View>
+              <Image source={{ uri: recipe.recipe.image }} style={apiImage} />
+            </View>
+            <View style={[apiTextContainer, cardBackground]}>
+              <Text style={apiTitle}>{recipe.recipe.label}</Text>
+              <Text>View Recipe</Text>
+            </View>
+          </View>
+        </ExternalLink>
+      ))}
+  </>
+)
+
+const FallbackRecipeList: FC<RecipeListProps> = ({
+  fallbackRecipes,
+  cardBackground,
+}) => (
+  <>
+    {fallbackRecipes &&
+      fallbackRecipes.map((meal) => (
+        <ExternalLink key={meal.idMeal} href={meal.strYoutube}>
+          <View style={[row, cardBackground]}>
+            <View>
+              <Image source={{ uri: meal.strMealThumb }} style={apiImage} />
+            </View>
+            <View style={[apiTextContainer, cardBackground]}>
+              <Text style={apiTitle}>{meal.strMeal}</Text>
+              <Text>View Recipe</Text>
+            </View>
+          </View>
+        </ExternalLink>
+      ))}
+  </>
+)
 
 const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
   const colorScheme = useColorScheme()
@@ -40,10 +90,8 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
   const fetchRecipe = async ({ query, fallbackFood }: ExtendedRecipeProps) => {
     setLoading(true)
     try {
-      // console.log('QUERY: ', query, fallbackFood)
       const data = await searchRecipe({ query })
-      // console.log('data:', data.hits[0].recipe.label)
-      if (data) {
+      if (data && data.hits) {
         setRecipes(data.hits.slice(0, 2))
       }
     } catch (error) {
@@ -52,8 +100,7 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
 
     try {
       const fallbackData = await searchMealRecipe({ fallbackFood })
-      // console.log('fallbackData:', fallbackData.meals[0].strMeal)
-      if (fallbackData) {
+      if (fallbackData && fallbackData.meals) {
         setFallbackRecipes(fallbackData.meals.slice(0, 2))
       }
     } catch (error) {
@@ -77,43 +124,13 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
       ) : (
         <>
           {recipes.length > 0 ? (
-            // Render recipes
-            recipes.map((recipe, index) => (
-              <ExternalLink key={index} href={recipe.recipe.url}>
-                <View style={[row, cardBackground]}>
-                  <View>
-                    <Image
-                      source={{ uri: recipe.recipe.image }}
-                      style={apiImage}
-                    />
-                  </View>
-                  <View style={[apiTextContainer, cardBackground]}>
-                    <Text style={apiTitle}>{recipe.recipe.label}</Text>
-                    <Text>View Recipe</Text>
-                  </View>
-                </View>
-              </ExternalLink>
-            ))
+            <RecipeList recipes={recipes} cardBackground={cardBackground} />
           ) : fallbackRecipes.length > 0 ? (
-            // Render fallback recipes
-            fallbackRecipes.map((meal, index) => (
-              <ExternalLink key={index} href={meal.strYoutube}>
-                <View style={[row, cardBackground]}>
-                  <View>
-                    <Image
-                      source={{ uri: meal.strMealThumb }}
-                      style={apiImage}
-                    />
-                  </View>
-                  <View style={[apiTextContainer, cardBackground]}>
-                    <Text style={apiTitle}>{meal.strMeal}</Text>
-                    <Text>View Recipe</Text>
-                  </View>
-                </View>
-              </ExternalLink>
-            ))
+            <FallbackRecipeList
+              fallbackRecipes={fallbackRecipes}
+              cardBackground={cardBackground}
+            />
           ) : (
-            // Last-resort fallback text
             <Text style={apiTitle}>
               Oof I guess today's transit means you're going hungry...
             </Text>
