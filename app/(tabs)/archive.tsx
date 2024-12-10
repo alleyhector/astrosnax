@@ -4,6 +4,7 @@ import {
   Button,
   FlatList,
   ListRenderItem,
+  Pressable,
   RefreshControl,
   StyleSheet,
 } from 'react-native'
@@ -63,8 +64,7 @@ const ArchiveScreen: FC = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
   const today = new Date().toString()
-  const PAGE_SIZE = 3
-  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const PAGE_SIZE = 1
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1) // Update this dynamically if total posts are known.
 
@@ -126,28 +126,56 @@ const ArchiveScreen: FC = () => {
 
   const PaginationControls: FC = () => (
     <View style={styles.paginationContainer}>
-      <Text>
-        Page {currentPage} of {totalPages}
-      </Text>
       <View style={styles.paginationButtons}>
-        <Button
-          title='Previous'
+        <Pressable
           onPress={goToPreviousPage}
           disabled={currentPage === 1}
-        />
+          style={({ pressed }) => [
+            styles.paginationButton,
+            {
+              backgroundColor: Colors[colorScheme ?? 'light'].background,
+              color: Colors[colorScheme ?? 'light'].text,
+              opacity: currentPage === 1 ? 0.5 : pressed ? 0.7 : 1,
+            },
+          ]}
+        >
+          <Text style={styles.paginationText}>Previous</Text>
+        </Pressable>
         {Array.from({ length: totalPages }, (_, i) => (
-          <Button
+          <Pressable
             key={i}
-            title={(i + 1).toString()}
             onPress={() => goToPage(i + 1)}
-            color={currentPage === i + 1 ? 'blue' : 'gray'}
-          />
+            style={({ pressed }) => [
+              styles.paginationButton,
+              {
+                color: Colors[colorScheme ?? 'light'].text,
+                backgroundColor:
+                  currentPage === i + 1
+                    ? colorScheme === 'dark'
+                      ? '#000'
+                      : '#fac7b0'
+                    : Colors[colorScheme ?? 'light'].background,
+                opacity: pressed ? 0.7 : 1,
+              },
+            ]}
+          >
+            <Text style={styles.paginationText}>{`${i + 1}`}</Text>
+          </Pressable>
         ))}
-        <Button
-          title='Next'
+        <Pressable
           onPress={goToNextPage}
           disabled={currentPage === totalPages}
-        />
+          style={({ pressed }) => [
+            styles.paginationButton,
+            {
+              backgroundColor: Colors[colorScheme ?? 'light'].background,
+              color: Colors[colorScheme ?? 'light'].text,
+              opacity: currentPage === totalPages ? 0.5 : pressed ? 0.7 : 1,
+            },
+          ]}
+        >
+          <Text style={styles.paginationText}>Next</Text>
+        </Pressable>
       </View>
     </View>
   )
@@ -205,12 +233,22 @@ const styles = StyleSheet.create({
     fontFamily: 'AngelClub',
   },
   paginationContainer: {
-    marginVertical: 20,
+    margin: 20,
     alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   paginationButtons: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     marginTop: 10,
+    backgroundColor: 'transparent',
   },
+  paginationButton: {
+    margin: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+  },
+  paginationText: { fontFamily: 'AngelClub', fontSize: 18 },
 })
