@@ -19,6 +19,7 @@ export interface About {
 export interface BlogPostQueryResponse {
   blogPostCollection: {
     items: BlogPost[]
+    total?: number
   }
 }
 

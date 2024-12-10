@@ -73,21 +73,28 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
       const mainResultsArray = Array.isArray(mainResults)
         ? mainResults.filter(Boolean)
         : []
+
       const foodResultsArray = Array.isArray(foodResults)
         ? foodResults.filter(Boolean)
         : []
+      const mainResultSliced = mainResultsArray.slice(0, 1)
+      const foodResultSliced = foodResultsArray.slice(0, 1)
 
       // Combine the results and remove duplicates (by playlist id in this example)
       const combinedResults = [
-        ...mainResultsArray,
-        ...foodResultsArray.filter(
+        ...mainResultSliced,
+        ...foodResultSliced.filter(
           (item) =>
             !mainResultsArray.some((mainItem) => mainItem.id === item.id),
         ),
       ]
 
-      if (combinedResults.length > 0) {
-        setPlaylists(combinedResults.slice(0, 2))
+      if (combinedResults.length > 1) {
+        setPlaylists(combinedResults)
+      } else if (mainResultsArray.length > 1) {
+        setPlaylists(mainResultsArray.slice(0, 2))
+      } else if (foodResultsArray.length > 1) {
+        setPlaylists(foodResultsArray.slice(0, 2))
       } else {
         console.log('No results from either query')
         setPlaylists([])

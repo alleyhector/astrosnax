@@ -1,4 +1,4 @@
-import { FC, memo } from 'react'
+import { FC, memo, useState, useEffect } from 'react'
 import {
   ActivityIndicator,
   FlatList,
@@ -17,12 +17,16 @@ import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { DefaultTheme } from '@react-navigation/native'
 import { useColorScheme } from '@/components/useColorScheme'
 import { LinearGradient } from 'expo-linear-gradient'
+import Pagination from '@/components/Pagination'
+import { dimensions } from '@/constants/Styles'
 
 const QUERY_POSTS = gql`
-  query blogPosts($today: DateTime!) {
+  query blogPosts($today: DateTime!, $skip: Int, $limit: Int) {
     blogPostCollection(
       where: { publishDate_lte: $today }
       order: publishDate_DESC
+      skip: $skip
+      limit: $limit
     ) {
       items {
         sys {
@@ -51,6 +55,7 @@ const QUERY_POSTS = gql`
           }
         }
       }
+      total
     }
   }
 `
@@ -59,22 +64,23 @@ const ArchiveScreen: FC = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
   const today = new Date().toString()
+  const PAGE_SIZE = 3
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1) // Update this dynamically if total posts are known.
 
   const { data, loading, error, refetch } = useQuery<
     BlogPostQueryResponse,
     OperationVariables
   >(QUERY_POSTS, {
     fetchPolicy: 'network-only',
-    variables: { today: new Date(today) },
+    variables: {
+      today: new Date(today),
+      skip: (currentPage - 1) * PAGE_SIZE,
+      limit: PAGE_SIZE,
+    },
   })
-  const { onRefresh, isRefreshing } = useAutoRefetch({
-    refetch,
-  })
-  if (loading) return <ActivityIndicator size='large' />
-  if (error) return <Text>Error: {error.message}</Text>
-  const posts = data?.blogPostCollection.items
+  const posts = data?.blogPostCollection?.items || []
 
-  const keyExtractor = (_: BlogPost, index: number) => index.toString()
   const Item: FC<{ item: BlogPost }> = memo(({ item }) => (
     <View style={styles.container}>
       <Link
@@ -92,6 +98,38 @@ const ArchiveScreen: FC = () => {
     <Item item={item} />
   )
 
+  // Update total pages dynamically if your API provides the total count.
+  useEffect(() => {
+    if (data?.blogPostCollection) {
+      const totalItems = data.blogPostCollection.total || 1
+      setTotalPages(Math.ceil(totalItems / PAGE_SIZE))
+    }
+  }, [data])
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page)
+    }
+  }
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1)
+    }
+  }
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1)
+    }
+  }
+
+  const { onRefresh, isRefreshing } = useAutoRefetch({
+    refetch,
+  })
+  if (loading) return <ActivityIndicator size='large' />
+  if (error) return <Text style={{ margin: 60 }}>Error: {error.message}</Text>
+
   return (
     <LinearGradient
       colors={[
@@ -101,6 +139,7 @@ const ArchiveScreen: FC = () => {
         colorScheme === 'dark' ? '#000' : '#fac7b0',
       ]}
       start={{ x: 0.5, y: 0.6 }}
+      style={{ height: dimensions.fullHeight }}
     >
       <View
         style={{
@@ -114,9 +153,18 @@ const ArchiveScreen: FC = () => {
           style={{ backgroundColor: 'transparent' }}
           data={posts}
           renderItem={renderItem}
-          keyExtractor={keyExtractor}
+          keyExtractor={(item) => item.sys.publishedAt}
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+          }
+          ListFooterComponent={
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              goToPage={goToPage}
+              goToNextPage={goToNextPage}
+              goToPreviousPage={goToPreviousPage}
+            />
           }
         />
       </View>
@@ -136,10 +184,5 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontFamily: 'AngelClub',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
   },
 })
