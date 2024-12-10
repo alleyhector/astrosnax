@@ -28,6 +28,7 @@ const QUERY_POST = gql`
         body
         heroImage {
           url
+          description
         }
         transitCollection {
           items {
@@ -77,7 +78,11 @@ const PostDetails = () => {
       <ScrollView>
         <View style={styles.container}>
           {post?.heroImage && (
-            <Image style={styles.hero} source={{ uri: post.heroImage.url }} />
+            <Image
+              style={styles.hero}
+              source={{ uri: post.heroImage.url }}
+              alt={post.heroImage.description}
+            />
           )}
           <Text style={styles.menu}>On the astrological menu:</Text>
           <Transits transits={post?.transitCollection.items} />

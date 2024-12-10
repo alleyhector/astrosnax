@@ -85,6 +85,7 @@ const AboutScreen = () => {
                 <Image
                   style={styles.hero}
                   source={{ uri: about.profile.url }}
+                  alt='Rotoscope drawing of the author'
                 />
               )}
               <Markdown style={markdownStyles}>{about.aboutMe}</Markdown>

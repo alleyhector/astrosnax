@@ -39,6 +39,7 @@ const QUERY_TODAY_POST = gql`
         body
         heroImage {
           url
+          description
         }
         transitCollection {
           items {
@@ -110,6 +111,7 @@ const HomeScreen = () => {
           <Image
             style={styles.logo}
             source={require('../../assets/images/logo.png')}
+            alt='AstroSnax logo'
           />
           <Today data={data} />
         </View>

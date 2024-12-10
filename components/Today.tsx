@@ -71,7 +71,11 @@ const Today: FC<{ data: BlogPostQueryResponse | undefined }> = ({ data }) => {
       {post && (
         <>
           {post.heroImage && (
-            <Image style={styles.hero} source={{ uri: post.heroImage.url }} />
+            <Image
+              style={styles.hero}
+              source={{ uri: post.heroImage.url }}
+              alt={post.heroImage.description}
+            />
           )}
           <Link href={`/${post.slug}`} style={styles.title}>
             <Text style={styles.menu}>{date}</Text>

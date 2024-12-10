@@ -40,7 +40,11 @@ const RecipeList: FC<RecipeListProps> = ({ recipes, cardBackground }) => (
         <ExternalLink key={recipe.recipe.uri} href={recipe.recipe.url}>
           <View style={[row, cardBackground]}>
             <View>
-              <Image source={{ uri: recipe.recipe.image }} style={apiImage} />
+              <Image
+                source={{ uri: recipe.recipe.image }}
+                alt={`${recipe.recipe.label} photo`}
+                style={apiImage}
+              />
             </View>
             <View style={[apiTextContainer, cardBackground]}>
               <Text style={apiTitle}>{recipe.recipe.label}</Text>
@@ -62,7 +66,11 @@ const FallbackRecipeList: FC<RecipeListProps> = ({
         <ExternalLink key={meal.idMeal} href={meal.strYoutube}>
           <View style={[row, cardBackground]}>
             <View>
-              <Image source={{ uri: meal.strMealThumb }} style={apiImage} />
+              <Image
+                source={{ uri: meal.strMealThumb }}
+                alt={`${meal.strMeal} photo`}
+                style={apiImage}
+              />
             </View>
             <View style={[apiTextContainer, cardBackground]}>
               <Text style={apiTitle}>{meal.strMeal}</Text>

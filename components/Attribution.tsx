@@ -15,6 +15,7 @@ const Attribution = () => {
             uri: 'https://developer.edamam.com/images/transparent.png',
           }}
           style={{ width: 200, height: 40 }}
+          alt='Edamam logo'
         />
       </TouchableOpacity>
     </View>

@@ -139,6 +139,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
                     {playlist.images.length > 0 && (
                       <Image
                         source={{ uri: playlist.images[0].url }}
+                        alt={`Image for ${playlist.name} playlist`}
                         style={[apiImage, cardBackground]}
                       />
                     )}
