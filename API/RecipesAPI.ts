@@ -12,6 +12,13 @@ if (!appKey) {
   throw new Error('EDAMAM_KEY is not set')
 }
 
+/**
+ * Searches for recipes based on the provided query and cuisine type.
+ * @param {Object} props - The properties for the recipe search.
+ * @param {string} props.query - The search query (e.g., "chicken").
+ * @param {string} [props.cuisineType] - The optional cuisine type (e.g., "Italian").
+ * @returns {Promise<Object>} The recipe data from the API or cache.
+ */
 export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
   const url = 'https://api.edamam.com/api/recipes/v2'
   const params = {

@@ -20,6 +20,10 @@ const axiosInstance = axios.create({
 })
 
 // Get access token using Client Credentials Flow
+/**
+ * Fetches a public access token from Spotify using Client Credentials Flow.
+ * @returns {Promise<string>} A promise that resolves to the access token.
+ */
 export const fetchPublicAccessToken = async () => {
   try {
     const response = await axiosInstance.post(
@@ -38,7 +42,14 @@ export const fetchPublicAccessToken = async () => {
   }
 }
 
-// Search for playlists by artist and/or genre
+/**
+ * Search for playlists by artist and/or genre.
+ *
+ * @param {Object} params - The parameters for the search.
+ * @param {string} params.accessToken - The access token for Spotify API.
+ * @param {string} params.query - The search query.
+ * @returns {Promise<Object>} The search results including playlists.
+ */
 export const searchPlaylistsByParams = async ({
   accessToken,
   query,
@@ -59,9 +70,7 @@ export const searchPlaylistsByParams = async ({
     const playlists = response.data.playlists.items
 
     // Filter out null items
-    const filteredPlaylists = playlists.filter(
-      (item: PlaylistItem) => item !== null,
-    )
+    const filteredPlaylists = playlists.filter(Boolean)
 
     return {
       ...response.data,
