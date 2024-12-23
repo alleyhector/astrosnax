@@ -25,16 +25,26 @@ export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
 
   try {
     // Attempt to retrieve cached data
-    const cachedData = await FileSystemStorage.getItem(
-      `edamam-${query}-${cuisineType}`,
-    )
+    let cachedData
+    if (cuisineType === undefined) {
+      cachedData = await FileSystemStorage.getItem(
+        `edamam-${query}-${cuisineType}`,
+      )
+    } else {
+      cachedData = await FileSystemStorage.getItem(`edamam-${query}`)
+    }
     if (cachedData) {
       console.warn('Using cached recipe data.')
       return JSON.parse(cachedData)
     } else {
       const response = await axios.get(url, { params })
       // Store the fetched data in FileSystemStorage
-      const CACHE_KEY = `edamam-${query}-${cuisineType}`
+      let CACHE_KEY
+      if (cuisineType === undefined) {
+        CACHE_KEY = `edamam-${query}`
+      } else {
+        CACHE_KEY = `edamam-${query}-${cuisineType}`
+      }
       await FileSystemStorage.setItem(CACHE_KEY, JSON.stringify(response.data))
       console.log('EDAM API CALLED')
       return response.data
