@@ -1,5 +1,5 @@
 import axios from 'axios'
-import FileSystemStorage from 'redux-persist-expo-filesystem'
+import { createExpoFileSystemStorage } from 'redux-persist-expo-file-system-storage'
 
 interface RecipeProps {
   query: string
@@ -13,39 +13,33 @@ if (!appId || !appKey) {
   throw new Error('EDAMAM_ID or EDAMAM_KEY is not set')
 }
 
+// Create an instance of ExpoFileSystemStorage
+const expoFileSystemStorage = createExpoFileSystemStorage()
+
 export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
   const url = 'https://api.edamam.com/api/recipes/v2'
   const params = {
     type: 'public', // Required parameter
     q: query, // Search query (e.g., "chicken")
-    app_id: appId!,
-    app_key: appKey!,
+    app_id: appId,
+    app_key: appKey,
     cuisineType: cuisineType, // Optional parameter (e.g., "Italian")
   }
 
   try {
     // Attempt to retrieve cached data
-    let cachedData
-    if (cuisineType === undefined) {
-      cachedData = await FileSystemStorage.getItem(
-        `edamam-${query}-${cuisineType}`,
-      )
-    } else {
-      cachedData = await FileSystemStorage.getItem(`edamam-${query}`)
-    }
+    const cachedData = await expoFileSystemStorage.getItem(`edamam-${query}`)
     if (cachedData) {
       console.warn('Using cached recipe data.')
       return JSON.parse(cachedData)
     } else {
       const response = await axios.get(url, { params })
       // Store the fetched data in FileSystemStorage
-      let CACHE_KEY
-      if (cuisineType === undefined) {
-        CACHE_KEY = `edamam-${query}`
-      } else {
-        CACHE_KEY = `edamam-${query}-${cuisineType}`
-      }
-      await FileSystemStorage.setItem(CACHE_KEY, JSON.stringify(response.data))
+      const CACHE_KEY = `edamam-${query}`
+      await expoFileSystemStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify(response.data),
+      )
       console.log('EDAM API CALLED')
       return response.data
     }
