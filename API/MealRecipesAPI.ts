@@ -1,9 +1,12 @@
 import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { createExpoFileSystemStorage } from 'redux-persist-expo-file-system-storage'
 
 interface SearchMealParams {
   fallbackFood?: string | string[]
 }
+
+// Create an instance of ExpoFileSystemStorage
+const expoFileSystemStorage = createExpoFileSystemStorage()
 
 export const searchRecipe = async ({ fallbackFood }: SearchMealParams) => {
   const url = 'https://www.themealdb.com/api/json/v1/1/search.php'
@@ -13,7 +16,9 @@ export const searchRecipe = async ({ fallbackFood }: SearchMealParams) => {
 
   try {
     // Attempt to retrieve cached data
-    const cachedData = await AsyncStorage.getItem(`mealdb-${fallbackFood}`)
+    const cachedData = await expoFileSystemStorage.getItem(
+      `mealdb-${fallbackFood}`,
+    )
     if (cachedData) {
       console.warn('Using cached meal recipe data.')
 
@@ -22,7 +27,10 @@ export const searchRecipe = async ({ fallbackFood }: SearchMealParams) => {
       const response = await axios.get(url, { params })
       // Store the fetched data in AsyncStorage
       const CACHE_KEY = `mealdb-${fallbackFood}`
-      await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(response.data))
+      await expoFileSystemStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify(response.data),
+      )
       console.log(`MEAL API CALLED for ${fallbackFood}`)
       return response.data
     }
