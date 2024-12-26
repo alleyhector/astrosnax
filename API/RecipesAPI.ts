@@ -32,8 +32,6 @@ export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
     if (cachedData) {
       console.warn('Using cached recipe data.')
       return JSON.parse(cachedData)
-      // const response = await axios.get(url, { params })
-      // return response.data
     } else {
       const response = await axios.get(url, { params })
       // Store the fetched data in FileSystemStorage
