@@ -31,6 +31,8 @@ export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
     const cachedData = await expoFileSystemStorage.getItem(`edamam-${query}`)
     if (cachedData) {
       console.warn('Using cached recipe data.')
+      const parsedCachedData = JSON.parse(cachedData)
+      console.log('PARSED CACHED DATA', parsedCachedData.hits[0].recipe.image)
       return JSON.parse(cachedData)
     } else {
       const response = await axios.get(url, { params })

@@ -1,6 +1,7 @@
 import { FC, memo, useEffect, useState } from 'react'
 import { View, Text } from './Themed'
-import { Image, ActivityIndicator, useColorScheme } from 'react-native'
+import { ActivityIndicator, useColorScheme } from 'react-native'
+import { Image } from 'expo-image'
 import { searchRecipe } from '@/API/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
 import {
@@ -44,6 +45,8 @@ const RecipeList: FC<RecipeListProps> = ({ recipes, cardBackground }) => (
                 source={{ uri: recipe.recipe.image }}
                 alt={`${recipe.recipe.label} photo`}
                 style={apiImage}
+                placeholder={require('@/assets/images/recipe-placeholder.png')}
+                placeholderContentFit='cover'
               />
             </View>
             <View style={[apiTextContainer, cardBackground]}>
