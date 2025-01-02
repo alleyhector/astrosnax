@@ -11,6 +11,7 @@ import {
   apiTextContainer,
   row,
   apiTitle,
+  apiImageWrapper,
 } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
 import { ExternalLink as ExternalLinkComponent } from './ExternalLink'
@@ -40,13 +41,14 @@ const RecipeList: FC<RecipeListProps> = ({ recipes, cardBackground }) => (
       recipes.map((recipe) => (
         <ExternalLink key={recipe.recipe.uri} href={recipe.recipe.url}>
           <View style={[row, cardBackground]}>
-            <View>
+            <View style={apiImageWrapper}>
               <Image
                 source={{ uri: recipe.recipe.image }}
                 alt={`${recipe.recipe.label} photo`}
                 style={apiImage}
                 placeholder={require('@/assets/images/recipe-placeholder.png')}
                 placeholderContentFit='cover'
+                transition={1000}
               />
             </View>
             <View style={[apiTextContainer, cardBackground]}>
@@ -68,11 +70,14 @@ const FallbackRecipeList: FC<RecipeListProps> = ({
       fallbackRecipes.map((meal) => (
         <ExternalLink key={meal.idMeal} href={meal.strYoutube}>
           <View style={[row, cardBackground]}>
-            <View>
+            <View style={apiImageWrapper}>
               <Image
                 source={{ uri: meal.strMealThumb }}
                 alt={`${meal.strMeal} photo`}
                 style={apiImage}
+                placeholder={require('@/assets/images/recipe-placeholder.png')}
+                placeholderContentFit='cover'
+                transition={1000}
               />
             </View>
             <View style={[apiTextContainer, cardBackground]}>

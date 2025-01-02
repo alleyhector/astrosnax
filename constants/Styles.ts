@@ -68,12 +68,18 @@ export const row: ViewStyle = {
 }
 
 export const apiImage: ImageStyle = {
+  width: '100%',
+  height: '100%',
+  alignSelf: 'center',
+  borderColor: 'black',
+}
+
+export const apiImageWrapper: ViewStyle = {
+  borderTopWidth: 3,
+  borderLeftWidth: 3,
+  borderColor: 'black',
   width: 100,
   height: 100,
-  resizeMode: 'cover',
-  alignSelf: 'center',
-  borderLeftWidth: 3,
-  borderTopWidth: 3,
 }
 
 export const apiTextContainer = {

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, memo, useRef } from 'react'
-import { Image, ActivityIndicator, useColorScheme } from 'react-native'
+import { ActivityIndicator, useColorScheme } from 'react-native'
+import { Image } from 'expo-image'
 import { View, Text } from '@/components/Themed'
 import {
   fetchPublicAccessToken,
@@ -17,6 +18,7 @@ import {
   apiTextContainer,
   row,
   apiTitle,
+  apiImageWrapper,
 } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
 import { ExternalLink } from './ExternalLink'
@@ -135,7 +137,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
                 href={playlist.external_urls.spotify}
               >
                 <View style={[row, cardBackground]}>
-                  <View>
+                  <View style={apiImageWrapper}>
                     {playlist.images.length > 0 && (
                       <Image
                         source={{ uri: playlist.images[0].url }}
