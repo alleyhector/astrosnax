@@ -70,7 +70,9 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
     try {
       // Fetch data from both queries concurrently
       const [mainResults, foodResults] = await Promise.all([
-        transitQuery ? fetchPlaylists(transitQuery) : Promise.resolve(null),
+        transitQuery
+          ? fetchPlaylists(`"${transitQuery}"`)
+          : Promise.resolve(null),
         foodQuery && foodQuery.trim()
           ? fetchPlaylists(foodQuery)
           : Promise.resolve(null),
@@ -84,6 +86,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
       const foodResultsArray = Array.isArray(foodResults)
         ? foodResults.filter(Boolean)
         : []
+
       const mainResultSliced = mainResultsArray.slice(0, 1)
       const foodResultSliced = foodResultsArray.slice(0, 1)
 
