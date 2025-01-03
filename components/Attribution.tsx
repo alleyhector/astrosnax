@@ -1,6 +1,6 @@
 import { Linking, TouchableOpacity } from 'react-native'
 import { Text, View } from './Themed'
-import { Image } from 'react-native'
+import { Image } from 'expo-image'
 import { column } from '@/constants/Styles'
 
 const Attribution = () => {

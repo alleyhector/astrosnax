@@ -23,15 +23,7 @@
         "image": "latest"
       }
     },
-    "production": {
-      "autoIncrement": true,
-      "ios": {
-        "image": "latest"
-      },
-      "android": {
-        "image": "latest"
-      }
-    }
+    "production": {}
   },
   "submit": {
     "production": {}

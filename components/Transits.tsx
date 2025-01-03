@@ -1,4 +1,5 @@
-import { Image, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { Image } from 'expo-image'
 import { FC, memo } from 'react'
 import { Text, View } from '@/components/Themed'
 import { imagesMap } from '@/assets/glyphs/exports'

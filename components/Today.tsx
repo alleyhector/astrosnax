@@ -1,6 +1,7 @@
 import { Link } from 'expo-router'
 import { FC, ReactNode } from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { Image } from 'expo-image'
 import Markdown from 'react-native-markdown-display'
 import FitImage from 'react-native-fit-image'
 import { Text, View } from '@/components/Themed'

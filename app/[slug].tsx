@@ -1,4 +1,5 @@
-import { Image, StyleSheet, ScrollView } from 'react-native'
+import { StyleSheet, ScrollView } from 'react-native'
+import { Image } from 'expo-image'
 import { useLocalSearchParams } from 'expo-router'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
 import Markdown from 'react-native-markdown-display'

@@ -1,10 +1,10 @@
 import {
-  Image,
   StyleSheet,
   ScrollView,
   ActivityIndicator,
   RefreshControl,
 } from 'react-native'
+import { Image } from 'expo-image'
 import { View, Text } from '@/components/Themed'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
 import Markdown from 'react-native-markdown-display'

@@ -2,10 +2,10 @@ import React from 'react'
 import {
   ScrollView,
   StyleSheet,
-  Image,
   RefreshControl,
   ActivityIndicator,
 } from 'react-native'
+import { Image } from 'expo-image'
 import { container, textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Colors from '@/constants/Colors'
@@ -110,7 +110,7 @@ const HomeScreen = () => {
           </Text>
           <Image
             style={styles.logo}
-            source={require('../../assets/images/logo.png')}
+            source={require('@/assets/images/logo.png')}
             alt='AstroSnax logo'
           />
           <Today data={data} />
