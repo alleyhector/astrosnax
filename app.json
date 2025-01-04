@@ -15,12 +15,10 @@
       "enableFullScreenImage_legacy": true
     },
     "ios": {
-      "buildNumber": "30", // Equivalent to Version Code for iOS
       "supportsTablet": true,
       "bundleIdentifier": "com.alleyhector1981.astrosnax"
     },
     "android": {
-      "versionCode": 30, // Version Code for Android
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
