@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, memo, useRef } from 'react'
 import { ActivityIndicator, useColorScheme } from 'react-native'
-import { Image } from 'expo-image'
 import { View, Text } from '@/components/Themed'
 import {
   fetchPublicAccessToken,
@@ -11,17 +10,9 @@ import {
   PlaylistProps,
   SpotifySearchResponse,
 } from '@/types/spotify'
-import {
-  card,
-  column,
-  apiImage,
-  apiTextContainer,
-  row,
-  apiTitle,
-  apiImageWrapper,
-} from '@/constants/Styles'
+import { card, column, apiTitle } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
-import { ExternalLink } from './ExternalLink'
+import Card from './ui/Card'
 
 const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
   const accessTokenRef = useRef<string | null>(null)
@@ -135,30 +126,15 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
         <>
           {playlists &&
             playlists.map((playlist) => (
-              <ExternalLink
+              <Card
                 key={playlist.id}
-                href={playlist.external_urls.spotify}
-              >
-                <View style={[row, cardBackground]}>
-                  <View style={apiImageWrapper}>
-                    {playlist.images.length > 0 && (
-                      <Image
-                        source={{ uri: playlist.images[0].url }}
-                        alt={`Image for ${playlist.name} playlist`}
-                        style={[apiImage, cardBackground]}
-                      />
-                    )}
-                  </View>
-                  <View style={[apiTextContainer, cardBackground]}>
-                    <View style={cardBackground}>
-                      <Text style={apiTitle}>
-                        {playlist.name} by {playlist.owner.display_name}
-                      </Text>
-                      <Text>Open playlist</Text>
-                    </View>
-                  </View>
-                </View>
-              </ExternalLink>
+                background={cardBackground}
+                imageUrl={playlist.images[0]?.url}
+                alt={`Image for ${playlist.name} playlist`}
+                title={`${playlist.name} by ${playlist.owner.display_name}`}
+                description='Open playlist'
+                link={playlist.external_urls.spotify}
+              />
             ))}
         </>
       )}

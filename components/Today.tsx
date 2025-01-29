@@ -25,7 +25,7 @@ const Today: FC<{ data: BlogPostQueryResponse | undefined }> = ({ data }) => {
 
   const post: BlogPost | undefined = data?.blogPostCollection?.items[0]
   const date: string | undefined = new Date(
-    post?.sys?.publishedAt!,
+    post?.publishDate!,
   ).toLocaleDateString('en-us', {
     weekday: 'long',
     year: 'numeric',

@@ -27,6 +27,7 @@ export interface BlogPost {
   sys: {
     publishedAt: string
   }
+  publishDate: string
   title: string
   slug: string
   author: {
