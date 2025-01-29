@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import { View, Text } from '@/components/Themed'
 import { Image } from 'expo-image'
 import { ExternalLink as ExternalLinkComponent } from '../ExternalLink'
@@ -11,7 +12,7 @@ import {
 import { memo } from 'react'
 
 interface CardProps {
-  background: any
+  background: object
   imageUrl: string
   alt: string
   title: string
@@ -22,7 +23,7 @@ interface CardProps {
 
 const ExternalLink = memo(ExternalLinkComponent)
 
-const Card: React.FC<CardProps> = ({
+const Card: FC<CardProps> = ({
   background,
   imageUrl,
   alt,
