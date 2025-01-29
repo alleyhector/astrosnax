@@ -10,10 +10,9 @@ import {
 } from '@/constants/Styles'
 
 interface CardProps {
-  id: string
   background: any
   imageUrl: string
-  name: string
+  alt: string
   owner: string
   description: string
   link: string
@@ -21,31 +20,28 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({
-  id,
   background,
   imageUrl,
-  name,
+  alt,
   owner,
   description,
   link,
 }) => {
   return (
-    <ExternalLink key={id} href={link}>
+    <ExternalLink href={link}>
       <View style={[row, background]}>
         <View style={apiImageWrapper}>
           {imageUrl && (
             <Image
               source={{ uri: imageUrl }}
-              alt={`Image for ${name} playlist`}
+              alt={alt}
               style={[apiImage, background]}
             />
           )}
         </View>
         <View style={[apiTextContainer, background]}>
           <View style={background}>
-            <Text style={apiTitle}>
-              {name} by {owner}
-            </Text>
+            <Text style={apiTitle}>{owner}</Text>
             <Text>{description}</Text>
           </View>
         </View>

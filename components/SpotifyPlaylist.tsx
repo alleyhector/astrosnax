@@ -125,22 +125,17 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
       ) : (
         <>
           {playlists &&
-            playlists.map(
-              (playlist) => (
-                console.log(playlist.images[0]?.url),
-                (
-                  <Card
-                    id={playlist.id}
-                    background={cardBackground}
-                    imageUrl={playlist.images[0]?.url}
-                    name={playlist.name}
-                    owner={playlist.owner.display_name}
-                    description='Open playlist'
-                    link={playlist.external_urls.spotify}
-                  />
-                )
-              ),
-            )}
+            playlists.map((playlist) => (
+              <Card
+                key={playlist.id}
+                background={cardBackground}
+                imageUrl={playlist.images[0]?.url}
+                alt={`Image for ${playlist.name} playlist`}
+                owner={`${playlist.name} by ${playlist.owner.display_name}`}
+                description='Open playlist'
+                link={playlist.external_urls.spotify}
+              />
+            ))}
         </>
       )}
       {playlists.length === 0 && (
