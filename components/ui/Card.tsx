@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text } from '@/components/Themed'
 import { Image } from 'expo-image'
 import { ExternalLink } from '../ExternalLink'
 import {
@@ -13,7 +13,7 @@ interface CardProps {
   background: any
   imageUrl: string
   alt: string
-  owner: string
+  title: string
   description: string
   link: string
   backgroundColor?: string
@@ -23,7 +23,7 @@ const Card: React.FC<CardProps> = ({
   background,
   imageUrl,
   alt,
-  owner,
+  title,
   description,
   link,
 }) => {
@@ -41,7 +41,7 @@ const Card: React.FC<CardProps> = ({
         </View>
         <View style={[apiTextContainer, background]}>
           <View style={background}>
-            <Text style={apiTitle}>{owner}</Text>
+            <Text style={apiTitle}>{title}</Text>
             <Text>{description}</Text>
           </View>
         </View>

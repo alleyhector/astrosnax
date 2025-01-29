@@ -131,7 +131,7 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
                 background={cardBackground}
                 imageUrl={playlist.images[0]?.url}
                 alt={`Image for ${playlist.name} playlist`}
-                owner={`${playlist.name} by ${playlist.owner.display_name}`}
+                title={`${playlist.name} by ${playlist.owner.display_name}`}
                 description='Open playlist'
                 link={playlist.external_urls.spotify}
               />
