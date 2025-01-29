@@ -1,6 +1,6 @@
 import { View, Text } from '@/components/Themed'
 import { Image } from 'expo-image'
-import { ExternalLink } from '../ExternalLink'
+import { ExternalLink as ExternalLinkComponent } from '../ExternalLink'
 import {
   apiImage,
   apiImageWrapper,
@@ -8,6 +8,7 @@ import {
   apiTitle,
   row,
 } from '@/constants/Styles'
+import { memo } from 'react'
 
 interface CardProps {
   background: any
@@ -18,6 +19,8 @@ interface CardProps {
   link: string
   backgroundColor?: string
 }
+
+const ExternalLink = memo(ExternalLinkComponent)
 
 const Card: React.FC<CardProps> = ({
   background,
@@ -36,6 +39,9 @@ const Card: React.FC<CardProps> = ({
               source={{ uri: imageUrl }}
               alt={alt}
               style={[apiImage, background]}
+              placeholder={require('@/assets/images/recipe-placeholder.png')}
+              placeholderContentFit='cover'
+              transition={1000}
             />
           )}
         </View>

@@ -1,20 +1,10 @@
 import { FC, memo, useEffect, useState } from 'react'
 import { View, Text } from './Themed'
 import { ActivityIndicator, useColorScheme } from 'react-native'
-import { Image } from 'expo-image'
 import { searchRecipe } from '@/API/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
-import {
-  card,
-  column,
-  apiImage,
-  apiTextContainer,
-  row,
-  apiTitle,
-  apiImageWrapper,
-} from '@/constants/Styles'
+import { card, column, apiTitle } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
-import { ExternalLink as ExternalLinkComponent } from './ExternalLink'
 import { searchRecipe as searchMealRecipe } from '@/API/MealRecipesAPI'
 import Card from './ui/Card'
 
@@ -33,8 +23,6 @@ interface RecipeListProps {
   fallbackRecipes?: Meal[]
   cardBackground: object
 }
-
-const ExternalLink = memo(ExternalLinkComponent)
 
 const RecipeList: FC<RecipeListProps> = ({ recipes, cardBackground }) => (
   <>
