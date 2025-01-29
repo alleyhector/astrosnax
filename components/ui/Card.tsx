@@ -18,7 +18,6 @@ interface CardProps {
   title: string
   description: string
   link: string
-  backgroundColor?: string
 }
 
 const ExternalLink = memo(ExternalLinkComponent)
