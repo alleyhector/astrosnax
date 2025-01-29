@@ -1,0 +1,14 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.format.enable": true,
+  "prettier.arrowParens": "avoid",
+  "prettier.enableDebugLogs": true,
+  "prettier.jsxSingleQuote": true,
+  "prettier.singleQuote": true,
+  "files.autoSave": "afterDelay",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "editor.formatOnPaste": true,
+  "prettier.semi": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
