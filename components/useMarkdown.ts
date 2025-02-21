@@ -10,7 +10,9 @@ export function useMarkdownStyles() {
     h1: { fontFamily: 'AngelClub', fontSize: 24, color: textColor },
     h2: { fontFamily: 'AngelClub', fontSize: 22, color: textColor },
     h3: { fontFamily: 'AngelClub', fontSize: 20, color: textColor },
-    strong: { fontFamily: 'AngelClub', fontSize: 18, color: textColor },
+    h4: { fontFamily: 'AngelClub', fontSize: 18, color: textColor },
+    strong: { fontFamily: 'NimbusBold', fontSize: 16, color: textColor },
+    em: { fontFamily: 'NimbusItalic', fontSize: 16, color: textColor },
     paragraph: { fontFamily: 'Nimbus', fontSize: 16, color: textColor },
   })
 }

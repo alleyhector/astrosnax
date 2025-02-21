@@ -7,7 +7,7 @@ import {
 import { Image } from 'expo-image'
 import { View, Text } from '@/components/Themed'
 import { gql, OperationVariables, useQuery } from '@apollo/client'
-import Markdown from 'react-native-markdown-display'
+import Markdown from '@ronradtke/react-native-markdown-display'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AboutCollectionQueryResponse } from '@/types/contentful'
 import { container, dimensions } from '@/constants/Styles'
