@@ -1,11 +1,11 @@
 import { FC, memo, useEffect, useState } from 'react'
 import { View, Text } from './Themed'
 import { ActivityIndicator, useColorScheme } from 'react-native'
-import { searchRecipe } from '@/API/RecipesAPI'
+import { searchRecipe } from '@/lib/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
 import { card, column, apiTitle } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
-import { searchRecipe as searchMealRecipe } from '@/API/MealRecipesAPI'
+import { searchRecipe as searchMealRecipe } from '@/lib/MealRecipesAPI'
 import Card from './ui/Card'
 
 interface ExtendedRecipeProps extends RecipeProps {
