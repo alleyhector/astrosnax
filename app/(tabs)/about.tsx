@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import { Image } from 'expo-image'
 import { View, Text } from '@/components/Themed'
-import { gql, OperationVariables, useQuery } from '@apollo/client'
+import { OperationVariables, useQuery } from '@apollo/client'
 import Markdown from '@ronradtke/react-native-markdown-display'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { AboutCollectionQueryResponse } from '@/types/contentful'
@@ -19,21 +19,7 @@ import { useMarkdownStyles } from '@/components/useMarkdown'
 import Attribution from '@/components/Attribution'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
-
-const QUERY_ABOUT = gql`
-  {
-    aboutCollection {
-      items {
-        name
-        description
-        aboutMe
-        profile {
-          url
-        }
-      }
-    }
-  }
-`
+import { QUERY_ABOUT } from '@/lib/graphql'
 
 const AboutScreen = () => {
   const insets = useSafeAreaInsets()

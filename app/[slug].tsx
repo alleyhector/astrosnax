@@ -1,7 +1,7 @@
 import { StyleSheet, ScrollView } from 'react-native'
 import { Image } from 'expo-image'
 import { useLocalSearchParams } from 'expo-router'
-import { gql, OperationVariables, useQuery } from '@apollo/client'
+import { OperationVariables, useQuery } from '@apollo/client'
 import Markdown from '@ronradtke/react-native-markdown-display'
 import Transits from '@/components/Transits'
 import { Text, View } from '@/components/Themed'
@@ -12,40 +12,7 @@ import { useColorScheme } from '@/components/useColorScheme'
 import Colors from '@/constants/Colors'
 import { DefaultTheme } from '@react-navigation/native'
 import { dimensions } from '@/constants/Styles'
-
-const QUERY_POST = gql`
-  query blogPost($slug: String) {
-    blogPostCollection(where: { slug: $slug }) {
-      items {
-        sys {
-          publishedAt
-        }
-        title
-        slug
-        author {
-          name
-        }
-        publishDate
-        body
-        heroImage {
-          url
-          description
-        }
-        transitCollection {
-          items {
-            title
-            planet
-            sign
-            aspect
-            transitingPlanet
-            transitingSign
-            foods
-          }
-        }
-      }
-    }
-  }
-`
+import { QUERY_POST } from '@/lib/graphql'
 
 const PostDetails = () => {
   const { slug } = useLocalSearchParams()

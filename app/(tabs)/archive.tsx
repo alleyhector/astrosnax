@@ -6,7 +6,7 @@ import {
   RefreshControl,
   StyleSheet,
 } from 'react-native'
-import { gql, OperationVariables, useQuery } from '@apollo/client'
+import { OperationVariables, useQuery } from '@apollo/client'
 import { Link } from 'expo-router'
 import Transits from '@/components/Transits'
 import { View, Text } from '@/components/Themed'
@@ -18,46 +18,7 @@ import { DefaultTheme } from '@react-navigation/native'
 import { useColorScheme } from '@/components/useColorScheme'
 import { LinearGradient } from 'expo-linear-gradient'
 import Pagination from '@/components/Pagination'
-
-const QUERY_POSTS = gql`
-  query blogPosts($today: DateTime!, $skip: Int, $limit: Int) {
-    blogPostCollection(
-      where: { publishDate_lte: $today }
-      order: publishDate_DESC
-      skip: $skip
-      limit: $limit
-    ) {
-      items {
-        sys {
-          publishedAt
-        }
-        title
-        slug
-        author {
-          name
-        }
-        publishDate
-        description
-        body
-        heroImage {
-          url
-        }
-        transitCollection {
-          items {
-            title
-            planet
-            sign
-            aspect
-            transitingPlanet
-            transitingSign
-            foods
-          }
-        }
-      }
-      total
-    }
-  }
-`
+import { QUERY_POSTS } from '@/lib/graphql'
 
 const ArchiveScreen: FC = () => {
   const insets = useSafeAreaInsets()

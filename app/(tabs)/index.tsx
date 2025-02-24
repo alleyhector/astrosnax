@@ -13,49 +13,11 @@ import { useColorScheme } from '@/components/useColorScheme'
 import { DefaultTheme } from '@react-navigation/native'
 import { Text, View } from '@/components/Themed'
 import Today from '@/components/Today'
-import { gql, useQuery, OperationVariables } from '@apollo/client'
+import { useQuery, OperationVariables } from '@apollo/client'
 import { BlogPostQueryResponse } from '@/types/contentful'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { LinearGradient } from 'expo-linear-gradient'
-
-const QUERY_TODAY_POST = gql`
-  query blogPost($today: DateTime!) {
-    blogPostCollection(
-      where: { publishDate_lte: $today }
-      order: publishDate_DESC
-      limit: 2
-    ) {
-      items {
-        sys {
-          publishedAt
-        }
-        title
-        slug
-        author {
-          name
-        }
-        publishDate
-        description
-        body
-        heroImage {
-          url
-          description
-        }
-        transitCollection {
-          items {
-            title
-            planet
-            sign
-            aspect
-            transitingPlanet
-            transitingSign
-            foods
-          }
-        }
-      }
-    }
-  }
-`
+import { QUERY_TODAY_POST } from '@/lib/graphql'
 
 const HomeScreen = () => {
   const insets = useSafeAreaInsets()

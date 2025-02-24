@@ -1,47 +1,10 @@
-import { gql, OperationVariables, useQuery } from '@apollo/client'
+import { OperationVariables, useQuery } from '@apollo/client'
 import { FC } from 'react'
 import { Text, View } from '@/components/Themed'
 import Transits from '@/components/Transits'
 import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
 import { StyleSheet } from 'react-native'
-
-const QUERY_TODAY_POST = gql`
-  query blogPost($tomorrow: DateTime!) {
-    blogPostCollection(
-      where: { publishDate_lte: $tomorrow }
-      order: publishDate_DESC
-      limit: 1
-    ) {
-      items {
-        sys {
-          publishedAt
-        }
-        title
-        slug
-        author {
-          name
-        }
-        publishDate
-        description
-        body
-        heroImage {
-          url
-        }
-        transitCollection {
-          items {
-            title
-            planet
-            sign
-            aspect
-            transitingPlanet
-            transitingSign
-            foods
-          }
-        }
-      }
-    }
-  }
-`
+import { QUERY_TOMORROW_POST } from '@/lib/graphql'
 
 const Tomorrow: FC = () => {
   const today = new Date()
@@ -55,7 +18,7 @@ const Tomorrow: FC = () => {
   )
 
   const { data } = useQuery<BlogPostQueryResponse, OperationVariables>(
-    QUERY_TODAY_POST,
+    QUERY_TOMORROW_POST,
     {
       fetchPolicy: 'cache-and-network',
       variables: { tomorrow: new Date(tomorrow) },
