@@ -54,12 +54,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  hero: {
-    width: 300,
-    height: 300,
-    resizeMode: 'contain',
-    alignSelf: 'center',
-  },
   menu: {
     fontFamily: 'AngelClub',
     fontSize: 20,

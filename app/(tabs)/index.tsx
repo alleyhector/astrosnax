@@ -74,6 +74,7 @@ const HomeScreen = () => {
             style={styles.logo}
             source={require('@/assets/images/logo.png')}
             alt='AstroSnax logo'
+            contentFit='cover'
           />
           <Today data={data} />
         </View>
@@ -106,7 +107,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 300,
     height: 250,
-    resizeMode: 'cover',
     alignSelf: 'center',
   },
 })

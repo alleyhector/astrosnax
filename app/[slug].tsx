@@ -50,6 +50,7 @@ const PostDetails = () => {
               style={styles.hero}
               source={{ uri: post.heroImage.url }}
               alt={post.heroImage.description}
+              contentFit='contain'
             />
           )}
           <Text style={styles.menu}>On the astrological menu:</Text>
@@ -74,7 +75,6 @@ const styles = StyleSheet.create({
   hero: {
     width: 300,
     height: 300,
-    resizeMode: 'contain',
     alignSelf: 'center',
   },
   menu: {

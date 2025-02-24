@@ -72,6 +72,7 @@ const AboutScreen = () => {
                   style={styles.hero}
                   source={{ uri: about.profile.url }}
                   alt='Rotoscope drawing of the author'
+                  contentFit='contain'
                 />
               )}
               <Markdown style={markdownStyles}>{about.aboutMe}</Markdown>
@@ -91,7 +92,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 260,
     height: 387,
-    resizeMode: 'contain',
     alignSelf: 'center',
   },
   title: {

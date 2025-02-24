@@ -115,17 +115,20 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                       style={styles.image}
                       source={imagesMap[transit?.planet ?? '']}
                       alt={`${transit?.planet} glyph`}
+                      contentFit='contain'
                     />
 
                     <Image
                       style={styles.image}
                       source={imagesMap[transit?.aspect ?? '']}
                       alt={`${transit?.aspect} glyph`}
+                      contentFit='contain'
                     />
                     <Image
                       style={styles.image}
                       source={imagesMap[transit?.sign ?? '']}
                       alt={`${transit?.sign} glyph`}
+                      contentFit='contain'
                     />
                   </View>
                 </>
@@ -146,11 +149,13 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                           style={styles.image}
                           source={imagesMap['Moon']}
                           alt={`${transit?.planet} glyph`}
+                          contentFit='contain'
                         />
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.sign ?? '']}
                           alt={`${transit?.sign} glyph`}
+                          contentFit='contain'
                         />
                       </>
                     ) : (
@@ -159,27 +164,32 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
                           style={styles.image}
                           source={imagesMap[transit?.planet ?? '']}
                           alt={`${transit?.planet} glyph`}
+                          contentFit='contain'
                         />
 
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.sign ?? '']}
                           alt={`${transit?.sign} glyph`}
+                          contentFit='contain'
                         />
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.aspect ?? '']}
                           alt={`${transit?.aspect} glyph`}
+                          contentFit='contain'
                         />
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.transitingPlanet ?? '']}
                           alt={`${transit?.transitingPlanet} glyph`}
+                          contentFit='contain'
                         />
                         <Image
                           style={styles.image}
                           source={imagesMap[transit?.transitingSign ?? '']}
                           alt={`${transit?.transitingSign} glyph`}
+                          contentFit='contain'
                         />
                       </>
                     )}
@@ -228,7 +238,6 @@ const styles = StyleSheet.create({
   image: {
     width: 40,
     height: 40,
-    resizeMode: 'contain',
     flex: 1,
     backgroundColor: 'transparent',
   },
