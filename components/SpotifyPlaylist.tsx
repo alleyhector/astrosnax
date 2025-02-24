@@ -4,7 +4,7 @@ import { View, Text } from '@/components/Themed'
 import {
   fetchPublicAccessToken,
   searchPlaylistsByParams,
-} from '@/API/SpotifyAPI'
+} from '@/lib/SpotifyAPI'
 import {
   PlaylistItem,
   PlaylistProps,

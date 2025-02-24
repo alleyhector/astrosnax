@@ -76,6 +76,7 @@ const Today: FC<{ data: BlogPostQueryResponse | undefined }> = ({ data }) => {
               style={styles.hero}
               source={{ uri: post.heroImage.url }}
               alt={post.heroImage.description}
+              contentFit='contain'
             />
           )}
           <Link href={`/${post.slug}`} style={styles.title}>
@@ -107,7 +108,6 @@ const styles = StyleSheet.create({
   hero: {
     width: 300,
     height: 300,
-    resizeMode: 'contain',
     alignSelf: 'center',
   },
   menu: {
