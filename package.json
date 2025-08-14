@@ -19,7 +19,7 @@
     "@expo/vector-icons": "^14.0.4",
     "@react-navigation/native": "^7.0.14",
     "@ronradtke/react-native-markdown-display": "^8.1.0",
-    "axios": "^1.7.9",
+    "axios": "^1.8.2",
     "expo": "~52.0.23",
     "expo-font": "~13.0.2",
     "expo-image": "^2.0.3",
