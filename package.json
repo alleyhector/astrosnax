@@ -21,6 +21,7 @@
     "@ronradtke/react-native-markdown-display": "^8.1.0",
     "axios": "^1.11.0",
     "expo": "~53.0.20",
+    "expo-build-properties": "^0.14.8",
     "expo-font": "~13.3.2",
     "expo-image": "^2.4.0",
     "expo-linear-gradient": "^14.1.5",
