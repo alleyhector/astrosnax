@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     fontFamily: 'Nimbus',
-    padding: 30,
+    padding: 20,
     backgroundColor: 'transparent',
   },
   title: {
