@@ -34,15 +34,25 @@ const TransitCard: FC<TransitCardProps> = ({
       <Text style={styles.transitText}>{transitText}</Text>
 
       <View style={styles.glyphContainer}>
-        {glyphs.map((glyph, index) => (
-          <Image
-            key={index}
-            style={styles.image}
-            source={imagesMap[glyph]}
-            alt={`${glyph} glyph`}
-            contentFit='contain'
-          />
-        ))}
+        {glyphs.map((glyph, index) => {
+          // Use ingress image for retrograde/direct, but transform it
+          const glyphKey =
+            glyph === 'retrograde' || glyph === 'direct' ? 'ingress' : glyph
+          const imageStyle = [
+            styles.image,
+            glyph === 'retrograde' && { transform: [{ scaleX: -1 }] },
+          ]
+
+          return (
+            <Image
+              key={index}
+              style={imageStyle}
+              source={imagesMap[glyphKey]}
+              alt={`${glyph} glyph`}
+              contentFit='contain'
+            />
+          )
+        })}
       </View>
 
       <Recipes fallbackFood={recipeFallbackFood} query={recipeQuery} />

@@ -62,6 +62,10 @@ const getFood = (foods: string) => {
       return 'sandwich'
     case 'ingress':
       return 'salad'
+    case 'retrograde':
+      return 'pickle'
+    case 'direct':
+      return 'fresh'
     default:
       return ''
   }
@@ -76,11 +80,17 @@ const buildQuery = (transit: Transit) => {
     const transitingPlanetFood = getFood(transit.transitingPlanet)
     const transitingSignFood = getFood(transit.transitingSign)
     const aspectFood = getFood(transit.aspect)
-    const query =
-      transit.aspect === 'ingress'
-        ? `${planetFood[0]},${signFood[0]},${aspectFood}`
-        : `${planetFood[0]},${signFood[0]},${transitingPlanetFood[0] ?? ''},${transitingSignFood[0] ?? ''},${aspectFood}`
-    return query
+
+    // Ingress, retrograde, and direct are single-planet events
+    if (
+      transit.aspect === 'ingress' ||
+      transit.aspect === 'retrograde' ||
+      transit.aspect === 'direct'
+    ) {
+      return `${planetFood[0]},${signFood[0]},${aspectFood}`
+    }
+
+    return `${planetFood[0]},${signFood[0]},${transitingPlanetFood[0] ?? ''},${transitingSignFood[0] ?? ''},${aspectFood}`
   }
 }
 
@@ -88,12 +98,25 @@ const getTransitText = (transit: Transit) => {
   if (transit.aspect === 'ingress') {
     return `${transit.planet} enters ${transit.sign}`
   }
+
+  if (transit.aspect === 'retrograde') {
+    return `${transit.planet} stations retrograde in ${transit.sign}`
+  }
+
+  if (transit.aspect === 'direct') {
+    return `${transit.planet} stations direct in ${transit.sign}`
+  }
+
   return `${transit.planet} in ${transit.sign} ${transit.transitingPlanet ? `${transit.aspect} ${transit.transitingPlanet} in ${transit.transitingSign}` : ''}`
 }
 
 const getGlyphs = (transit: Transit): string[] => {
-  // Ingress transits
-  if (transit.aspect === 'ingress') {
+  // Single-planet events: ingress, retrograde, direct
+  if (
+    transit.aspect === 'ingress' ||
+    transit.aspect === 'retrograde' ||
+    transit.aspect === 'direct'
+  ) {
     return [transit.planet, transit.aspect, transit.sign]
   }
 
@@ -113,13 +136,22 @@ const getGlyphs = (transit: Transit): string[] => {
 }
 
 const getSpotifyQuery = (transit: Transit) => {
-  if (
-    transit.aspect === 'ingress' ||
-    transit.planet === 'New Moon' ||
-    transit.planet === 'Full Moon'
-  ) {
+  if (transit.aspect === 'ingress') {
     return `${transit.planet} enters ${transit.sign}`
   }
+
+  if (transit.aspect === 'retrograde') {
+    return `${transit.planet} retrograde in ${transit.sign}`
+  }
+
+  if (transit.aspect === 'direct') {
+    return `${transit.planet} direct in ${transit.sign}`
+  }
+
+  if (transit.planet === 'New Moon' || transit.planet === 'Full Moon') {
+    return `${transit.planet} in ${transit.sign}`
+  }
+
   return `${transit.planet} in ${transit.sign} ${transit.aspect} ${transit.transitingPlanet} in ${transit.transitingSign}`
 }
 
