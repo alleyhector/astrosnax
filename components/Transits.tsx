@@ -63,7 +63,7 @@ const getFood = (foods: string) => {
     case 'ingress':
       return 'salad'
     case 'retrograde':
-      return 'pickle'
+      return 'sour'
     case 'direct':
       return 'fresh'
     default:
