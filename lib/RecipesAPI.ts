@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { createExpoFileSystemStorage } from 'redux-persist-expo-file-system-storage'
-import * as FileSystem from 'expo-file-system'
+import { cacheStorage } from './cacheStorage'
 
 interface RecipeProps {
   query: string
@@ -12,33 +11,6 @@ const appKey = process.env.EXPO_PUBLIC_EDAMAM_KEY
 
 if (!appId || !appKey) {
   throw new Error('EDAMAM_ID or EDAMAM_KEY is not set')
-}
-
-// Create an instance of ExpoFileSystemStorage
-const expoFileSystemStorage = createExpoFileSystemStorage({
-  storagePath: `${FileSystem.documentDirectory}reduxPersist/`,
-})
-
-const getCacheAge = async (key: string): Promise<number | null> => {
-  try {
-    const sanitizedKey = key.replace(/[,\s]+/g, '') // Sanitize the key
-    const fileUri = `${FileSystem.documentDirectory}reduxPersist/${sanitizedKey}`
-
-    // Get metadata about the file
-    const fileInfo = await FileSystem.getInfoAsync(fileUri)
-
-    if (fileInfo.exists && fileInfo.modificationTime) {
-      const now = Date.now()
-      const fileAgeInMs = now - fileInfo.modificationTime * 1000 // Convert seconds to milliseconds
-      console.log('Cache age:', fileAgeInMs / 60000, 'minutes')
-      return fileAgeInMs // Return file age in milliseconds
-    } else {
-      return null // File doesn't exist
-    }
-  } catch (error) {
-    console.error('Error checking cache age:', error)
-    return null
-  }
 }
 
 const CACHE_MAX_AGE = 3600 * 1000 * 12 // 12 hours in milliseconds
@@ -56,10 +28,10 @@ export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
   try {
     // Attempt to retrieve cached data
     const sanitizedKey = `edamam-${query}`.replace(/[,\s]+/g, '')
-    const cachedData = await expoFileSystemStorage.getItem(sanitizedKey)
+    const cachedData = await cacheStorage.getItem(sanitizedKey)
 
     if (cachedData) {
-      const cacheAge = await getCacheAge(sanitizedKey)
+      const cacheAge = await cacheStorage.getCacheAge(sanitizedKey)
       if (cacheAge !== null && cacheAge < CACHE_MAX_AGE) {
         console.warn('Using cached recipe data.')
         const parsedCachedData = JSON.parse(cachedData)
@@ -74,7 +46,7 @@ export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
     console.log('Fetched fresh data:', response.data.hits[0]?.recipe?.label)
 
     // Store the fetched data in FileSystemStorage
-    await expoFileSystemStorage.setItem(
+    await cacheStorage.setItem(
       sanitizedKey,
       JSON.stringify(response.data),
     )
