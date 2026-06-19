@@ -9,8 +9,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "eslint --ext .ts,.tsx .",
-    "pretty": "prettier --check .",
-    "eas-build-post-install": "node scripts/patch-fmt-podspec.js"
+    "pretty": "prettier --check ."
   },
   "jest": {
     "preset": "jest-expo"

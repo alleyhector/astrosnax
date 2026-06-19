@@ -31,7 +31,6 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "./plugins/withIosFmtFix",
       "expo-router",
       "expo-font",
       [
