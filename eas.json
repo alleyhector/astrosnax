@@ -25,6 +25,9 @@
     },
     "production": {
       "autoIncrement": true,
+      "cache": {
+        "key": "fmt-xcode26-fix-v3"
+      },
       "android": {
         "image": "latest"
       },
