@@ -114,8 +114,18 @@ const Playlists = ({ transitQuery, foodQuery }: PlaylistProps) => {
 
   // Fetch playlists when transitQuery or foodQuery changes.
   useEffect(() => {
-    if (transitQuery || foodQuery) {
-      fetchAndCombinePlaylists()
+    if (!transitQuery && !foodQuery) return
+
+    let cancelled = false
+
+    void (async () => {
+      await Promise.resolve()
+      if (cancelled) return
+      await fetchAndCombinePlaylists()
+    })()
+
+    return () => {
+      cancelled = true
     }
   }, [transitQuery, foodQuery, fetchAndCombinePlaylists])
 

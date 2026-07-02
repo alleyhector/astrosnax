@@ -39,7 +39,7 @@ const Tomorrow: FC = () => {
     <View style={styles.container}>
       {post && (
         <View>
-          <Text style={styles.menu}>On tomorrow's astrological menu: </Text>
+          <Text style={styles.menu}>On tomorrow’s astrological menu: </Text>
           <Text>{date}</Text>
           <Transits transits={post.transitCollection.items} />
         </View>

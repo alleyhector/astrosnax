@@ -49,8 +49,7 @@ const Pagination: FC<PaginationProps> = ({
   const colorScheme = useColorScheme() ?? 'light'
   const visiblePages = getVisiblePages(currentPage, totalPages)
 
-  const activeBackground =
-    colorScheme === 'dark' ? '#000' : '#fac7b0'
+  const activeBackground = colorScheme === 'dark' ? '#000' : '#fac7b0'
 
   return (
     <View style={styles.paginationContainer}>

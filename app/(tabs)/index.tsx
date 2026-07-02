@@ -10,7 +10,7 @@ import { container, textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
-import { DefaultTheme } from "expo-router/react-navigation"
+import { DefaultTheme } from 'expo-router/react-navigation'
 import { Text, View } from '@/components/Themed'
 import Today from '@/components/Today'
 import { useQuery, OperationVariables } from '@apollo/client'
@@ -60,8 +60,8 @@ const HomeScreen = () => {
           <Text style={styles.title}>AstroSnax</Text>
           <Text style={styles.subtitle}>Food for celestial thought</Text>
           <Text style={styles.p}>
-            What's the astrological weather report for today? Below you will
-            find a list of today's transits. Interpret them how you will. I have
+            What’s the astrological weather report for today? Below you will
+            find a list of today’s transits. Interpret them how you will. I have
             done so by providing recipes created with the mashup of these
             cosmological characters and dishes that express how their powers
             combine...for better or worse...

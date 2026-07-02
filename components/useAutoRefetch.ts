@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { AppState } from 'react-native'
-import { useFocusEffect } from "expo-router/react-navigation"
+import { useFocusEffect } from 'expo-router/react-navigation'
 
 interface UseAutoRefetchOptions {
   refetch: () => Promise<any>

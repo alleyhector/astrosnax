@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
 import { cacheStorage } from './cacheStorage'
 
 interface SearchMealParams {
@@ -28,7 +28,7 @@ export const searchRecipe = async ({ fallbackFood }: SearchMealParams) => {
   } catch (error) {
     console.error('Error fetching mealdb recipe data:', error)
 
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       throw new Error(`Error fetching mealdb recipe data: ${error.message}`)
     } else {
       throw new Error(

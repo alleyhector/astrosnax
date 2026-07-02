@@ -1,5 +1,5 @@
-import { PlaylistFetchProps, PlaylistItem } from '@/types/spotify'
-import axios from 'axios'
+import { PlaylistFetchProps } from '@/types/spotify'
+import axios, { isAxiosError } from 'axios'
 
 const encodeBasicAuth = (clientId: string, clientSecret: string) =>
   btoa(`${clientId}:${clientSecret}`)
@@ -81,7 +81,7 @@ export const searchPlaylistsByParams = async ({
   } catch (error) {
     console.error('Failed to search playlists:', error)
 
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       console.log('AXIOS ERROR')
       throw new Error(`Error fetching Spotify data: ${error.message}`)
     } else {

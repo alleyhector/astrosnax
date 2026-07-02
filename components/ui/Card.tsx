@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, memo } from 'react'
 import { View, Text } from '@/components/Themed'
 import { Image } from 'expo-image'
 import { ExternalLink as ExternalLinkComponent } from '../ExternalLink'
@@ -9,7 +9,6 @@ import {
   apiTitle,
   row,
 } from '@/constants/Styles'
-import { memo } from 'react'
 
 interface CardProps {
   background: object
