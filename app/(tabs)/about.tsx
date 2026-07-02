@@ -13,12 +13,12 @@ import { AboutCollectionQueryResponse } from '@/types/contentful'
 import { container, dimensions } from '@/constants/Styles'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
-import { DefaultTheme } from '@react-navigation/native'
+import { DefaultTheme } from "expo-router/react-navigation"
 import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { useMarkdownStyles } from '@/components/useMarkdown'
 import Attribution from '@/components/Attribution'
 import { LinearGradient } from 'expo-linear-gradient'
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
+import { useBottomTabBarHeight } from "expo-router/js-tabs"
 import { QUERY_ABOUT } from '@/lib/graphql'
 
 const AboutScreen = () => {

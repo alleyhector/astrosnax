@@ -10,7 +10,7 @@ import { container, textShadow } from '@/constants/Styles'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
-import { DefaultTheme } from '@react-navigation/native'
+import { DefaultTheme } from "expo-router/react-navigation"
 import { Text, View } from '@/components/Themed'
 import Today from '@/components/Today'
 import { useQuery, OperationVariables } from '@apollo/client'

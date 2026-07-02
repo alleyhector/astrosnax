@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, memo, useRef } from 'react'
-import { ActivityIndicator, useColorScheme } from 'react-native'
+import { ActivityIndicator } from 'react-native'
+import { useColorScheme } from '@/components/useColorScheme'
 import { View, Text } from '@/components/Themed'
 import {
   fetchPublicAccessToken,

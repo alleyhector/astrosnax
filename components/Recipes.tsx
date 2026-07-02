@@ -1,6 +1,7 @@
 import { FC, memo, useEffect, useState } from 'react'
 import { View, Text } from './Themed'
-import { ActivityIndicator, useColorScheme } from 'react-native'
+import { ActivityIndicator } from 'react-native'
+import { useColorScheme } from '@/components/useColorScheme'
 import { searchRecipe } from '@/lib/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
 import { card, column, apiTitle } from '@/constants/Styles'

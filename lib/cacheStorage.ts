@@ -29,7 +29,7 @@ function createWebCacheStorage(): CacheStorage {
 function createNativeCacheStorage(): CacheStorage {
   const { createExpoFileSystemStorage } =
     require('redux-persist-expo-file-system-storage')
-  const FileSystem = require('expo-file-system')
+  const FileSystem = require('expo-file-system/legacy')
 
   const storage = createExpoFileSystemStorage({
     storagePath: `${FileSystem.documentDirectory}reduxPersist/`,

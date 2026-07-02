@@ -14,7 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
 import Colors from '@/constants/Colors'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
-import { DefaultTheme } from '@react-navigation/native'
+import { DefaultTheme } from "expo-router/react-navigation"
 import { useColorScheme } from '@/components/useColorScheme'
 import { LinearGradient } from 'expo-linear-gradient'
 import Pagination from '@/components/Pagination'

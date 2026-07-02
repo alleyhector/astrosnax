@@ -1,6 +1,8 @@
 import { PlaylistFetchProps, PlaylistItem } from '@/types/spotify'
 import axios from 'axios'
-import { Buffer } from 'buffer'
+
+const encodeBasicAuth = (clientId: string, clientSecret: string) =>
+  btoa(`${clientId}:${clientSecret}`)
 
 const clientId = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID
 if (!clientId) {
@@ -31,7 +33,7 @@ export const fetchPublicAccessToken = async () => {
       'grant_type=client_credentials',
       {
         headers: {
-          Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+          Authorization: `Basic ${encodeBasicAuth(clientId, clientSecret)}`,
         },
       },
     )

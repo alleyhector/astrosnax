@@ -10,7 +10,7 @@ import { useMarkdownStyles } from '@/components/useMarkdown'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useColorScheme } from '@/components/useColorScheme'
 import Colors from '@/constants/Colors'
-import { DefaultTheme } from '@react-navigation/native'
+import { DefaultTheme } from "expo-router/react-navigation"
 import { dimensions } from '@/constants/Styles'
 import { QUERY_POST } from '@/lib/graphql'
 
