@@ -1,9 +1,31 @@
+import * as FileSystem from 'expo-file-system/legacy'
 import { Platform } from 'react-native'
 
 export interface CacheStorage {
   getItem(key: string): Promise<string | null>
   setItem(key: string, value: string): Promise<void>
   getCacheAge(key: string): Promise<number | null>
+}
+
+const CACHE_DIR = `${FileSystem.documentDirectory}reduxPersist/`
+let initPromise: Promise<void> | null = null
+
+function pathForKey(key: string) {
+  const fileName = key.replace(/[^a-z0-9.\-_]/gi, '-')
+  return `${CACHE_DIR}${fileName}`
+}
+
+async function ensureCacheDir() {
+  if (!initPromise) {
+    initPromise = (async () => {
+      const info = await FileSystem.getInfoAsync(CACHE_DIR)
+      if (!info.exists) {
+        await FileSystem.makeDirectoryAsync(CACHE_DIR, { intermediates: true })
+      }
+    })()
+  }
+
+  await initPromise
 }
 
 function createWebCacheStorage(): CacheStorage {
@@ -27,21 +49,30 @@ function createWebCacheStorage(): CacheStorage {
 }
 
 function createNativeCacheStorage(): CacheStorage {
-  const { createExpoFileSystemStorage } =
-    require('redux-persist-expo-file-system-storage')
-  const FileSystem = require('expo-file-system/legacy')
-
-  const storage = createExpoFileSystemStorage({
-    storagePath: `${FileSystem.documentDirectory}reduxPersist/`,
-  })
-
   return {
-    getItem: (key) => storage.getItem(key),
-    setItem: (key, value) => storage.setItem(key, value),
-    getCacheAge: async (key) => {
+    getItem: async (key) => {
+      await ensureCacheDir()
+
       try {
-        const fileUri = `${FileSystem.documentDirectory}reduxPersist/${key}`
-        const fileInfo = await FileSystem.getInfoAsync(fileUri)
+        const content = await FileSystem.readAsStringAsync(pathForKey(key), {
+          encoding: FileSystem.EncodingType.UTF8,
+        })
+        return content || null
+      } catch {
+        return null
+      }
+    },
+    setItem: async (key, value) => {
+      await ensureCacheDir()
+      await FileSystem.writeAsStringAsync(pathForKey(key), value, {
+        encoding: FileSystem.EncodingType.UTF8,
+      })
+    },
+    getCacheAge: async (key) => {
+      await ensureCacheDir()
+
+      try {
+        const fileInfo = await FileSystem.getInfoAsync(pathForKey(key))
 
         if (fileInfo.exists && fileInfo.modificationTime) {
           return Date.now() - fileInfo.modificationTime * 1000
