@@ -2,7 +2,7 @@ import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
-} from '@react-navigation/native'
+} from 'expo-router/react-navigation'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
@@ -68,17 +68,13 @@ const RootLayoutNav = () => {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <ApolloProvider client={apolloClient}>
-        <StatusBar translucent backgroundColor='transparent' />
+        <StatusBar style='auto' />
         <Stack
           screenOptions={{
             headerStyle: {
-              backgroundColor: colorScheme
-                ? Colors[colorScheme].background
-                : DefaultTheme.colors.background,
+              backgroundColor: Colors[colorScheme].background,
             },
-            headerTintColor: colorScheme
-              ? Colors[colorScheme].tint
-              : DefaultTheme.colors.text,
+            headerTintColor: Colors[colorScheme].tint,
           }}
         >
           <Stack.Screen

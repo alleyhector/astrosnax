@@ -1,6 +1,8 @@
-import { PlaylistFetchProps, PlaylistItem } from '@/types/spotify'
-import axios from 'axios'
-import { Buffer } from 'buffer'
+import { PlaylistFetchProps } from '@/types/spotify'
+import axios, { isAxiosError } from 'axios'
+
+const encodeBasicAuth = (clientId: string, clientSecret: string) =>
+  btoa(`${clientId}:${clientSecret}`)
 
 const clientId = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID
 if (!clientId) {
@@ -31,7 +33,7 @@ export const fetchPublicAccessToken = async () => {
       'grant_type=client_credentials',
       {
         headers: {
-          Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+          Authorization: `Basic ${encodeBasicAuth(clientId, clientSecret)}`,
         },
       },
     )
@@ -79,7 +81,7 @@ export const searchPlaylistsByParams = async ({
   } catch (error) {
     console.error('Failed to search playlists:', error)
 
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       console.log('AXIOS ERROR')
       throw new Error(`Error fetching Spotify data: ${error.message}`)
     } else {

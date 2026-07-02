@@ -1,6 +1,7 @@
 import { FC, memo, useEffect, useState } from 'react'
 import { View, Text } from './Themed'
-import { ActivityIndicator, useColorScheme } from 'react-native'
+import { ActivityIndicator } from 'react-native'
+import { useColorScheme } from '@/components/useColorScheme'
 import { searchRecipe } from '@/lib/RecipesAPI'
 import { RecipeProps, RecipeSearchResponse } from '@/types/edamam'
 import { card, column, apiTitle } from '@/constants/Styles'
@@ -72,34 +73,40 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
   const [fallbackRecipes, setFallbackRecipes] = useState<Meal[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  // Function to fetch the recipe based on the query
-  const fetchRecipe = async ({ query, fallbackFood }: ExtendedRecipeProps) => {
-    setLoading(true)
-    try {
-      const data = await searchRecipe({ query })
-      if (data && data.hits) {
-        setRecipes(data.hits.slice(0, 2))
-      }
-    } catch (error) {
-      console.error('Error fetching recipes from EdamAPI:', error)
-    }
-
-    try {
-      const fallbackData = await searchMealRecipe({ fallbackFood })
-      if (fallbackData && fallbackData.meals) {
-        setFallbackRecipes(fallbackData.meals.slice(0, 2))
-      }
-    } catch (error) {
-      console.error('Error fetching recipes from MealAPI:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // Call the API when the query changes
+  // Fetch recipes when the query changes
   useEffect(() => {
-    if (query || fallbackFood) {
-      fetchRecipe({ query, fallbackFood })
+    if (!query && !fallbackFood) return
+
+    let cancelled = false
+
+    void (async () => {
+      await Promise.resolve()
+      if (cancelled) return
+
+      setLoading(true)
+      try {
+        const data = await searchRecipe({ query })
+        if (!cancelled && data?.hits) {
+          setRecipes(data.hits.slice(0, 2))
+        }
+      } catch (error) {
+        console.error('Error fetching recipes from EdamAPI:', error)
+      }
+
+      try {
+        const fallbackData = await searchMealRecipe({ fallbackFood })
+        if (!cancelled && fallbackData?.meals) {
+          setFallbackRecipes(fallbackData.meals.slice(0, 2))
+        }
+      } catch (error) {
+        console.error('Error fetching recipes from MealAPI:', error)
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    })()
+
+    return () => {
+      cancelled = true
     }
   }, [query, fallbackFood])
 
@@ -118,7 +125,7 @@ const Recipes = ({ query, fallbackFood }: ExtendedRecipeProps) => {
             />
           ) : (
             <Text style={apiTitle}>
-              Oof I guess today's transit means you're going hungry...
+              Oof I guess today’s transit means you’re going hungry...
             </Text>
           )}
         </>

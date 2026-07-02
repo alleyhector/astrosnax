@@ -67,7 +67,7 @@ const Today: FC<{ data: BlogPostQueryResponse | undefined }> = ({ data }) => {
           </Text>
         </>
       ) : (
-        <Text style={styles.menu}>On today's astrological menu:</Text>
+        <Text style={styles.menu}>On today’s astrological menu:</Text>
       )}
       {post && (
         <>

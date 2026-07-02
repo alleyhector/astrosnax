@@ -1,4 +1,4 @@
-import { FC, memo, useState, useEffect } from 'react'
+import { FC, memo, useState, useMemo } from 'react'
 import {
   ActivityIndicator,
   FlatList,
@@ -14,7 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
 import Colors from '@/constants/Colors'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
-import { DefaultTheme } from '@react-navigation/native'
+import { DefaultTheme } from 'expo-router/react-navigation'
 import { useColorScheme } from '@/components/useColorScheme'
 import { LinearGradient } from 'expo-linear-gradient'
 import Pagination from '@/components/Pagination'
@@ -26,7 +26,6 @@ const ArchiveScreen: FC = () => {
   const today = new Date().toString()
   const PAGE_SIZE = 3
   const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1) // Update this dynamically if total posts are known.
 
   const { data, loading, error, refetch } = useQuery<
     BlogPostQueryResponse,
@@ -39,6 +38,12 @@ const ArchiveScreen: FC = () => {
       limit: PAGE_SIZE,
     },
   })
+
+  const totalPages = useMemo(() => {
+    const totalItems = data?.blogPostCollection?.total
+    if (!totalItems) return 1
+    return Math.ceil(totalItems / PAGE_SIZE)
+  }, [data?.blogPostCollection?.total])
   const posts = data?.blogPostCollection?.items || []
 
   const Item: FC<{ item: BlogPost }> = memo(({ item }) => (
@@ -57,14 +62,6 @@ const ArchiveScreen: FC = () => {
   const renderItem: ListRenderItem<BlogPost> = ({ item }) => (
     <Item item={item} />
   )
-
-  // Update total pages dynamically if your API provides the total count.
-  useEffect(() => {
-    if (data?.blogPostCollection) {
-      const totalItems = data.blogPostCollection.total || 1
-      setTotalPages(Math.ceil(totalItems / PAGE_SIZE))
-    }
-  }, [data])
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {

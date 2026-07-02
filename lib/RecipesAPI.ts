@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
 import { cacheStorage } from './cacheStorage'
 
 interface RecipeProps {
@@ -46,17 +46,14 @@ export const searchRecipe = async ({ query, cuisineType }: RecipeProps) => {
     console.log('Fetched fresh data:', response.data.hits[0]?.recipe?.label)
 
     // Store the fetched data in FileSystemStorage
-    await cacheStorage.setItem(
-      sanitizedKey,
-      JSON.stringify(response.data),
-    )
+    await cacheStorage.setItem(sanitizedKey, JSON.stringify(response.data))
     console.log('Stored fresh data in cache.')
     return response.data
   } catch (error) {
     console.log('REG ERROR')
     console.error('Error fetching recipe data:', error)
 
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
       console.log('AXIOS ERROR')
       throw new Error(`Error fetching recipe data: ${error.message}`)
     } else {
