@@ -76,7 +76,7 @@ export interface TransitQueryResponse {
 }
 
 export interface TransitsProps {
-  transits: Array<Transit | TransitWithLiveAt> | undefined
+  transits: Transit[] | TransitWithLiveAt[] | undefined
 }
 
 export interface RenderMarkdownNode {
