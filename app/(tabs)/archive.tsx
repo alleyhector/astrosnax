@@ -6,60 +6,62 @@ import {
   RefreshControl,
   StyleSheet,
 } from 'react-native'
-import { OperationVariables, useQuery } from '@apollo/client'
-import { Link } from 'expo-router'
+import { useQuery } from '@apollo/client'
 import Transits from '@/components/Transits'
 import { View, Text } from '@/components/Themed'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { BlogPost, BlogPostQueryResponse } from '@/types/contentful'
+import { TransitDayGroup, TransitQueryResponse } from '@/types/contentful'
 import Colors from '@/constants/Colors'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { DefaultTheme } from 'expo-router/react-navigation'
 import { useColorScheme } from '@/components/useColorScheme'
 import { LinearGradient } from 'expo-linear-gradient'
 import Pagination from '@/components/Pagination'
-import { QUERY_POSTS } from '@/lib/graphql'
+import { QUERY_LIVE_TRANSITS } from '@/lib/graphql'
+import { getArchiveDayGroups } from '@/lib/transitTimes'
+
+const PAGE_SIZE = 3
 
 const ArchiveScreen: FC = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
-  const today = new Date().toString()
-  const PAGE_SIZE = 3
   const [currentPage, setCurrentPage] = useState(1)
 
-  const { data, loading, error, refetch } = useQuery<
-    BlogPostQueryResponse,
-    OperationVariables
-  >(QUERY_POSTS, {
-    fetchPolicy: 'network-only',
-    variables: {
-      today: new Date(today),
-      skip: (currentPage - 1) * PAGE_SIZE,
-      limit: PAGE_SIZE,
+  const { data, loading, error, refetch } = useQuery<TransitQueryResponse>(
+    QUERY_LIVE_TRANSITS,
+    {
+      fetchPolicy: 'network-only',
     },
-  })
+  )
+
+  const dayGroups = useMemo(
+    () => getArchiveDayGroups(data?.transitCollection?.items ?? []),
+    [data?.transitCollection?.items],
+  )
 
   const totalPages = useMemo(() => {
-    const totalItems = data?.blogPostCollection?.total
-    if (!totalItems) return 1
-    return Math.ceil(totalItems / PAGE_SIZE)
-  }, [data?.blogPostCollection?.total])
-  const posts = data?.blogPostCollection?.items || []
+    if (dayGroups.length === 0) return 1
+    return Math.ceil(dayGroups.length / PAGE_SIZE)
+  }, [dayGroups.length])
 
-  const Item: FC<{ item: BlogPost }> = memo(({ item }) => (
+  const pageGroups = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE
+    return dayGroups.slice(start, start + PAGE_SIZE)
+  }, [dayGroups, currentPage])
+
+  const Item: FC<{ item: TransitDayGroup }> = memo(({ item }) => (
     <View style={styles.container}>
-      <Link
-        href={`/${item.slug}`}
+      <Text
         style={[styles.title, { color: Colors[colorScheme ?? 'light'].text }]}
       >
-        {item.title}
-      </Link>
-      <Transits transits={item.transitCollection.items} />
+        {item.dayLabel}
+      </Text>
+      <Transits transits={item.transits} />
     </View>
   ))
-  Item.displayName = 'BlogPostItem'
+  Item.displayName = 'TransitDayItem'
 
-  const renderItem: ListRenderItem<BlogPost> = ({ item }) => (
+  const renderItem: ListRenderItem<TransitDayGroup> = ({ item }) => (
     <Item item={item} />
   )
 
@@ -107,9 +109,9 @@ const ArchiveScreen: FC = () => {
         <FlatList
           removeClippedSubviews
           style={{ backgroundColor: 'transparent' }}
-          data={posts}
+          data={pageGroups}
           renderItem={renderItem}
-          keyExtractor={(item) => item.sys.publishedAt}
+          keyExtractor={(item) => item.dayKey}
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
           }

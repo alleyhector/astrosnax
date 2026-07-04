@@ -25,6 +25,23 @@ export function formatLiveAt(liveAtUtc: Date): string {
   })
 }
 
+/** Day-only label for archive section headers (user's local timezone). */
+export function formatLiveDay(liveAtUtc: Date): string {
+  return liveAtUtc.toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
+export function localDayKey(date: Date): string {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
 export function isSameLocalDay(a: Date, b: Date): boolean {
   return (
     a.getFullYear() === b.getFullYear() &&

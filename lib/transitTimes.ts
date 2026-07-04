@@ -1,7 +1,9 @@
-import { Transit, TransitWithLiveAt } from '@/types/contentful'
+import { Transit, TransitDayGroup, TransitWithLiveAt } from '@/types/contentful'
 import {
   formatLiveAt,
+  formatLiveDay,
   isSameLocalDay,
+  localDayKey,
   pacificToUtc,
 } from '@/lib/pacificTime'
 
@@ -70,4 +72,49 @@ export function getTodaysLiveTransits(
     })
     .filter((t): t is TransitWithLiveAt => t !== null)
     .sort((a, b) => b.liveAtUtc.getTime() - a.liveAtUtc.getTime())
+}
+
+/**
+ * Archive rows: each liveAt occurrence, including later today.
+ * Future days are excluded. Grouped by the user's local calendar day.
+ */
+export function getArchiveDayGroups(
+  transits: Transit[],
+  now = new Date(),
+): TransitDayGroup[] {
+  const occurrences: TransitWithLiveAt[] = []
+
+  for (const transit of transits) {
+    for (const time of transit.transitTimeCollection?.items ?? []) {
+      const liveAtUtc = pacificToUtc(time.liveAt)
+      const isToday = isSameLocalDay(liveAtUtc, now)
+      const isPast = liveAtUtc.getTime() <= now.getTime()
+      if (!isToday && !isPast) continue
+
+      occurrences.push({
+        ...transit,
+        liveAtUtc,
+        liveAtLabel: formatLiveAt(liveAtUtc),
+      })
+    }
+  }
+
+  const byDay = new Map<string, TransitWithLiveAt[]>()
+
+  for (const occurrence of occurrences) {
+    const key = localDayKey(occurrence.liveAtUtc)
+    const existing = byDay.get(key) ?? []
+    existing.push(occurrence)
+    byDay.set(key, existing)
+  }
+
+  return [...byDay.entries()]
+    .map(([dayKey, dayTransits]) => ({
+      dayKey,
+      dayLabel: formatLiveDay(dayTransits[0].liveAtUtc),
+      transits: dayTransits.sort(
+        (a, b) => b.liveAtUtc.getTime() - a.liveAtUtc.getTime(),
+      ),
+    }))
+    .sort((a, b) => b.dayKey.localeCompare(a.dayKey))
 }

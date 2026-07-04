@@ -68,6 +68,13 @@ export interface TransitWithLiveAt extends Transit {
   liveAtLabel: string
 }
 
+/** Archive section: one local calendar day and its transit occurrences. */
+export interface TransitDayGroup {
+  dayKey: string
+  dayLabel: string
+  transits: TransitWithLiveAt[]
+}
+
 export interface TransitQueryResponse {
   transitCollection: {
     items: Transit[]
