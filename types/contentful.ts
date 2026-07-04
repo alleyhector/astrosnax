@@ -44,18 +44,39 @@ export interface BlogPost {
   }
 }
 
+export interface TransitLiveTime {
+  transitName?: string
+  liveAt: string
+}
+
 export interface Transit {
   title: string
   planet: string
   sign: string
-  aspect: string
-  transitingPlanet: string
-  transitingSign: string
-  foods?: string
+  aspect: string | null
+  transitingPlanet: string | null
+  transitingSign: string | null
+  foods?: string | string[]
+  transitTimeCollection?: {
+    items: TransitLiveTime[]
+  }
+}
+
+/** Transit with its latest live instant resolved for display. */
+export interface TransitWithLiveAt extends Transit {
+  liveAtUtc: Date
+  liveAtLabel: string
+}
+
+export interface TransitQueryResponse {
+  transitCollection: {
+    items: Transit[]
+    total?: number
+  }
 }
 
 export interface TransitsProps {
-  transits: Transit[] | undefined
+  transits: Array<Transit | TransitWithLiveAt> | undefined
 }
 
 export interface RenderMarkdownNode {

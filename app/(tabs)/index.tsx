@@ -13,24 +13,22 @@ import { useColorScheme } from '@/components/useColorScheme'
 import { DefaultTheme } from 'expo-router/react-navigation'
 import { Text, View } from '@/components/Themed'
 import Today from '@/components/Today'
-import { useQuery, OperationVariables } from '@apollo/client'
-import { BlogPostQueryResponse } from '@/types/contentful'
+import { useQuery } from '@apollo/client'
+import { TransitQueryResponse } from '@/types/contentful'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { LinearGradient } from 'expo-linear-gradient'
-import { QUERY_TODAY_POST } from '@/lib/graphql'
+import { QUERY_LIVE_TRANSITS } from '@/lib/graphql'
 
 const HomeScreen = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
-  const today = new Date().toString()
 
-  const { data, refetch, loading, error } = useQuery<
-    BlogPostQueryResponse,
-    OperationVariables
-  >(QUERY_TODAY_POST, {
-    fetchPolicy: 'network-only',
-    variables: { today: new Date(today) },
-  })
+  const { data, refetch, loading, error } = useQuery<TransitQueryResponse>(
+    QUERY_LIVE_TRANSITS,
+    {
+      fetchPolicy: 'network-only',
+    },
+  )
 
   const { onRefresh, isRefreshing } = useAutoRefetch({ refetch })
   if (loading) return <ActivityIndicator size='large' />
