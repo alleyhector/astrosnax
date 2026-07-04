@@ -45,12 +45,29 @@ export function getLiveTransits(
     .sort((a, b) => b.liveAtUtc.getTime() - a.liveAtUtc.getTime())
 }
 
-/** Transits whose latest liveAt falls on the user's local calendar day. */
+/**
+ * Transits with a liveAt on the user's local calendar day,
+ * including times later today that have not occurred yet.
+ */
 export function getTodaysLiveTransits(
   transits: Transit[],
   now = new Date(),
 ): TransitWithLiveAt[] {
-  return getLiveTransits(transits, now).filter((t) =>
-    isSameLocalDay(t.liveAtUtc, now),
-  )
+  return transits
+    .map((transit) => {
+      const timesOnDay = (transit.transitTimeCollection?.items ?? [])
+        .map((t) => pacificToUtc(t.liveAt))
+        .filter((d) => isSameLocalDay(d, now))
+        .sort((a, b) => b.getTime() - a.getTime())
+
+      if (timesOnDay.length === 0) return null
+
+      return {
+        ...transit,
+        liveAtUtc: timesOnDay[0],
+        liveAtLabel: formatLiveAt(timesOnDay[0]),
+      }
+    })
+    .filter((t): t is TransitWithLiveAt => t !== null)
+    .sort((a, b) => b.liveAtUtc.getTime() - a.liveAtUtc.getTime())
 }
