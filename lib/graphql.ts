@@ -9,7 +9,27 @@ const TRANSIT_FRAGMENT = gql`
     transitingPlanet
     transitingSign
     foods
+    transitTimeCollection(limit: 20, order: liveAt_DESC) {
+      items {
+        transitName
+        liveAt
+      }
+    }
   }
+`
+
+export const QUERY_LIVE_TRANSITS = gql`
+  query liveTransits {
+    transitCollection(
+      where: { transitTime: { liveAt_exists: true } }
+      limit: 100
+    ) {
+      items {
+        ...TransitFields
+      }
+    }
+  }
+  ${TRANSIT_FRAGMENT}
 `
 const POST_FRAGMENT = gql`
   fragment PostFields on BlogPost {

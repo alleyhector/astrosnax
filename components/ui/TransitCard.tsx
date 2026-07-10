@@ -15,6 +15,7 @@ interface TransitCardProps {
   recipeQuery: string
   recipeFallbackFood: string | string[]
   spotifyQuery: string
+  liveAtLabel?: string
 }
 
 const TransitCard: FC<TransitCardProps> = ({
@@ -23,6 +24,7 @@ const TransitCard: FC<TransitCardProps> = ({
   recipeQuery,
   recipeFallbackFood,
   spotifyQuery,
+  liveAtLabel,
 }) => {
   const colorScheme = useColorScheme()
   const cardBackground = {
@@ -32,6 +34,9 @@ const TransitCard: FC<TransitCardProps> = ({
   return (
     <View style={[card, cardBackground]}>
       <Text style={styles.transitText}>{transitText}</Text>
+      {liveAtLabel ? (
+        <Text style={styles.liveAtText}>{liveAtLabel}</Text>
+      ) : null}
 
       <View style={styles.glyphContainer}>
         {glyphs.map((glyph, index) => {
@@ -70,13 +75,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 30,
+    marginBottom: 10,
   },
   transitText: {
     marginTop: 5,
-    marginBottom: 15,
+    marginBottom: 6,
     fontFamily: 'NimbusBold',
     fontSize: 20,
+    textAlign: 'center',
+    color: Colors.light.text,
+  },
+  liveAtText: {
+    marginBottom: 12,
+    fontFamily: 'Nimbus',
+    fontSize: 16,
     textAlign: 'center',
     color: Colors.light.text,
   },

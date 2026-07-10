@@ -1,8 +1,19 @@
 import { FC, memo } from 'react'
-import { Transit, TransitsProps } from '@/types/contentful'
+import { Transit, TransitWithLiveAt, TransitsProps } from '@/types/contentful'
+import { formatLiveAt } from '@/lib/pacificTime'
+import { getLatestLiveAtUtc } from '@/lib/transitTimes'
 import TransitCard from './ui/TransitCard'
 
-const getFood = (foods: string) => {
+const getLiveAtLabel = (transit: Transit | TransitWithLiveAt): string | undefined => {
+  if ('liveAtLabel' in transit && transit.liveAtLabel) {
+    return transit.liveAtLabel
+  }
+
+  const latest = getLatestLiveAtUtc(transit)
+  return latest ? formatLiveAt(latest) : undefined
+}
+
+const getFood = (foods: string | null | undefined) => {
   switch (foods) {
     case 'Sun':
       return ['lemon', 'mexican']
@@ -132,7 +143,7 @@ const getGlyphs = (transit: Transit): string[] => {
     transit.aspect,
     transit.transitingPlanet,
     transit.transitingSign,
-  ]
+  ].filter((glyph): glyph is string => Boolean(glyph))
 }
 
 const getSpotifyQuery = (transit: Transit) => {
@@ -167,6 +178,7 @@ const Transits: FC<TransitsProps> = ({ transits }) => {
             recipeQuery={buildQuery(transit)}
             recipeFallbackFood={getFood(transit.aspect)}
             spotifyQuery={getSpotifyQuery(transit)}
+            liveAtLabel={getLiveAtLabel(transit)}
           />
         ))}
     </>
