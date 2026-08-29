@@ -119,7 +119,7 @@
     "title": "Mercury Conjunction Venus",
     "planet": "Mercury",
     "sign": "Scorpio",
-    "aspect": "conjunction",
+    "aspect": "conjunct",
     "transitingPlanet": "Venus",
     "transitingSign": "Scorpio",
     "liveTimes": [
@@ -357,7 +357,7 @@
     "title": "Sun Conjunction Venus",
     "planet": "Sun",
     "sign": "Scorpio",
-    "aspect": "conjunction",
+    "aspect": "conjunct",
     "transitingPlanet": "Venus",
     "transitingSign": "Scorpio",
     "liveTimes": [

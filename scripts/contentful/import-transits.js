@@ -101,6 +101,11 @@ async function withRetry(fn, label) {
   }
 }
 
+// Contentful's Transit.aspect "in" validation uses "conjunct", not "conjunction".
+function normalizeAspect(aspect) {
+  return aspect === 'conjunction' ? 'conjunct' : aspect
+}
+
 function loc(value) {
   return value === undefined || value === null || value === ''
     ? undefined
@@ -180,6 +185,7 @@ async function createLiveTimeEntry(client, liveTime) {
 }
 
 async function createTransitEntry(client, transit, liveTimeEntries) {
+  const aspect = normalizeAspect(transit.aspect)
   const transitTimeLinks = liveTimeEntries.map((e) => ({
     sys: { type: 'Link', linkType: 'Entry', id: e.sys.id },
   }))
@@ -194,46 +200,66 @@ async function createTransitEntry(client, transit, liveTimeEntries) {
     // Recurring transits (e.g. "Sun enters Scorpio") are meant to accumulate
     // occurrences across years in transitTime, not be replaced. Append only
     // whichever of this run's live-time links aren't already there, and
-    // leave every existing link (and every other field) exactly as-is.
+    // leave every existing link (and every other field) exactly as-is —
+    // except aspect, which we correct if a prior run wrote "conjunction"
+    // instead of the Contentful enum value "conjunct" and left a draft.
     const currentLinks =
       (existing.fields.transitTime && existing.fields.transitTime[LOCALE]) || []
     const linkedIds = new Set(currentLinks.map((l) => l.sys.id))
     const missing = transitTimeLinks.filter((l) => !linkedIds.has(l.sys.id))
+    const currentAspect = existing.fields.aspect?.[LOCALE]
+    const needsAspectFix = Boolean(aspect && currentAspect !== aspect)
+    const unpublished = existing.sys.publishedVersion == null
 
-    if (missing.length === 0) {
+    if (missing.length === 0 && !needsAspectFix && !unpublished) {
       console.log(
         `= "${transit.title}" already exists and already has all live time links`,
       )
       return existing
     }
     if (DRY_RUN) {
+      const bits = []
+      if (missing.length)
+        bits.push(`append ${missing.length} new live time link(s)`)
+      if (needsAspectFix)
+        bits.push(`fix aspect "${currentAspect}" -> "${aspect}"`)
+      if (unpublished && !needsAspectFix) bits.push('publish unpublished draft')
       console.log(
-        `= "${transit.title}" exists -- would append ${missing.length} new live time link(s), leave the rest untouched`,
+        `= "${transit.title}" exists -- would ${bits.join(', ')}, leave the rest untouched`,
       )
       return existing
     }
 
-    const updated = await withRetry(
-      () =>
-        client.entry.update(
-          { entryId: existing.sys.id },
-          {
-            ...existing,
-            fields: {
-              ...existing.fields,
-              transitTime: { [LOCALE]: [...currentLinks, ...missing] },
-            },
-          },
-        ),
-      `append transitTime on existing "${transit.title}"`,
-    )
+    const nextFields = { ...existing.fields }
+    if (missing.length) {
+      nextFields.transitTime = { [LOCALE]: [...currentLinks, ...missing] }
+    }
+    if (needsAspectFix) {
+      nextFields.aspect = loc(aspect)
+    }
+
+    const toPublish =
+      missing.length || needsAspectFix
+        ? await withRetry(
+            () =>
+              client.entry.update(
+                { entryId: existing.sys.id },
+                { ...existing, fields: nextFields },
+              ),
+            `update existing "${transit.title}"`,
+          )
+        : existing
     const published = await withRetry(
-      () => client.entry.publish({ entryId: updated.sys.id }, updated),
+      () => client.entry.publish({ entryId: toPublish.sys.id }, toPublish),
       `publish "${transit.title}"`,
     )
-    console.log(
-      `= "${transit.title}" existed -- appended ${missing.length} new live time link(s)`,
-    )
+    const actions = []
+    if (missing.length)
+      actions.push(`appended ${missing.length} new live time link(s)`)
+    if (needsAspectFix) actions.push(`fixed aspect to "${aspect}"`)
+    if (unpublished && !needsAspectFix && !missing.length)
+      actions.push('published draft')
+    console.log(`= "${transit.title}" existed -- ${actions.join(', ')}`)
     return published
   }
 
@@ -248,7 +274,7 @@ async function createTransitEntry(client, transit, liveTimeEntries) {
     title: transit.title,
     planet: transit.planet,
     sign: transit.sign,
-    aspect: transit.aspect,
+    aspect,
     transitingPlanet: transit.transitingPlanet,
     transitingSign: transit.transitingSign,
   })

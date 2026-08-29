@@ -49,7 +49,7 @@
     "title": "Sun Conjunction Mercury",
     "planet": "Sun",
     "sign": "Scorpio",
-    "aspect": "conjunction",
+    "aspect": "conjunct",
     "transitingPlanet": "Mercury",
     "transitingSign": "Scorpio",
     "liveTimes": [
@@ -189,7 +189,7 @@
     "title": "Mars Conjunction Jupiter",
     "planet": "Mars",
     "sign": "Leo",
-    "aspect": "conjunction",
+    "aspect": "conjunct",
     "transitingPlanet": "Jupiter",
     "transitingSign": "Leo",
     "liveTimes": [
