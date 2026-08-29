@@ -28,11 +28,14 @@
  *   Space ID / environment are read from your existing EXPO_PUBLIC_ vars since
  *   those aren't sensitive, but can be overridden with plain CONTENTFUL_* vars.
  *
- *   node scripts/contentful/import-transits.js october_transits.json
+ *   node scripts/contentful/import-transits.js transits_2026_11.json
  *
  * Add --dry-run to only log what would be created, without writing anything.
- * Safe to re-run: it looks up existing entries by title/transitName first and
- * reuses them instead of creating duplicates.
+ * Safe to re-run: Transit Live Time entries are looked up by transitName and
+ * reused rather than duplicated. Transit entries are looked up by title --
+ * if one already exists (a recurring transit like "Sun enters Scorpio" from
+ * a prior year), this run's new live-time links are APPENDED to it, never
+ * replacing or removing whatever links it already had.
  */
 
 const fs = require('fs')
@@ -161,17 +164,21 @@ async function createLiveTimeEntry(client, liveTime) {
       ),
     `create transitLiveTime "${liveTime.transitName}"`,
   )
-  await withRetry(
+  const published = await withRetry(
     () => client.entry.publish({ entryId: entry.sys.id }, entry),
     `publish transitLiveTime "${liveTime.transitName}"`,
   )
   console.log(
     `  + created + published Transit Live Time "${liveTime.transitName}"`,
   )
-  return entry
+  return published
 }
 
 async function createTransitEntry(client, transit, liveTimeEntries) {
+  const transitTimeLinks = liveTimeEntries.map((e) => ({
+    sys: { type: 'Link', linkType: 'Entry', id: e.sys.id },
+  }))
+
   const existing = await findExistingEntry(
     client,
     'transit',
@@ -179,15 +186,51 @@ async function createTransitEntry(client, transit, liveTimeEntries) {
     transit.title,
   )
   if (existing) {
-    console.log(
-      `= reusing existing Transit "${transit.title}" (not modifying links)`,
-    )
-    return existing
-  }
+    // Recurring transits (e.g. "Sun enters Scorpio") are meant to accumulate
+    // occurrences across years in transitTime, not be replaced. Append only
+    // whichever of this run's live-time links aren't already there, and
+    // leave every existing link (and every other field) exactly as-is.
+    const currentLinks =
+      (existing.fields.transitTime && existing.fields.transitTime[LOCALE]) || []
+    const linkedIds = new Set(currentLinks.map((l) => l.sys.id))
+    const missing = transitTimeLinks.filter((l) => !linkedIds.has(l.sys.id))
 
-  const transitTimeLinks = liveTimeEntries.map((e) => ({
-    sys: { type: 'Link', linkType: 'Entry', id: e.sys.id },
-  }))
+    if (missing.length === 0) {
+      console.log(
+        `= "${transit.title}" already exists and already has all live time links`,
+      )
+      return existing
+    }
+    if (DRY_RUN) {
+      console.log(
+        `= "${transit.title}" exists -- would append ${missing.length} new live time link(s), leave the rest untouched`,
+      )
+      return existing
+    }
+
+    const updated = await withRetry(
+      () =>
+        client.entry.update(
+          { entryId: existing.sys.id },
+          {
+            ...existing,
+            fields: {
+              ...existing.fields,
+              transitTime: { [LOCALE]: [...currentLinks, ...missing] },
+            },
+          },
+        ),
+      `append transitTime on existing "${transit.title}"`,
+    )
+    const published = await withRetry(
+      () => client.entry.publish({ entryId: updated.sys.id }, updated),
+      `publish "${transit.title}"`,
+    )
+    console.log(
+      `= "${transit.title}" existed -- appended ${missing.length} new live time link(s)`,
+    )
+    return published
+  }
 
   if (DRY_RUN) {
     console.log(
@@ -210,12 +253,12 @@ async function createTransitEntry(client, transit, liveTimeEntries) {
     () => client.entry.create({ contentTypeId: 'transit' }, { fields }),
     `create transit "${transit.title}"`,
   )
-  await withRetry(
+  const published = await withRetry(
     () => client.entry.publish({ entryId: entry.sys.id }, entry),
     `publish transit "${transit.title}"`,
   )
   console.log(`+ created + published Transit "${transit.title}"`)
-  return entry
+  return published
 }
 
 async function main() {
