@@ -1,0 +1,184 @@
+[
+  {
+    "title": "Moon enters Aquarius",
+    "planet": "Moon",
+    "sign": "Aquarius",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Aquarius \u2013 Sep 21, 2026",
+        "liveAt": "2026-09-21T10:15:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mercury Sextile Jupiter",
+    "planet": "Mercury",
+    "sign": "Libra",
+    "aspect": "sextile",
+    "transitingPlanet": "Jupiter",
+    "transitingSign": "Leo",
+    "liveTimes": [
+      {
+        "transitName": "Mercury Sextile Jupiter \u2013 Sep 21, 2026",
+        "liveAt": "2026-09-21T15:51:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun enters Libra",
+    "planet": "Sun",
+    "sign": "Libra",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Sun enters Libra \u2013 Sep 22, 2026",
+        "liveAt": "2026-09-22T17:05:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Pisces",
+    "planet": "Moon",
+    "sign": "Pisces",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Pisces \u2013 Sep 23, 2026",
+        "liveAt": "2026-09-23T20:24:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Opposition Neptune",
+    "planet": "Sun",
+    "sign": "Libra",
+    "aspect": "opposition",
+    "transitingPlanet": "Neptune",
+    "transitingSign": "Aries",
+    "liveTimes": [
+      {
+        "transitName": "Sun Opposition Neptune \u2013 Sep 25, 2026",
+        "liveAt": "2026-09-25T18:36:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Trine Pluto",
+    "planet": "Sun",
+    "sign": "Libra",
+    "aspect": "trine",
+    "transitingPlanet": "Pluto",
+    "transitingSign": "Aquarius",
+    "liveTimes": [
+      {
+        "transitName": "Sun Trine Pluto \u2013 Sep 25, 2026",
+        "liveAt": "2026-09-25T22:34:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Aries",
+    "planet": "Moon",
+    "sign": "Aries",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Aries \u2013 Sep 26, 2026",
+        "liveAt": "2026-09-26T03:23:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Full Moon in Aries",
+    "planet": "Full Moon",
+    "sign": "Aries",
+    "aspect": "",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Full Moon in Aries \u2013 Sep 26, 2026",
+        "liveAt": "2026-09-26T09:49:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mars enters Leo",
+    "planet": "Mars",
+    "sign": "Leo",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Mars enters Leo \u2013 Sep 27, 2026",
+        "liveAt": "2026-09-27T19:49:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Taurus",
+    "planet": "Moon",
+    "sign": "Taurus",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Taurus \u2013 Sep 28, 2026",
+        "liveAt": "2026-09-28T07:40:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Trine Uranus",
+    "planet": "Sun",
+    "sign": "Libra",
+    "aspect": "trine",
+    "transitingPlanet": "Uranus",
+    "transitingSign": "Gemini",
+    "liveTimes": [
+      {
+        "transitName": "Sun Trine Uranus \u2013 Sep 28, 2026",
+        "liveAt": "2026-09-28T09:22:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mercury enters Scorpio",
+    "planet": "Mercury",
+    "sign": "Scorpio",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Mercury enters Scorpio \u2013 Sep 30, 2026",
+        "liveAt": "2026-09-30T04:44:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Gemini",
+    "planet": "Moon",
+    "sign": "Gemini",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Gemini \u2013 Sep 30, 2026",
+        "liveAt": "2026-09-30T10:26:00.000Z"
+      }
+    ]
+  }
+]
