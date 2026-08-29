@@ -32,10 +32,18 @@
  *
  * Add --dry-run to only log what would be created, without writing anything.
  * Safe to re-run: Transit Live Time entries are looked up by transitName and
- * reused rather than duplicated. Transit entries are looked up by title --
- * if one already exists (a recurring transit like "Sun enters Scorpio" from
- * a prior year), this run's new live-time links are APPENDED to it, never
- * replacing or removing whatever links it already had.
+ * reused rather than duplicated. A Transit entry's real identity is its
+ * planet + sign + aspect + transitingPlanet + transitingSign, NOT its title
+ * -- title is just a display label derived from those fields, and two
+ * genuinely different events can share one (an aspect like "Mercury Square
+ * Mars" recurs across months in whatever signs the two bodies happen to be
+ * in each time -- Scorpio/Leo one month, Sagittarius/Virgo the next). If a
+ * Transit with the same identity already exists (a recurring transit like
+ * "Sun enters Scorpio" from a prior year, or the same aspect in the same
+ * sign pairing), this run's new live-time links are APPENDED to it, never
+ * replacing or removing whatever links it already had. If the same title
+ * shows up with a *different* sign pairing, that's treated as a distinct
+ * Transit and gets its own entry.
  */
 
 const fs = require('fs')
@@ -142,6 +150,38 @@ async function findExistingEntry(client, contentTypeId, fieldId, value) {
   return res.items[0] || null
 }
 
+// A Transit's real identity: planet + sign + aspect + transitingPlanet +
+// transitingSign -- NOT title (title is a derived label; see header comment
+// for why title-only matching silently corrupted sign data). Only fields
+// that were actually stored are queried, mirroring buildFields's omission of
+// empty values -- an ingress has no transitingPlanet/transitingSign stored
+// at all, so those are left out of its query rather than matched against an
+// empty string, which would never match a field that was never set.
+function transitIdentityQuery(fields) {
+  const query = { content_type: 'transit', limit: 5 }
+  for (const key of [
+    'planet',
+    'sign',
+    'aspect',
+    'transitingPlanet',
+    'transitingSign',
+  ]) {
+    const value = fields[key]
+    if (value !== undefined && value !== null && value !== '') {
+      query[`fields.${key}`] = value
+    }
+  }
+  return query
+}
+
+async function findExistingTransit(client, fields) {
+  const res = await withRetry(
+    () => client.entry.getMany({ query: transitIdentityQuery(fields) }),
+    `lookup transit identity ${JSON.stringify(fields)}`,
+  )
+  return res.items[0] || null
+}
+
 async function createLiveTimeEntry(client, liveTime) {
   const existing = await findExistingEntry(
     client,
@@ -190,19 +230,25 @@ async function createTransitEntry(client, transit, liveTimeEntries) {
     sys: { type: 'Link', linkType: 'Entry', id: e.sys.id },
   }))
 
-  const existing = await findExistingEntry(
-    client,
-    'transit',
-    'title',
-    transit.title,
-  )
+  const existing = await findExistingTransit(client, {
+    planet: transit.planet,
+    sign: transit.sign,
+    aspect,
+    transitingPlanet: transit.transitingPlanet,
+    transitingSign: transit.transitingSign,
+  })
   if (existing) {
-    // Recurring transits (e.g. "Sun enters Scorpio") are meant to accumulate
+    // Recurring transits (e.g. "Sun enters Scorpio", or the same aspect
+    // recurring in the same sign pairing) are meant to accumulate
     // occurrences across years in transitTime, not be replaced. Append only
     // whichever of this run's live-time links aren't already there, and
     // leave every existing link (and every other field) exactly as-is —
     // except aspect, which we correct if a prior run wrote "conjunction"
     // instead of the Contentful enum value "conjunct" and left a draft.
+    // (In practice this branch is now mostly dormant for aspect, since an
+    // entry only matches `existing` here when its stored aspect already
+    // equals the normalized value -- it's kept as a safety net for any
+    // leftover unfixed entries the identity lookup happens to still find.)
     const currentLinks =
       (existing.fields.transitTime && existing.fields.transitTime[LOCALE]) || []
     const linkedIds = new Set(currentLinks.map((l) => l.sys.id))
@@ -305,19 +351,30 @@ async function main() {
     { defaults: { spaceId: SPACE_ID, environmentId: ENVIRONMENT_ID } },
   )
 
+  const failures = []
   for (const transit of transits) {
     console.log(`\n${transit.title}`)
-    const liveTimeEntries = []
-    for (const lt of transit.liveTimes) {
-      const entry = await createLiveTimeEntry(client, lt)
-      liveTimeEntries.push(entry)
-      await sleep(150) // stay well under CMA rate limits
+    try {
+      const liveTimeEntries = []
+      for (const lt of transit.liveTimes) {
+        const entry = await createLiveTimeEntry(client, lt)
+        liveTimeEntries.push(entry)
+        await sleep(150) // stay well under CMA rate limits
+      }
+      await createTransitEntry(client, transit, liveTimeEntries)
+      await sleep(150)
+    } catch (err) {
+      console.error(`  !! FAILED "${transit.title}": ${err.message || err}`)
+      failures.push(transit.title)
     }
-    await createTransitEntry(client, transit, liveTimeEntries)
-    await sleep(150)
   }
 
   console.log('\nDone.')
+  if (failures.length) {
+    console.log(`${failures.length} transit(s) failed and were skipped:`)
+    for (const title of failures) console.log(`  - ${title}`)
+    process.exitCode = 1
+  }
 }
 
 main().catch((err) => {

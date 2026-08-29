@@ -1,14 +1,21 @@
 #!/usr/bin/env node
 /**
  * Audits and repairs the link between Transit entries and their Transit Live
- * Time entries for October 2026.
+ * Time entries for a given month's file.
  *
  * Root cause this addresses: import-transits.js skips creating a Transit
- * entry when one with the same title already exists (correct, to avoid
+ * entry when one with the same identity already exists (correct, to avoid
  * duplicating a recurring transit like "Sun enters Scorpio" across years) --
- * but it never added the new month's live-time link to that pre-existing
- * entry's `transitTime` array. So the live-time entry exists and is
- * published, it's just not linked to anything.
+ * but it used to never add the new month's live-time link to that
+ * pre-existing entry's `transitTime` array. So the live-time entry exists
+ * and is published, it's just not linked to anything.
+ *
+ * A Transit's real identity is planet + sign + aspect + transitingPlanet +
+ * transitingSign, NOT title -- title is just a display label derived from
+ * those fields. An aspect like "Mercury Square Mars" recurs across months in
+ * whatever signs the two bodies happen to be in each time (e.g. Scorpio/Leo
+ * one month, Sagittarius/Virgo the next), so matching by title alone can
+ * find the WRONG prior occurrence and report/link against it.
  *
  * This script is READ-ONLY except for the final link-append step, which is
  * additive: it only ever pushes missing links onto the existing transitTime
@@ -16,8 +23,8 @@
  * any other field. Safe to re-run.
  *
  * Usage:
- *   node link-live-times.js october_transits_corrected.json --audit-only
- *   node link-live-times.js october_transits_corrected.json
+ *   node link-live-times.js transits_2026_12.json --audit-only
+ *   node link-live-times.js transits_2026_12.json
  *
  * --audit-only does all the (safe, read-only) lookups and prints a report,
  * but makes no writes -- use it first to see the real scope of the problem.
@@ -39,9 +46,7 @@ const AUDIT_ONLY = process.argv.includes('--audit-only')
 const inputPath = process.argv.find((a, i) => i >= 2 && !a.startsWith('--'))
 
 if (!inputPath) {
-  console.error(
-    'Usage: node link-live-times.js <october_transits.json> [--audit-only]',
-  )
+  console.error('Usage: node link-live-times.js <transits.json> [--audit-only]')
   process.exit(1)
 }
 if (!SPACE_ID || !TOKEN) {
@@ -86,6 +91,43 @@ async function findOne(client, contentTypeId, fieldId, value) {
   return res.items[0] || null
 }
 
+// Contentful's Transit.aspect "in" validation uses "conjunct", not
+// "conjunction" -- normalize before matching so a data file that still says
+// "conjunction" doesn't fail to find the (correctly-stored) live entry.
+function normalizeAspect(aspect) {
+  return aspect === 'conjunction' ? 'conjunct' : aspect
+}
+
+// Same identity model as import-transits.js: title is a label, not identity.
+// A Transit is really identified by planet + sign + aspect + transitingPlanet
+// + transitingSign (only the fields that were actually stored -- an ingress
+// has no transitingPlanet/transitingSign at all, so those are left out
+// rather than matched against empty string).
+function transitIdentityQuery(t) {
+  const fields = {
+    planet: t.planet,
+    sign: t.sign,
+    aspect: normalizeAspect(t.aspect),
+    transitingPlanet: t.transitingPlanet,
+    transitingSign: t.transitingSign,
+  }
+  const query = { content_type: 'transit', limit: 5 }
+  for (const [key, value] of Object.entries(fields)) {
+    if (value !== undefined && value !== null && value !== '') {
+      query[`fields.${key}`] = value
+    }
+  }
+  return query
+}
+
+async function findTransit(client, t) {
+  const res = await withRetry(
+    () => client.entry.getMany({ query: transitIdentityQuery(t) }),
+    `lookup transit identity for "${t.title}"`,
+  )
+  return res.items[0] || null
+}
+
 async function main() {
   const transits = JSON.parse(fs.readFileSync(inputPath, 'utf8'))
   console.log(
@@ -103,10 +145,10 @@ async function main() {
   let missingLiveTime = 0
 
   for (const t of transits) {
-    const transitEntry = await findOne(client, 'transit', 'title', t.title)
+    const transitEntry = await findTransit(client, t)
     if (!transitEntry) {
       console.log(
-        `? "${t.title}" -- no Transit entry found at all (expected one to already exist from the import)`,
+        `? "${t.title}" (${t.sign}${t.transitingSign ? '/' + t.transitingSign : ''}) -- no matching Transit entry found at all (expected one to already exist from the import)`,
       )
       missingTransit++
       continue
