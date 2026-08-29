@@ -1,0 +1,398 @@
+[
+  {
+    "title": "Mercury Square Mars",
+    "planet": "Mercury",
+    "sign": "Scorpio",
+    "aspect": "square",
+    "transitingPlanet": "Mars",
+    "transitingSign": "Leo",
+    "liveTimes": [
+      {
+        "transitName": "Mercury Square Mars \u2013 Oct 2, 2026",
+        "liveAt": "2026-10-02T02:14:00.000Z"
+      },
+      {
+        "transitName": "Mercury Square Mars \u2013 Oct 30, 2026",
+        "liveAt": "2026-10-30T10:20:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Cancer",
+    "planet": "Moon",
+    "sign": "Cancer",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Cancer \u2013 Oct 2, 2026",
+        "liveAt": "2026-10-02T12:54:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mercury Square Pluto",
+    "planet": "Mercury",
+    "sign": "Scorpio",
+    "aspect": "square",
+    "transitingPlanet": "Pluto",
+    "transitingSign": "Aquarius",
+    "liveTimes": [
+      {
+        "transitName": "Mercury Square Pluto \u2013 Oct 2, 2026",
+        "liveAt": "2026-10-02T13:43:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mars Trine Neptune",
+    "planet": "Mars",
+    "sign": "Leo",
+    "aspect": "trine",
+    "transitingPlanet": "Neptune",
+    "transitingSign": "Aries",
+    "liveTimes": [
+      {
+        "transitName": "Mars Trine Neptune \u2013 Oct 2, 2026",
+        "liveAt": "2026-10-02T15:18:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Venus Stations Retrograde in Scorpio",
+    "planet": "Venus",
+    "sign": "Scorpio",
+    "aspect": "retrograde",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Venus Stations Retrograde in Scorpio \u2013 Oct 3, 2026",
+        "liveAt": "2026-10-03T00:16:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Leo",
+    "planet": "Moon",
+    "sign": "Leo",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Leo \u2013 Oct 4, 2026",
+        "liveAt": "2026-10-04T15:54:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Virgo",
+    "planet": "Moon",
+    "sign": "Virgo",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Virgo \u2013 Oct 6, 2026",
+        "liveAt": "2026-10-06T19:53:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mars Sextile Uranus",
+    "planet": "Mars",
+    "sign": "Leo",
+    "aspect": "sextile",
+    "transitingPlanet": "Uranus",
+    "transitingSign": "Gemini",
+    "liveTimes": [
+      {
+        "transitName": "Mars Sextile Uranus \u2013 Oct 7, 2026",
+        "liveAt": "2026-10-07T03:42:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Libra",
+    "planet": "Moon",
+    "sign": "Libra",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Libra \u2013 Oct 9, 2026",
+        "liveAt": "2026-10-09T01:10:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "New Moon in Libra",
+    "planet": "New Moon",
+    "sign": "Libra",
+    "aspect": "",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "New Moon in Libra \u2013 Oct 10, 2026",
+        "liveAt": "2026-10-10T08:50:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Venus Square Mars",
+    "planet": "Venus",
+    "sign": "Scorpio",
+    "aspect": "square",
+    "transitingPlanet": "Mars",
+    "transitingSign": "Leo",
+    "liveTimes": [
+      {
+        "transitName": "Venus Square Mars \u2013 Oct 10, 2026",
+        "liveAt": "2026-10-10T14:31:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Scorpio",
+    "planet": "Moon",
+    "sign": "Scorpio",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Scorpio \u2013 Oct 11, 2026",
+        "liveAt": "2026-10-11T08:21:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Sagittarius",
+    "planet": "Moon",
+    "sign": "Sagittarius",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Sagittarius \u2013 Oct 13, 2026",
+        "liveAt": "2026-10-13T17:59:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Sextile Jupiter",
+    "planet": "Sun",
+    "sign": "Libra",
+    "aspect": "sextile",
+    "transitingPlanet": "Jupiter",
+    "transitingSign": "Leo",
+    "liveTimes": [
+      {
+        "transitName": "Sun Sextile Jupiter \u2013 Oct 15, 2026",
+        "liveAt": "2026-10-15T01:22:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Pluto Stations Direct in Aquarius",
+    "planet": "Pluto",
+    "sign": "Aquarius",
+    "aspect": "direct",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Pluto Stations Direct in Aquarius \u2013 Oct 15, 2026",
+        "liveAt": "2026-10-15T19:40:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mars Trine Saturn",
+    "planet": "Mars",
+    "sign": "Leo",
+    "aspect": "trine",
+    "transitingPlanet": "Saturn",
+    "transitingSign": "Aries",
+    "liveTimes": [
+      {
+        "transitName": "Mars Trine Saturn \u2013 Oct 16, 2026",
+        "liveAt": "2026-10-16T01:32:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Capricorn",
+    "planet": "Moon",
+    "sign": "Capricorn",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Capricorn \u2013 Oct 16, 2026",
+        "liveAt": "2026-10-16T05:57:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Aquarius",
+    "planet": "Moon",
+    "sign": "Aquarius",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Aquarius \u2013 Oct 18, 2026",
+        "liveAt": "2026-10-18T18:40:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Venus Square Pluto",
+    "planet": "Venus",
+    "sign": "Scorpio",
+    "aspect": "square",
+    "transitingPlanet": "Pluto",
+    "transitingSign": "Aquarius",
+    "liveTimes": [
+      {
+        "transitName": "Venus Square Pluto \u2013 Oct 19, 2026",
+        "liveAt": "2026-10-19T23:57:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Pisces",
+    "planet": "Moon",
+    "sign": "Pisces",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Pisces \u2013 Oct 21, 2026",
+        "liveAt": "2026-10-21T05:36:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun enters Scorpio",
+    "planet": "Sun",
+    "sign": "Scorpio",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Sun enters Scorpio \u2013 Oct 23, 2026",
+        "liveAt": "2026-10-23T02:38:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Aries",
+    "planet": "Moon",
+    "sign": "Aries",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Aries \u2013 Oct 23, 2026",
+        "liveAt": "2026-10-23T12:54:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mercury Stations Retrograde in Scorpio",
+    "planet": "Mercury",
+    "sign": "Scorpio",
+    "aspect": "retrograde",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Mercury Stations Retrograde in Scorpio \u2013 Oct 24, 2026",
+        "liveAt": "2026-10-24T00:13:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Taurus",
+    "planet": "Moon",
+    "sign": "Taurus",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Taurus \u2013 Oct 25, 2026",
+        "liveAt": "2026-10-25T16:34:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Full Moon in Taurus",
+    "planet": "Full Moon",
+    "sign": "Taurus",
+    "aspect": "",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Full Moon in Taurus \u2013 Oct 25, 2026",
+        "liveAt": "2026-10-25T21:12:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Square Pluto",
+    "planet": "Sun",
+    "sign": "Scorpio",
+    "aspect": "square",
+    "transitingPlanet": "Pluto",
+    "transitingSign": "Aquarius",
+    "liveTimes": [
+      {
+        "transitName": "Sun Square Pluto \u2013 Oct 26, 2026",
+        "liveAt": "2026-10-26T05:12:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Gemini",
+    "planet": "Moon",
+    "sign": "Gemini",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Gemini \u2013 Oct 27, 2026",
+        "liveAt": "2026-10-27T18:02:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Cancer",
+    "planet": "Moon",
+    "sign": "Cancer",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Cancer \u2013 Oct 29, 2026",
+        "liveAt": "2026-10-29T19:06:00.000Z"
+      }
+    ]
+  }
+]

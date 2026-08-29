@@ -60,7 +60,7 @@ if (!inputPath) {
   process.exit(1)
 }
 
-if (!DRY_RUN && process.env.EXPO_PUBLIC_CONTENTFUL_MANAGEMENT_TOKEN && !TOKEN) {
+if (process.env.EXPO_PUBLIC_CONTENTFUL_MANAGEMENT_TOKEN && !TOKEN) {
   console.error(
     'Found EXPO_PUBLIC_CONTENTFUL_MANAGEMENT_TOKEN but no CONTENTFUL_MANAGEMENT_TOKEN.\n' +
       'This script refuses to use the EXPO_PUBLIC_ version on purpose: Expo inlines\n' +
@@ -70,7 +70,10 @@ if (!DRY_RUN && process.env.EXPO_PUBLIC_CONTENTFUL_MANAGEMENT_TOKEN && !TOKEN) {
   )
   process.exit(1)
 }
-if (!DRY_RUN && (!SPACE_ID || !TOKEN)) {
+// Required even in --dry-run: dry-run does real, read-only lookups against
+// your space so it can accurately report "already exists" / "would append"
+// instead of just assuming everything is new. It never writes anything.
+if (!SPACE_ID || !TOKEN) {
   console.error(
     'Missing CONTENTFUL_SPACE_ID or CONTENTFUL_MANAGEMENT_TOKEN env vars.',
   )
@@ -117,7 +120,9 @@ function buildFields(obj) {
 }
 
 async function findExistingEntry(client, contentTypeId, fieldId, value) {
-  if (DRY_RUN) return null
+  // Always a real, read-only lookup -- including in --dry-run -- so the
+  // preview reflects what's actually in the space rather than assuming
+  // nothing exists yet.
   const res = await withRetry(
     () =>
       client.entry.getMany({
@@ -267,13 +272,12 @@ async function main() {
     `Loaded ${transits.length} transits from ${inputPath} (dry-run: ${DRY_RUN})`,
   )
 
-  let client = null
-  if (!DRY_RUN) {
-    client = contentful.createClient(
-      { accessToken: TOKEN },
-      { defaults: { spaceId: SPACE_ID, environmentId: ENVIRONMENT_ID } },
-    )
-  }
+  // Created unconditionally now -- dry-run reads through this client too,
+  // it just never reaches the create/update/publish calls below.
+  const client = contentful.createClient(
+    { accessToken: TOKEN },
+    { defaults: { spaceId: SPACE_ID, environmentId: ENVIRONMENT_ID } },
+  )
 
   for (const transit of transits) {
     console.log(`\n${transit.title}`)
