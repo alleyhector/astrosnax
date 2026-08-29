@@ -74,6 +74,34 @@
     ]
   },
   {
+    "title": "Mars Opposition Pluto",
+    "planet": "Mars",
+    "sign": "Leo",
+    "aspect": "opposition",
+    "transitingPlanet": "Pluto",
+    "transitingSign": "Aquarius",
+    "liveTimes": [
+      {
+        "transitName": "Mars Opposition Pluto \u2013 Oct 3, 2026",
+        "liveAt": "2026-10-03T03:39:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Opposition Saturn",
+    "planet": "Sun",
+    "sign": "Libra",
+    "aspect": "opposition",
+    "transitingPlanet": "Saturn",
+    "transitingSign": "Aries",
+    "liveTimes": [
+      {
+        "transitName": "Sun Opposition Saturn \u2013 Oct 4, 2026",
+        "liveAt": "2026-10-04T05:29:00.000Z"
+      }
+    ]
+  },
+  {
     "title": "Moon enters Leo",
     "planet": "Moon",
     "sign": "Leo",
@@ -84,6 +112,20 @@
       {
         "transitName": "Moon enters Leo \u2013 Oct 4, 2026",
         "liveAt": "2026-10-04T15:54:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mercury Conjunction Venus",
+    "planet": "Mercury",
+    "sign": "Scorpio",
+    "aspect": "conjunction",
+    "transitingPlanet": "Venus",
+    "transitingSign": "Scorpio",
+    "liveTimes": [
+      {
+        "transitName": "Mercury Conjunction Venus \u2013 Oct 6, 2026",
+        "liveAt": "2026-10-06T17:10:00.000Z"
       }
     ]
   },
@@ -312,6 +354,20 @@
     ]
   },
   {
+    "title": "Sun Conjunction Venus",
+    "planet": "Sun",
+    "sign": "Scorpio",
+    "aspect": "conjunction",
+    "transitingPlanet": "Venus",
+    "transitingSign": "Scorpio",
+    "liveTimes": [
+      {
+        "transitName": "Sun Conjunction Venus \u2013 Oct 23, 2026",
+        "liveAt": "2026-10-23T20:44:00.000Z"
+      }
+    ]
+  },
+  {
     "title": "Mercury Stations Retrograde in Scorpio",
     "planet": "Mercury",
     "sign": "Scorpio",
@@ -322,6 +378,20 @@
       {
         "transitName": "Mercury Stations Retrograde in Scorpio \u2013 Oct 24, 2026",
         "liveAt": "2026-10-24T00:13:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Venus enters Libra",
+    "planet": "Venus",
+    "sign": "Libra",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Venus enters Libra \u2013 Oct 25, 2026",
+        "liveAt": "2026-10-25T02:09:00.000Z"
       }
     ]
   },

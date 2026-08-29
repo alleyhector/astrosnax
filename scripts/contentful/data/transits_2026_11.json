@@ -46,6 +46,20 @@
     ]
   },
   {
+    "title": "Sun Conjunction Mercury",
+    "planet": "Sun",
+    "sign": "Scorpio",
+    "aspect": "conjunction",
+    "transitingPlanet": "Mercury",
+    "transitingSign": "Scorpio",
+    "liveTimes": [
+      {
+        "transitName": "Sun Conjunction Mercury \u2013 Nov 4, 2026",
+        "liveAt": "2026-11-04T06:24:00.000Z"
+      }
+    ]
+  },
+  {
     "title": "Moon enters Libra",
     "planet": "Moon",
     "sign": "Libra",
@@ -168,6 +182,20 @@
       {
         "transitName": "Moon enters Aquarius \u2013 Nov 15, 2026",
         "liveAt": "2026-11-15T01:24:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mars Conjunction Jupiter",
+    "planet": "Mars",
+    "sign": "Leo",
+    "aspect": "conjunction",
+    "transitingPlanet": "Jupiter",
+    "transitingSign": "Leo",
+    "liveTimes": [
+      {
+        "transitName": "Mars Conjunction Jupiter \u2013 Nov 15, 2026",
+        "liveAt": "2026-11-15T22:24:00.000Z"
       }
     ]
   },
@@ -308,6 +336,20 @@
       {
         "transitName": "Sun Sextile Pluto \u2013 Nov 25, 2026",
         "liveAt": "2026-11-25T09:27:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Opposition Uranus",
+    "planet": "Sun",
+    "sign": "Sagittarius",
+    "aspect": "opposition",
+    "transitingPlanet": "Uranus",
+    "transitingSign": "Gemini",
+    "liveTimes": [
+      {
+        "transitName": "Sun Opposition Uranus \u2013 Nov 25, 2026",
+        "liveAt": "2026-11-25T14:42:00.000Z"
       }
     ]
   },
