@@ -9,7 +9,9 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "eslint --ext .ts,.tsx .",
-    "pretty": "prettier --check ."
+    "pretty": "prettier --check .",
+    "contentful:dry-run": "node scripts/contentful/import-transits.js scripts/contentful/data/october_transits.json --dry-run",
+    "contentful:import": "node scripts/contentful/import-transits.js scripts/contentful/data/october_transits.json"
   },
   "jest": {
     "preset": "jest-expo"

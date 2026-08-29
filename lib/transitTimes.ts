@@ -80,7 +80,8 @@ export function getTodaysLiveTransits(
  */
 export function getArchiveDayGroups(
   transits: Transit[],
-  now = new Date(),
+  // now = new Date(),
+  now = new Date('2026-10-31T20:00:00-07:00'),
 ): TransitDayGroup[] {
   const occurrences: TransitWithLiveAt[] = []
 
