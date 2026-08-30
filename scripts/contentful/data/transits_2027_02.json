@@ -1,0 +1,458 @@
+[
+  {
+    "title": "Mercury Square Uranus",
+    "planet": "Mercury",
+    "sign": "Pisces",
+    "aspect": "square",
+    "transitingPlanet": "Uranus",
+    "transitingSign": "Gemini",
+    "liveTimes": [
+      {
+        "transitName": "Mercury Square Uranus \u2013 Feb 2, 2027",
+        "liveAt": "2027-02-02T04:18:00.000Z"
+      },
+      {
+        "transitName": "Mercury Square Uranus \u2013 Feb 16, 2027",
+        "liveAt": "2027-02-16T14:38:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Capricorn",
+    "planet": "Moon",
+    "sign": "Capricorn",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Capricorn \u2013 Feb 2, 2027",
+        "liveAt": "2027-02-02T07:33:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Venus enters Capricorn",
+    "planet": "Venus",
+    "sign": "Capricorn",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Venus enters Capricorn \u2013 Feb 3, 2027",
+        "liveAt": "2027-02-03T06:31:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Aquarius",
+    "planet": "Moon",
+    "sign": "Aquarius",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Aquarius \u2013 Feb 4, 2027",
+        "liveAt": "2027-02-04T20:29:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Venus Square Neptune",
+    "planet": "Venus",
+    "sign": "Capricorn",
+    "aspect": "square",
+    "transitingPlanet": "Neptune",
+    "transitingSign": "Aries",
+    "liveTimes": [
+      {
+        "transitName": "Venus Square Neptune \u2013 Feb 5, 2027",
+        "liveAt": "2027-02-05T09:34:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "New Moon in Aquarius",
+    "planet": "New Moon",
+    "sign": "Aquarius",
+    "aspect": "",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "New Moon in Aquarius \u2013 Feb 6, 2027",
+        "liveAt": "2027-02-06T07:56:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mercury Opposition Mars",
+    "planet": "Mercury",
+    "sign": "Pisces",
+    "aspect": "opposition",
+    "transitingPlanet": "Mars",
+    "transitingSign": "Virgo",
+    "liveTimes": [
+      {
+        "transitName": "Mercury Opposition Mars \u2013 Feb 6, 2027",
+        "liveAt": "2027-02-06T23:15:00.000Z"
+      },
+      {
+        "transitName": "Mercury Opposition Mars \u2013 Feb 16, 2027",
+        "liveAt": "2027-02-16T09:42:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Pisces",
+    "planet": "Moon",
+    "sign": "Pisces",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Pisces \u2013 Feb 7, 2027",
+        "liveAt": "2027-02-07T08:32:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Venus Trine Mars",
+    "planet": "Venus",
+    "sign": "Capricorn",
+    "aspect": "trine",
+    "transitingPlanet": "Mars",
+    "transitingSign": "Virgo",
+    "liveTimes": [
+      {
+        "transitName": "Venus Trine Mars \u2013 Feb 7, 2027",
+        "liveAt": "2027-02-07T18:29:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Uranus Stations Direct in Gemini",
+    "planet": "Uranus",
+    "sign": "Gemini",
+    "aspect": "direct",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Uranus Stations Direct in Gemini \u2013 Feb 8, 2027",
+        "liveAt": "2027-02-08T04:29:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mercury Sextile Venus",
+    "planet": "Mercury",
+    "sign": "Pisces",
+    "aspect": "sextile",
+    "transitingPlanet": "Venus",
+    "transitingSign": "Capricorn",
+    "liveTimes": [
+      {
+        "transitName": "Mercury Sextile Venus \u2013 Feb 8, 2027",
+        "liveAt": "2027-02-08T09:14:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mercury Stations Retrograde in Pisces",
+    "planet": "Mercury",
+    "sign": "Pisces",
+    "aspect": "retrograde",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Mercury Stations Retrograde in Pisces \u2013 Feb 9, 2027",
+        "liveAt": "2027-02-09T09:36:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Aries",
+    "planet": "Moon",
+    "sign": "Aries",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Aries \u2013 Feb 9, 2027",
+        "liveAt": "2027-02-09T18:48:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Opposition Jupiter",
+    "planet": "Sun",
+    "sign": "Aquarius",
+    "aspect": "opposition",
+    "transitingPlanet": "Jupiter",
+    "transitingSign": "Leo",
+    "liveTimes": [
+      {
+        "transitName": "Sun Opposition Jupiter \u2013 Feb 10, 2027",
+        "liveAt": "2027-02-10T16:28:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Taurus",
+    "planet": "Moon",
+    "sign": "Taurus",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Taurus \u2013 Feb 12, 2027",
+        "liveAt": "2027-02-12T02:44:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Venus Square Saturn",
+    "planet": "Venus",
+    "sign": "Capricorn",
+    "aspect": "square",
+    "transitingPlanet": "Saturn",
+    "transitingSign": "Aries",
+    "liveTimes": [
+      {
+        "transitName": "Venus Square Saturn \u2013 Feb 13, 2027",
+        "liveAt": "2027-02-13T03:40:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Gemini",
+    "planet": "Moon",
+    "sign": "Gemini",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Gemini \u2013 Feb 14, 2027",
+        "liveAt": "2027-02-14T07:59:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Cancer",
+    "planet": "Moon",
+    "sign": "Cancer",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Cancer \u2013 Feb 16, 2027",
+        "liveAt": "2027-02-16T10:38:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mars Square Uranus",
+    "planet": "Mars",
+    "sign": "Virgo",
+    "aspect": "square",
+    "transitingPlanet": "Uranus",
+    "transitingSign": "Gemini",
+    "liveTimes": [
+      {
+        "transitName": "Mars Square Uranus \u2013 Feb 16, 2027",
+        "liveAt": "2027-02-16T22:33:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mercury enters Aquarius",
+    "planet": "Mercury",
+    "sign": "Aquarius",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Mercury enters Aquarius \u2013 Feb 18, 2027",
+        "liveAt": "2027-02-18T04:16:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Conjunction Mercury",
+    "planet": "Sun",
+    "sign": "Aquarius",
+    "aspect": "conjunct",
+    "transitingPlanet": "Mercury",
+    "transitingSign": "Aquarius",
+    "liveTimes": [
+      {
+        "transitName": "Sun Conjunction Mercury \u2013 Feb 18, 2027",
+        "liveAt": "2027-02-18T08:39:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Leo",
+    "planet": "Moon",
+    "sign": "Leo",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Leo \u2013 Feb 18, 2027",
+        "liveAt": "2027-02-18T11:31:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun enters Pisces",
+    "planet": "Sun",
+    "sign": "Pisces",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Sun enters Pisces \u2013 Feb 18, 2027",
+        "liveAt": "2027-02-18T13:33:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Opposition Mars",
+    "planet": "Sun",
+    "sign": "Pisces",
+    "aspect": "opposition",
+    "transitingPlanet": "Mars",
+    "transitingSign": "Virgo",
+    "liveTimes": [
+      {
+        "transitName": "Sun Opposition Mars \u2013 Feb 19, 2027",
+        "liveAt": "2027-02-19T07:51:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Sun Square Uranus",
+    "planet": "Sun",
+    "sign": "Pisces",
+    "aspect": "square",
+    "transitingPlanet": "Uranus",
+    "transitingSign": "Gemini",
+    "liveTimes": [
+      {
+        "transitName": "Sun Square Uranus \u2013 Feb 20, 2027",
+        "liveAt": "2027-02-20T07:11:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Virgo",
+    "planet": "Moon",
+    "sign": "Virgo",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Virgo \u2013 Feb 20, 2027",
+        "liveAt": "2027-02-20T11:59:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Full Moon in Virgo",
+    "planet": "Full Moon",
+    "sign": "Virgo",
+    "aspect": "",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Full Moon in Virgo \u2013 Feb 20, 2027",
+        "liveAt": "2027-02-20T15:24:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Mars enters Leo",
+    "planet": "Mars",
+    "sign": "Leo",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Mars enters Leo \u2013 Feb 21, 2027",
+        "liveAt": "2027-02-21T06:13:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Libra",
+    "planet": "Moon",
+    "sign": "Libra",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Libra \u2013 Feb 22, 2027",
+        "liveAt": "2027-02-22T13:45:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Scorpio",
+    "planet": "Moon",
+    "sign": "Scorpio",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Scorpio \u2013 Feb 24, 2027",
+        "liveAt": "2027-02-24T18:24:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Moon enters Sagittarius",
+    "planet": "Moon",
+    "sign": "Sagittarius",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Moon enters Sagittarius \u2013 Feb 27, 2027",
+        "liveAt": "2027-02-27T02:53:00.000Z"
+      }
+    ]
+  },
+  {
+    "title": "Venus enters Aquarius",
+    "planet": "Venus",
+    "sign": "Aquarius",
+    "aspect": "ingress",
+    "transitingPlanet": "",
+    "transitingSign": "",
+    "liveTimes": [
+      {
+        "transitName": "Venus enters Aquarius \u2013 Feb 28, 2027",
+        "liveAt": "2027-02-28T22:32:00.000Z"
+      }
+    ]
+  }
+]
