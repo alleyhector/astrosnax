@@ -10,8 +10,10 @@
     "test": "jest --watchAll",
     "lint": "eslint --ext .ts,.tsx .",
     "pretty": "prettier --check .",
-    "contentful:dry-run": "node scripts/contentful/import-transits.js scripts/contentful/data/transits_2026_12.json --dry-run",
-    "contentful:import": "node scripts/contentful/import-transits.js scripts/contentful/data/transits_2026_12.json"
+    "contentful:dry-run": "node scripts/contentful/import-transits.js scripts/contentful/data/transits_2027_02.json --dry-run",
+    "contentful:import": "node scripts/contentful/import-transits.js scripts/contentful/data/transits_2027_02.json",
+    "contentful:audit": "node scripts/contentful/link-live-times.js scripts/contentful/data/transits_2027_02.json --audit-only",
+    "contentful:link-fix": "node scripts/contentful/link-live-times.js scripts/contentful/data/transits_2027_02.json"
   },
   "jest": {
     "preset": "jest-expo"
