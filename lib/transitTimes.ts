@@ -80,8 +80,9 @@ export function getTodaysLiveTransits(
  */
 export function getArchiveDayGroups(
   transits: Transit[],
-  // now = new Date(),
-  now = new Date('2026-10-31T20:00:00-07:00'),
+  now = new Date(),
+  // For testing: Here is where you can set a specific date/time to test the archive day groups.
+  // now = new Date('2027-03-01T20:00:00-07:00'),
 ): TransitDayGroup[] {
   const occurrences: TransitWithLiveAt[] = []
 
