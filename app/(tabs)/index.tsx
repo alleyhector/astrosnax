@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -22,11 +22,19 @@ import { QUERY_LIVE_TRANSITS } from '@/lib/graphql'
 const HomeScreen = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
+  const { from, to } = useMemo(() => {
+    const now = Date.now()
+    return {
+      from: new Date(now - 14 * 24 * 60 * 60 * 1000).toISOString(),
+      to: new Date(now + 2 * 24 * 60 * 60 * 1000).toISOString(),
+    }
+  }, [])
 
   const { data, refetch, loading, error } = useQuery<TransitQueryResponse>(
     QUERY_LIVE_TRANSITS,
     {
       fetchPolicy: 'network-only',
+      variables: { from, to },
     },
   )
 

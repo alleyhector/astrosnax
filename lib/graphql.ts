@@ -19,9 +19,9 @@ const TRANSIT_FRAGMENT = gql`
 `
 
 export const QUERY_LIVE_TRANSITS = gql`
-  query liveTransits {
+  query liveTransits($from: DateTime!, $to: DateTime!) {
     transitCollection(
-      where: { transitTime: { liveAt_exists: true } }
+      where: { transitTime: { liveAt_gte: $from, liveAt_lte: $to } }
       limit: 100
     ) {
       items {

@@ -26,11 +26,19 @@ const ArchiveScreen: FC = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
   const [currentPage, setCurrentPage] = useState(1)
+  const { from, to } = useMemo(() => {
+    const now = Date.now()
+    return {
+      from: new Date(now - 14 * 24 * 60 * 60 * 1000).toISOString(),
+      to: new Date(now + 2 * 24 * 60 * 60 * 1000).toISOString(),
+    }
+  }, [])
 
   const { data, loading, error, refetch } = useQuery<TransitQueryResponse>(
     QUERY_LIVE_TRANSITS,
     {
       fetchPolicy: 'network-only',
+      variables: { from, to },
     },
   )
 
