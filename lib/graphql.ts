@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
-const TRANSIT_FRAGMENT = gql`
-  fragment TransitFields on Transit {
+const TRANSIT_CORE_FRAGMENT = gql`
+  fragment TransitCore on Transit {
     title
     planet
     sign
@@ -9,6 +9,12 @@ const TRANSIT_FRAGMENT = gql`
     transitingPlanet
     transitingSign
     foods
+  }
+`
+
+const TRANSIT_FRAGMENT = gql`
+  fragment TransitFields on Transit {
+    ...TransitCore
     transitTimeCollection(limit: 20, order: liveAt_DESC) {
       items {
         transitName
@@ -16,20 +22,33 @@ const TRANSIT_FRAGMENT = gql`
       }
     }
   }
+  ${TRANSIT_CORE_FRAGMENT}
 `
 
-export const QUERY_LIVE_TRANSITS = gql`
-  query liveTransits {
-    transitCollection(
-      where: { transitTime: { liveAt_exists: true } }
-      limit: 100
+/** Timeline of live-time occurrences, newest first. Query this — not transitCollection. */
+export const QUERY_LIVE_TIME_OCCURRENCES = gql`
+  query liveTimeOccurrences($to: DateTime!, $limit: Int = 40, $skip: Int = 0) {
+    transitLiveTimeCollection(
+      where: { liveAt_lte: $to }
+      order: liveAt_DESC
+      limit: $limit
+      skip: $skip
     ) {
+      total
       items {
-        ...TransitFields
+        transitName
+        liveAt
+        linkedFrom {
+          transitCollection(limit: 1) {
+            items {
+              ...TransitCore
+            }
+          }
+        }
       }
     }
   }
-  ${TRANSIT_FRAGMENT}
+  ${TRANSIT_CORE_FRAGMENT}
 `
 const POST_FRAGMENT = gql`
   fragment PostFields on BlogPost {

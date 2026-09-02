@@ -82,6 +82,23 @@ export interface TransitQueryResponse {
   }
 }
 
+export interface LiveTimeOccurrence {
+  transitName?: string
+  liveAt: string
+  linkedFrom?: {
+    transitCollection?: {
+      items: Transit[]
+    }
+  }
+}
+
+export interface LiveTimeQueryResponse {
+  transitLiveTimeCollection: {
+    items: LiveTimeOccurrence[]
+    total?: number
+  }
+}
+
 export interface TransitsProps {
   transits: Transit[] | TransitWithLiveAt[] | undefined
 }

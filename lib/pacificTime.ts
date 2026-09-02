@@ -49,3 +49,21 @@ export function isSameLocalDay(a: Date, b: Date): boolean {
     a.getDate() === b.getDate()
   )
 }
+
+/**
+ * Upper bound for liveAt GraphQL filters: end of the user's local day,
+ * plus a buffer so Pacific-stored times still match near midnight.
+ * Stable across re-renders on the same local calendar day.
+ */
+export function liveAtQueryTo(now = new Date()): string {
+  const endOfLocalDay = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    23,
+    59,
+    59,
+    999,
+  )
+  return new Date(endOfLocalDay.getTime() + 12 * 60 * 60 * 1000).toISOString()
+}

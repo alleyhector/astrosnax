@@ -69,6 +69,7 @@ const getFood = (foods: string | null | undefined) => {
       return 'salt'
     case 'opposition':
       return 'nut'
+    case 'conjunct':
     case 'conjunction':
       return 'sandwich'
     case 'ingress':
