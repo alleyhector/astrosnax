@@ -1,4 +1,4 @@
-import { FC, memo, useState, useMemo } from 'react'
+import { FC, memo, useState, useMemo, useRef, useEffect } from 'react'
 import {
   ActivityIndicator,
   FlatList,
@@ -28,6 +28,7 @@ const ArchiveScreen: FC = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
   const [currentPage, setCurrentPage] = useState(1)
+  const listRef = useRef<FlatList<TransitDayGroup>>(null)
   const to = liveAtQueryTo()
 
   const { data, loading, error, refetch } = useQuery<LiveTimeQueryResponse>(
@@ -72,6 +73,10 @@ const ArchiveScreen: FC = () => {
     <Item item={item} />
   )
 
+  useEffect(() => {
+    listRef.current?.scrollToOffset({ offset: 0, animated: false })
+  }, [currentPage])
+
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page)
@@ -114,6 +119,7 @@ const ArchiveScreen: FC = () => {
         }}
       >
         <FlatList
+          ref={listRef}
           removeClippedSubviews
           style={{ backgroundColor: 'transparent' }}
           data={pageGroups}
