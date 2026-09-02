@@ -2,33 +2,14 @@ import { FC, useMemo } from 'react'
 import { StyleSheet } from 'react-native'
 import { Text, View } from '@/components/Themed'
 import Transits from '@/components/Transits'
-import { TransitQueryResponse } from '@/types/contentful'
-import { isSameLocalDay } from '@/lib/pacificTime'
-import {
-  getLiveTransits,
-  getTodaysLiveTransits,
-} from '@/lib/transitTimes'
+import { TransitWithLiveAt } from '@/types/contentful'
+import { getMenuTransits } from '@/lib/transitTimes'
 
-const Today: FC<{ data: TransitQueryResponse | undefined }> = ({ data }) => {
-  const transits = data?.transitCollection?.items ?? []
-
-  const { menuTransits, isToday } = useMemo(() => {
-    const todays = getTodaysLiveTransits(transits)
-    if (todays.length > 0) {
-      return { menuTransits: todays, isToday: true }
-    }
-
-    // Fall back to the most recent live set (same local day as the newest).
-    const live = getLiveTransits(transits)
-    if (live.length === 0) {
-      return { menuTransits: [], isToday: false }
-    }
-
-    const latestDay = live[0].liveAtUtc
-    const recent = live.filter((t) => isSameLocalDay(t.liveAtUtc, latestDay))
-
-    return { menuTransits: recent, isToday: false }
-  }, [transits])
+const Today: FC<{ occurrences: TransitWithLiveAt[] }> = ({ occurrences }) => {
+  const { menuTransits, isToday } = useMemo(
+    () => getMenuTransits(occurrences),
+    [occurrences],
+  )
 
   return (
     <View style={styles.container}>

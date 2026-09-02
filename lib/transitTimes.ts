@@ -1,4 +1,9 @@
-import { Transit, TransitDayGroup, TransitWithLiveAt } from '@/types/contentful'
+import {
+  LiveTimeOccurrence,
+  Transit,
+  TransitDayGroup,
+  TransitWithLiveAt,
+} from '@/types/contentful'
 import {
   formatLiveAt,
   formatLiveDay,
@@ -17,61 +22,55 @@ export function getLatestLiveAtUtc(transit: Transit): Date | null {
     .sort((a, b) => b.getTime() - a.getTime())[0]
 }
 
-/** Live times that have already gone live, newest first. */
-export function getPastLiveAtsUtc(transit: Transit, now = new Date()): Date[] {
-  return (transit.transitTimeCollection?.items ?? [])
-    .map((t) => pacificToUtc(t.liveAt))
-    .filter((d) => d.getTime() <= now.getTime())
-    .sort((a, b) => b.getTime() - a.getTime())
+export function mapLiveTimeOccurrences(
+  items: LiveTimeOccurrence[],
+): TransitWithLiveAt[] {
+  const occurrences: TransitWithLiveAt[] = []
+
+  for (const item of items) {
+    const transit = item.linkedFrom?.transitCollection?.items?.[0]
+    if (!transit || !item.liveAt) continue
+
+    const liveAtUtc = pacificToUtc(item.liveAt)
+    occurrences.push({
+      ...transit,
+      liveAtUtc,
+      liveAtLabel: formatLiveAt(liveAtUtc),
+    })
+  }
+
+  return occurrences
 }
 
 /**
- * Transits that are live (latest liveAt <= now), newest first.
- * Attaches the latest live instant for display.
+ * Today's occurrences, or if none, the most recent live day.
+ * `occurrences` should already be newest-first.
  */
-export function getLiveTransits(
-  transits: Transit[],
+export function getMenuTransits(
+  occurrences: TransitWithLiveAt[] = [],
   now = new Date(),
-): TransitWithLiveAt[] {
-  return transits
-    .map((transit) => {
-      const past = getPastLiveAtsUtc(transit, now)
-      if (past.length === 0) return null
-      return {
-        ...transit,
-        liveAtUtc: past[0],
-        liveAtLabel: formatLiveAt(past[0]),
-      }
-    })
-    .filter((t): t is TransitWithLiveAt => t !== null)
+): { menuTransits: TransitWithLiveAt[]; isToday: boolean } {
+  const todays = occurrences
+    .filter((t) => isSameLocalDay(t.liveAtUtc, now))
     .sort((a, b) => b.liveAtUtc.getTime() - a.liveAtUtc.getTime())
-}
 
-/**
- * Transits with a liveAt on the user's local calendar day,
- * including times later today that have not occurred yet.
- */
-export function getTodaysLiveTransits(
-  transits: Transit[],
-  now = new Date(),
-): TransitWithLiveAt[] {
-  return transits
-    .map((transit) => {
-      const timesOnDay = (transit.transitTimeCollection?.items ?? [])
-        .map((t) => pacificToUtc(t.liveAt))
-        .filter((d) => isSameLocalDay(d, now))
-        .sort((a, b) => b.getTime() - a.getTime())
+  if (todays.length > 0) {
+    return { menuTransits: todays, isToday: true }
+  }
 
-      if (timesOnDay.length === 0) return null
-
-      return {
-        ...transit,
-        liveAtUtc: timesOnDay[0],
-        liveAtLabel: formatLiveAt(timesOnDay[0]),
-      }
-    })
-    .filter((t): t is TransitWithLiveAt => t !== null)
+  const past = occurrences
+    .filter((t) => t.liveAtUtc.getTime() <= now.getTime())
     .sort((a, b) => b.liveAtUtc.getTime() - a.liveAtUtc.getTime())
+
+  if (past.length === 0) {
+    return { menuTransits: [], isToday: false }
+  }
+
+  const latestDay = past[0].liveAtUtc
+  return {
+    menuTransits: past.filter((t) => isSameLocalDay(t.liveAtUtc, latestDay)),
+    isToday: false,
+  }
 }
 
 /**
@@ -79,31 +78,23 @@ export function getTodaysLiveTransits(
  * Future days are excluded. Grouped by the user's local calendar day.
  */
 export function getArchiveDayGroups(
-  transits: Transit[],
+  occurrences: TransitWithLiveAt[],
   now = new Date(),
   // For testing: Here is where you can set a specific date/time to test the archive day groups.
   // now = new Date('2027-03-01T20:00:00-07:00'),
 ): TransitDayGroup[] {
-  const occurrences: TransitWithLiveAt[] = []
+  const visible: TransitWithLiveAt[] = []
 
-  for (const transit of transits) {
-    for (const time of transit.transitTimeCollection?.items ?? []) {
-      const liveAtUtc = pacificToUtc(time.liveAt)
-      const isToday = isSameLocalDay(liveAtUtc, now)
-      const isPast = liveAtUtc.getTime() <= now.getTime()
-      if (!isToday && !isPast) continue
-
-      occurrences.push({
-        ...transit,
-        liveAtUtc,
-        liveAtLabel: formatLiveAt(liveAtUtc),
-      })
-    }
+  for (const occurrence of occurrences) {
+    const isToday = isSameLocalDay(occurrence.liveAtUtc, now)
+    const isPast = occurrence.liveAtUtc.getTime() <= now.getTime()
+    if (!isToday && !isPast) continue
+    visible.push(occurrence)
   }
 
   const byDay = new Map<string, TransitWithLiveAt[]>()
 
-  for (const occurrence of occurrences) {
+  for (const occurrence of visible) {
     const key = localDayKey(occurrence.liveAtUtc)
     const existing = byDay.get(key) ?? []
     existing.push(occurrence)

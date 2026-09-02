@@ -10,41 +10,40 @@ import { useQuery } from '@apollo/client'
 import Transits from '@/components/Transits'
 import { View, Text } from '@/components/Themed'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { TransitDayGroup, TransitQueryResponse } from '@/types/contentful'
+import { LiveTimeQueryResponse, TransitDayGroup } from '@/types/contentful'
 import Colors from '@/constants/Colors'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { DefaultTheme } from 'expo-router/react-navigation'
 import { useColorScheme } from '@/components/useColorScheme'
 import { LinearGradient } from 'expo-linear-gradient'
 import Pagination from '@/components/Pagination'
-import { QUERY_LIVE_TRANSITS } from '@/lib/graphql'
-import { getArchiveDayGroups } from '@/lib/transitTimes'
+import { QUERY_LIVE_TIME_OCCURRENCES } from '@/lib/graphql'
+import { liveAtQueryTo } from '@/lib/pacificTime'
+import { getArchiveDayGroups, mapLiveTimeOccurrences } from '@/lib/transitTimes'
 
 const PAGE_SIZE = 3
+const ARCHIVE_LIVE_TIME_LIMIT = 1000
 
 const ArchiveScreen: FC = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
   const [currentPage, setCurrentPage] = useState(1)
-  const { from, to } = useMemo(() => {
-    const now = Date.now()
-    return {
-      from: new Date(now - 14 * 24 * 60 * 60 * 1000).toISOString(),
-      to: new Date(now + 2 * 24 * 60 * 60 * 1000).toISOString(),
-    }
-  }, [])
+  const to = liveAtQueryTo()
 
-  const { data, loading, error, refetch } = useQuery<TransitQueryResponse>(
-    QUERY_LIVE_TRANSITS,
+  const { data, loading, error, refetch } = useQuery<LiveTimeQueryResponse>(
+    QUERY_LIVE_TIME_OCCURRENCES,
     {
       fetchPolicy: 'network-only',
-      variables: { from, to },
+      variables: { to, limit: ARCHIVE_LIVE_TIME_LIMIT },
     },
   )
 
   const dayGroups = useMemo(
-    () => getArchiveDayGroups(data?.transitCollection?.items ?? []),
-    [data?.transitCollection?.items],
+    () =>
+      getArchiveDayGroups(
+        mapLiveTimeOccurrences(data?.transitLiveTimeCollection?.items ?? []),
+      ),
+    [data?.transitLiveTimeCollection?.items],
   )
 
   const totalPages = useMemo(() => {

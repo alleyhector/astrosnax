@@ -14,28 +14,31 @@ import { DefaultTheme } from 'expo-router/react-navigation'
 import { Text, View } from '@/components/Themed'
 import Today from '@/components/Today'
 import { useQuery } from '@apollo/client'
-import { TransitQueryResponse } from '@/types/contentful'
+import { LiveTimeQueryResponse } from '@/types/contentful'
 import { useAutoRefetch } from '@/components/useAutoRefetch'
 import { LinearGradient } from 'expo-linear-gradient'
-import { QUERY_LIVE_TRANSITS } from '@/lib/graphql'
+import { QUERY_LIVE_TIME_OCCURRENCES } from '@/lib/graphql'
+import { liveAtQueryTo } from '@/lib/pacificTime'
+import { mapLiveTimeOccurrences } from '@/lib/transitTimes'
+
+const TODAY_LIVE_TIME_LIMIT = 40
 
 const HomeScreen = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
-  const { from, to } = useMemo(() => {
-    const now = Date.now()
-    return {
-      from: new Date(now - 14 * 24 * 60 * 60 * 1000).toISOString(),
-      to: new Date(now + 2 * 24 * 60 * 60 * 1000).toISOString(),
-    }
-  }, [])
+  const to = liveAtQueryTo()
 
-  const { data, refetch, loading, error } = useQuery<TransitQueryResponse>(
-    QUERY_LIVE_TRANSITS,
+  const { data, refetch, loading, error } = useQuery<LiveTimeQueryResponse>(
+    QUERY_LIVE_TIME_OCCURRENCES,
     {
       fetchPolicy: 'network-only',
-      variables: { from, to },
+      variables: { to, limit: TODAY_LIVE_TIME_LIMIT },
     },
+  )
+
+  const occurrences = useMemo(
+    () => mapLiveTimeOccurrences(data?.transitLiveTimeCollection?.items ?? []),
+    [data?.transitLiveTimeCollection?.items],
   )
 
   const { onRefresh, isRefreshing } = useAutoRefetch({ refetch })
@@ -82,7 +85,7 @@ const HomeScreen = () => {
             alt='AstroSnax logo'
             contentFit='cover'
           />
-          <Today data={data} />
+          <Today occurrences={occurrences} />
         </View>
       </ScrollView>
     </LinearGradient>
