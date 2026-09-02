@@ -23,6 +23,7 @@
  * any other field. Safe to re-run.
  *
  * Usage:
+ *   pnpm --dir scripts/contentful install
  *   node link-live-times.js transits_2026_12.json --audit-only
  *   node link-live-times.js transits_2026_12.json
  *

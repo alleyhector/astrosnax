@@ -2,6 +2,7 @@
   "name": "astrosnax",
   "main": "expo-router/entry",
   "version": "1.7.0",
+  "packageManager": "pnpm@10.33.3",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -10,10 +11,10 @@
     "test": "jest --watchAll",
     "lint": "eslint --ext .ts,.tsx .",
     "pretty": "prettier --check .",
-    "contentful:dry-run": "node scripts/contentful/import-transits.js scripts/contentful/data/transits_2027_02.json --dry-run",
-    "contentful:import": "node scripts/contentful/import-transits.js scripts/contentful/data/transits_2027_02.json",
-    "contentful:audit": "node scripts/contentful/link-live-times.js scripts/contentful/data/transits_2027_02.json --audit-only",
-    "contentful:link-fix": "node scripts/contentful/link-live-times.js scripts/contentful/data/transits_2027_02.json"
+    "contentful:dry-run": "pnpm --dir scripts/contentful install && node scripts/contentful/import-transits.js scripts/contentful/data/transits_2027_02.json --dry-run",
+    "contentful:import": "pnpm --dir scripts/contentful install && node scripts/contentful/import-transits.js scripts/contentful/data/transits_2027_02.json",
+    "contentful:audit": "pnpm --dir scripts/contentful install && node scripts/contentful/link-live-times.js scripts/contentful/data/transits_2027_02.json --audit-only",
+    "contentful:link-fix": "pnpm --dir scripts/contentful install && node scripts/contentful/link-live-times.js scripts/contentful/data/transits_2027_02.json"
   },
   "jest": {
     "preset": "jest-expo"
@@ -24,10 +25,8 @@
     "@expo/vector-icons": "^15.1.1",
     "@ronradtke/react-native-markdown-display": "^8.1.0",
     "axios": "^1.12.0",
-    "contentful-management": "^12.15.0",
     "date-fns": "^4.4.0",
     "date-fns-tz": "^3.2.0",
-    "dotenv": "^17.4.2",
     "expo": "~56.0.13",
     "expo-build-properties": "^56.0.20",
     "expo-constants": "^56.0.19",

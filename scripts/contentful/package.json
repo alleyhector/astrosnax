@@ -1,0 +1,9 @@
+{
+  "name": "astrosnax-contentful-scripts",
+  "private": true,
+  "description": "Local Contentful import/audit tools. Kept out of the app lockfile so EAS builds do not install a Node write client.",
+  "dependencies": {
+    "contentful-management": "^12.15.0",
+    "dotenv": "^17.4.2"
+  }
+}

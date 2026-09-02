@@ -19,7 +19,7 @@
  * ]
  *
  * Usage:
- *   npm install contentful-management dotenv
+ *   pnpm --dir scripts/contentful install
  *
  *   In your .env (NOT prefixed with EXPO_PUBLIC_ — this token can write/delete
  *   content, so it must never end up in a client bundle):
