@@ -7,6 +7,7 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "pnpm": "10.33.3",
       "android": {
         "image": "latest"
       },
@@ -16,6 +17,7 @@
     },
     "preview": {
       "distribution": "internal",
+      "pnpm": "10.33.3",
       "ios": {
         "image": "latest"
       },
@@ -25,6 +27,7 @@
     },
     "production": {
       "autoIncrement": true,
+      "pnpm": "10.33.3",
       "android": {
         "image": "latest"
       },
