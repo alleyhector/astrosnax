@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -15,6 +16,7 @@ import { activeMergePack } from '@/lib/merge/pack'
 const GardenScreen = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
+  const [dragging, setDragging] = useState(false)
 
   return (
     <LinearGradient
@@ -27,6 +29,7 @@ const GardenScreen = () => {
       style={styles.gradient}
     >
       <ScrollView
+        scrollEnabled={!dragging}
         contentContainerStyle={{
           paddingTop: insets.top + 8,
           paddingBottom: insets.bottom + 28,
@@ -39,7 +42,7 @@ const GardenScreen = () => {
           <Text style={styles.subtitle}>
             A small garden of sky pieces. Merge matches to climb the chain.
           </Text>
-          <MergeBoard />
+          <MergeBoard onDraggingChange={setDragging} />
         </View>
       </ScrollView>
     </LinearGradient>

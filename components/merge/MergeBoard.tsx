@@ -1,13 +1,15 @@
 /* Reanimated shared values are mutated via `.value` inside worklets. */
 /* eslint-disable react-hooks/immutability */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   ActivityIndicator,
   LayoutChangeEvent,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
   View,
+  type ViewStyle,
 } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
@@ -35,8 +37,7 @@ type DraggableCellProps = {
   board: BoardState
   cellSize: number
   onDrop: (fromIndex: number, toIndex: number) => void
-  hitTest: (absoluteX: number, absoluteY: number) => number | null
-  measureBoard: () => void
+  onDragActiveChange: (active: boolean) => void
 }
 
 const DraggableCell = ({
@@ -44,8 +45,7 @@ const DraggableCell = ({
   board,
   cellSize,
   onDrop,
-  hitTest,
-  measureBoard,
+  onDragActiveChange,
 }: DraggableCellProps) => {
   const item = board.cells[index]
   const tier = item ? getTier(activeMergePack, item.tierIndex) : undefined
@@ -53,6 +53,7 @@ const DraggableCell = ({
   const translateY = useSharedValue(0)
   const zIndex = useSharedValue(0)
   const isDragging = useSharedValue(false)
+  const stride = cellSize + GAP
 
   const snapHome = useCallback(() => {
     translateX.value = withSpring(0, { damping: 18, stiffness: 220 })
@@ -62,25 +63,47 @@ const DraggableCell = ({
   }, [isDragging, translateX, translateY, zIndex])
 
   const handleEnd = useCallback(
-    (absoluteX: number, absoluteY: number) => {
-      const target = hitTest(absoluteX, absoluteY)
-      if (target !== null && target !== index) {
-        onDrop(index, target)
+    (translationX: number, translationY: number) => {
+      const fromRow = Math.floor(index / board.cols)
+      const fromCol = index % board.cols
+      const colDelta = Math.round(translationX / stride)
+      const rowDelta = Math.round(translationY / stride)
+      const toCol = fromCol + colDelta
+      const toRow = fromRow + rowDelta
+      const inBounds =
+        toCol >= 0 && toCol < board.cols && toRow >= 0 && toRow < board.rows
+
+      if (inBounds) {
+        const target = toRow * board.cols + toCol
+        if (target !== index) {
+          onDrop(index, target)
+        }
       }
+
+      onDragActiveChange(false)
       snapHome()
     },
-    [hitTest, index, onDrop, snapHome],
+    [
+      board.cols,
+      board.rows,
+      index,
+      onDragActiveChange,
+      onDrop,
+      snapHome,
+      stride,
+    ],
   )
 
   const pan = useMemo(
     () =>
       Gesture.Pan()
         .enabled(Boolean(item))
+        .minDistance(4)
         .onStart(() => {
           'worklet'
-          runOnJS(measureBoard)()
           isDragging.value = true
           zIndex.value = 20
+          runOnJS(onDragActiveChange)(true)
         })
         .onUpdate((event) => {
           'worklet'
@@ -89,9 +112,27 @@ const DraggableCell = ({
         })
         .onEnd((event) => {
           'worklet'
-          runOnJS(handleEnd)(event.absoluteX, event.absoluteY)
+          runOnJS(handleEnd)(event.translationX, event.translationY)
+        })
+        .onFinalize(() => {
+          'worklet'
+          if (isDragging.value) {
+            runOnJS(onDragActiveChange)(false)
+            translateX.value = withSpring(0, { damping: 18, stiffness: 220 })
+            translateY.value = withSpring(0, { damping: 18, stiffness: 220 })
+            zIndex.value = 0
+            isDragging.value = false
+          }
         }),
-    [handleEnd, isDragging, item, measureBoard, translateX, translateY, zIndex],
+    [
+      handleEnd,
+      isDragging,
+      item,
+      onDragActiveChange,
+      translateX,
+      translateY,
+      zIndex,
+    ],
   )
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -107,6 +148,11 @@ const DraggableCell = ({
     return <View style={[styles.cell, { width: cellSize, height: cellSize }]} />
   }
 
+  const webTouchStyle =
+    Platform.OS === 'web'
+      ? ({ touchAction: 'none' } as unknown as ViewStyle)
+      : null
+
   return (
     <GestureDetector gesture={pan}>
       <Animated.View
@@ -114,6 +160,7 @@ const DraggableCell = ({
           styles.cell,
           styles.filledCell,
           { width: cellSize, height: cellSize },
+          webTouchStyle,
           animatedStyle,
         ]}
       >
@@ -123,7 +170,11 @@ const DraggableCell = ({
   )
 }
 
-const MergeBoard = () => {
+type MergeBoardProps = {
+  onDraggingChange?: (dragging: boolean) => void
+}
+
+const MergeBoard = ({ onDraggingChange }: MergeBoardProps) => {
   const pack = activeMergePack
   const colorScheme = useColorScheme()
   const isDark = colorScheme === 'dark'
@@ -136,8 +187,6 @@ const MergeBoard = () => {
   const [board, setBoard] = useState<BoardState | null>(null)
   const [boardWidth, setBoardWidth] = useState(0)
   const [status, setStatus] = useState('Drag matching pieces together.')
-  const boardRef = useRef<View>(null)
-  const boardOrigin = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
     let mounted = true
@@ -154,18 +203,15 @@ const MergeBoard = () => {
     void saveBoard(board)
   }, [board])
 
-  const measureBoard = useCallback(() => {
-    boardRef.current?.measureInWindow((x, y) => {
-      boardOrigin.current = { x, y }
-    })
+  const onBoardLayout = useCallback((event: LayoutChangeEvent) => {
+    setBoardWidth(event.nativeEvent.layout.width)
   }, [])
 
-  const onBoardLayout = useCallback(
-    (event: LayoutChangeEvent) => {
-      setBoardWidth(event.nativeEvent.layout.width)
-      requestAnimationFrame(measureBoard)
+  const onDragActiveChange = useCallback(
+    (active: boolean) => {
+      onDraggingChange?.(active)
     },
-    [measureBoard],
+    [onDraggingChange],
   )
 
   const cellSize = useMemo(() => {
@@ -173,29 +219,6 @@ const MergeBoard = () => {
     const inner = boardWidth - PAD * 2 - GAP * (board.cols - 1)
     return Math.floor(inner / board.cols)
   }, [board, boardWidth])
-
-  const hitTest = useCallback(
-    (absoluteX: number, absoluteY: number) => {
-      if (!board) return null
-      const localX = absoluteX - boardOrigin.current.x - PAD
-      const localY = absoluteY - boardOrigin.current.y - PAD
-      if (localX < 0 || localY < 0) return null
-
-      const stride = cellSize + GAP
-      const col = Math.floor(localX / stride)
-      const row = Math.floor(localY / stride)
-      if (col < 0 || row < 0 || col >= board.cols || row >= board.rows) {
-        return null
-      }
-
-      const withinCellX = localX - col * stride
-      const withinCellY = localY - row * stride
-      if (withinCellX > cellSize || withinCellY > cellSize) return null
-
-      return row * board.cols + col
-    },
-    [board, cellSize],
-  )
 
   const handleDrop = useCallback(
     (fromIndex: number, toIndex: number) => {
@@ -261,7 +284,6 @@ const MergeBoard = () => {
       <Text style={[styles.hint, { color: mutedText }]}>{status}</Text>
 
       <View
-        ref={boardRef}
         style={[
           styles.board,
           {
@@ -274,7 +296,6 @@ const MergeBoard = () => {
           },
         ]}
         onLayout={onBoardLayout}
-        collapsable={false}
       >
         {Array.from({ length: board.rows }, (_, row) => (
           <View key={`row-${row}`} style={styles.row}>
@@ -299,8 +320,7 @@ const MergeBoard = () => {
                     board={board}
                     cellSize={cellSize}
                     onDrop={handleDrop}
-                    hitTest={hitTest}
-                    measureBoard={measureBoard}
+                    onDragActiveChange={onDragActiveChange}
                   />
                 </View>
               )
