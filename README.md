@@ -14,7 +14,7 @@ Then open in iOS Simulator, Android emulator, or Expo Go.
 ## What works in the stub
 
 - **Garden tab (home `/`)** — 5×5 merge board is the home surface
-- **Drag pieces** with `react-native-gesture-handler` (Reanimated motion)
+- **Play pieces** by tap-to-select then tap a match/empty cell (reliable on web); drag via `react-native-gesture-handler` on device
 - **Merge** two matching tiers into the next tier along an 8-step chain
 - **Add spark** places a new lowest-tier piece in an empty cell
 - **Reset** clears AsyncStorage and restores the starter layout

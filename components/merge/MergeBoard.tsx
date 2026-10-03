@@ -32,21 +32,27 @@ import type { BoardState } from '@/lib/merge/types'
 const GAP = 8
 const PAD = 10
 
-type DraggableCellProps = {
+type BoardCellProps = {
   index: number
   board: BoardState
   cellSize: number
+  selected: boolean
   onDrop: (fromIndex: number, toIndex: number) => void
+  onSelect: (index: number) => void
   onDragActiveChange: (active: boolean) => void
+  isDark: boolean
 }
 
-const DraggableCell = ({
+const BoardCell = ({
   index,
   board,
   cellSize,
+  selected,
   onDrop,
+  onSelect,
   onDragActiveChange,
-}: DraggableCellProps) => {
+  isDark,
+}: BoardCellProps) => {
   const item = board.cells[index]
   const tier = item ? getTier(activeMergePack, item.tierIndex) : undefined
   const translateX = useSharedValue(0)
@@ -98,7 +104,7 @@ const DraggableCell = ({
     () =>
       Gesture.Pan()
         .enabled(Boolean(item))
-        .minDistance(4)
+        .minDistance(6)
         .onStart(() => {
           'worklet'
           isDragging.value = true
@@ -144,29 +150,50 @@ const DraggableCell = ({
     zIndex: zIndex.value,
   }))
 
-  if (!item || !tier) {
-    return <View style={[styles.cell, { width: cellSize, height: cellSize }]} />
-  }
-
   const webTouchStyle =
     Platform.OS === 'web'
       ? ({ touchAction: 'none' } as unknown as ViewStyle)
       : null
 
+  const cellBody = (
+    <Animated.View
+      style={[
+        styles.cell,
+        item ? styles.filledCell : null,
+        selected && styles.selectedCell,
+        {
+          width: cellSize,
+          height: cellSize,
+          backgroundColor: item
+            ? isDark
+              ? 'rgba(254, 250, 224, 0.12)'
+              : 'rgba(255, 255, 255, 0.55)'
+            : 'transparent',
+        },
+        webTouchStyle,
+        animatedStyle,
+      ]}
+    >
+      {item && tier ? <MergeItem tier={tier} /> : null}
+    </Animated.View>
+  )
+
   return (
-    <GestureDetector gesture={pan}>
-      <Animated.View
-        style={[
-          styles.cell,
-          styles.filledCell,
-          { width: cellSize, height: cellSize },
-          webTouchStyle,
-          animatedStyle,
-        ]}
-      >
-        <MergeItem tier={tier} />
-      </Animated.View>
-    </GestureDetector>
+    <Pressable
+      accessibilityRole='button'
+      accessibilityLabel={
+        item && tier
+          ? `${tier.name}, cell ${index + 1}`
+          : `Empty cell ${index + 1}`
+      }
+      onPress={() => onSelect(index)}
+    >
+      {item ? (
+        <GestureDetector gesture={pan}>{cellBody}</GestureDetector>
+      ) : (
+        cellBody
+      )}
+    </Pressable>
   )
 }
 
@@ -186,7 +213,10 @@ const MergeBoard = ({ onDraggingChange }: MergeBoardProps) => {
     : 'rgba(45, 42, 38, 0.55)'
   const [board, setBoard] = useState<BoardState | null>(null)
   const [boardWidth, setBoardWidth] = useState(0)
-  const [status, setStatus] = useState('Drag matching pieces together.')
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+  const [status, setStatus] = useState(
+    'Tap a piece, then tap a match or empty cell. Drag also works on device.',
+  )
 
   useEffect(() => {
     let mounted = true
@@ -209,6 +239,7 @@ const MergeBoard = ({ onDraggingChange }: MergeBoardProps) => {
 
   const onDragActiveChange = useCallback(
     (active: boolean) => {
+      if (active) setSelectedIndex(null)
       onDraggingChange?.(active)
     },
     [onDraggingChange],
@@ -222,6 +253,7 @@ const MergeBoard = ({ onDraggingChange }: MergeBoardProps) => {
 
   const handleDrop = useCallback(
     (fromIndex: number, toIndex: number) => {
+      setSelectedIndex(null)
       setBoard((current) => {
         if (!current) return current
         const result = applyDrop(
@@ -251,7 +283,40 @@ const MergeBoard = ({ onDraggingChange }: MergeBoardProps) => {
     [pack],
   )
 
+  const handleSelect = useCallback(
+    (index: number) => {
+      if (!board) return
+
+      if (selectedIndex === null) {
+        if (!board.cells[index]) {
+          setStatus('Pick a piece first.')
+          return
+        }
+        setSelectedIndex(index)
+        const tier = getTier(pack, board.cells[index]!.tierIndex)
+        setStatus(
+          tier
+            ? `${tier.name} selected — tap a match or empty cell.`
+            : 'Selected — tap a match or empty cell.',
+        )
+        return
+      }
+
+      if (selectedIndex === index) {
+        setSelectedIndex(null)
+        setStatus(
+          'Tap a piece, then tap a match or empty cell. Drag also works on device.',
+        )
+        return
+      }
+
+      handleDrop(selectedIndex, index)
+    },
+    [board, handleDrop, pack, selectedIndex],
+  )
+
   const handleSpawn = useCallback(() => {
+    setSelectedIndex(null)
     setBoard((current) => {
       if (!current) return current
       const next = spawnLowestTier(current)
@@ -267,8 +332,9 @@ const MergeBoard = ({ onDraggingChange }: MergeBoardProps) => {
 
   const handleReset = useCallback(async () => {
     await clearBoardSave()
+    setSelectedIndex(null)
     setBoard(createStarterBoard(pack))
-    setStatus('Garden reset. Drag matching pieces together.')
+    setStatus('Garden reset. Tap a piece, then tap a match or empty cell.')
   }, [pack])
 
   if (!board) {
@@ -315,12 +381,15 @@ const MergeBoard = ({ onDraggingChange }: MergeBoardProps) => {
                     },
                   ]}
                 >
-                  <DraggableCell
+                  <BoardCell
                     index={index}
                     board={board}
                     cellSize={cellSize}
+                    selected={selectedIndex === index}
                     onDrop={handleDrop}
+                    onSelect={handleSelect}
                     onDragActiveChange={onDragActiveChange}
+                    isDark={isDark}
                   />
                 </View>
               )
@@ -420,6 +489,10 @@ const styles = StyleSheet.create({
   },
   filledCell: {
     backgroundColor: 'rgba(255, 255, 255, 0.55)',
+  },
+  selectedCell: {
+    borderWidth: 2,
+    borderColor: '#5A7A6A',
   },
   actions: {
     flexDirection: 'row',
