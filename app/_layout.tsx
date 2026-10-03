@@ -1,3 +1,4 @@
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import {
   DarkTheme,
   DefaultTheme,
@@ -14,6 +15,7 @@ import Colors from '@/constants/Colors'
 import { useColorScheme } from '@/components/useColorScheme'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { StatusBar } from 'expo-status-bar'
+import { StyleSheet } from 'react-native'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -22,7 +24,7 @@ export {
 
 export const unstableSettings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: 'Home',
+  initialRouteName: '(tabs)',
 }
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -66,24 +68,32 @@ const RootLayoutNav = () => {
   const colorScheme = useColorScheme()
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <ApolloProvider client={apolloClient}>
-        <StatusBar style='auto' />
-        <Stack
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: Colors[colorScheme].background,
-            },
-            headerTintColor: Colors[colorScheme].tint,
-          }}
-        >
-          <Stack.Screen
-            name='(tabs)'
-            options={{ headerShown: false, title: 'Back' }}
-          />
-          <Stack.Screen name='[slug]' options={{ title: 'Post Details' }} />
-        </Stack>
-      </ApolloProvider>
-    </ThemeProvider>
+    <GestureHandlerRootView style={styles.root}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <ApolloProvider client={apolloClient}>
+          <StatusBar style='auto' />
+          <Stack
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: Colors[colorScheme].background,
+              },
+              headerTintColor: Colors[colorScheme].tint,
+            }}
+          >
+            <Stack.Screen
+              name='(tabs)'
+              options={{ headerShown: false, title: 'Back' }}
+            />
+            <Stack.Screen name='[slug]' options={{ title: 'Post Details' }} />
+          </Stack>
+        </ApolloProvider>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   )
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+})

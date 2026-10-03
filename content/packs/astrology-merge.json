@@ -1,0 +1,58 @@
+{
+  "id": "astrology-merge",
+  "name": "Quiet Sky Garden",
+  "board": {
+    "cols": 5,
+    "rows": 5
+  },
+  "chain": [
+    {
+      "id": "spark",
+      "name": "Spark",
+      "color": "#E8C99A",
+      "shape": "circle"
+    },
+    {
+      "id": "ember",
+      "name": "Ember",
+      "color": "#D4A07A",
+      "shape": "circle"
+    },
+    {
+      "id": "crescent",
+      "name": "Crescent",
+      "color": "#C9B8D4",
+      "shape": "rounded"
+    },
+    {
+      "id": "orbit",
+      "name": "Orbit",
+      "color": "#8FA9B8",
+      "shape": "circle"
+    },
+    {
+      "id": "constellation",
+      "name": "Constellation",
+      "color": "#6B8F9E",
+      "shape": "rounded"
+    },
+    {
+      "id": "horizon",
+      "name": "Horizon",
+      "color": "#5A7A6A",
+      "shape": "circle"
+    },
+    {
+      "id": "nova",
+      "name": "Nova",
+      "color": "#B8956A",
+      "shape": "rounded"
+    },
+    {
+      "id": "eclipse",
+      "name": "Eclipse",
+      "color": "#3D4A52",
+      "shape": "circle"
+    }
+  ]
+}

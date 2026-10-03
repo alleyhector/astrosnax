@@ -21,6 +21,7 @@ const TabLayout = () => {
 
   return (
     <Tabs
+      initialRouteName='garden'
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
         // Disable the static render of the header on web
@@ -29,9 +30,16 @@ const TabLayout = () => {
       }}
     >
       <Tabs.Screen
+        name='garden'
+        options={{
+          title: 'Garden',
+          tabBarIcon: ({ color }) => <TabBarIcon name='sprout' color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name='index'
         options={{
-          title: 'Home',
+          title: 'Today',
           tabBarIcon: ({ color }) => (
             <TabBarIcon name='zodiac-taurus' color={color} />
           ),
