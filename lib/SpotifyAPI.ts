@@ -4,13 +4,13 @@ import axios, { isAxiosError } from 'axios'
 const encodeBasicAuth = (clientId: string, clientSecret: string) =>
   btoa(`${clientId}:${clientSecret}`)
 
-const clientId = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID
-if (!clientId) {
-  throw new Error('SPOTIFY_CLIENT_ID is not set')
-}
-const clientSecret = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET
-if (!clientSecret) {
-  throw new Error('SPOTIFY_CLIENT_SECRET is not set')
+const clientId = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_ID ?? ''
+const clientSecret = process.env.EXPO_PUBLIC_SPOTIFY_CLIENT_SECRET ?? ''
+if (!clientId || !clientSecret) {
+  // Soft-fail so the merge Garden stub can boot without Spotify secrets.
+  console.warn(
+    'SPOTIFY_CLIENT_ID or SPOTIFY_CLIENT_SECRET is not set; playlists will fail.',
+  )
 }
 
 // Create an Axios instance

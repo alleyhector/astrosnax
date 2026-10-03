@@ -1,91 +1,45 @@
-import React, { useMemo } from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  RefreshControl,
-  ActivityIndicator,
-} from 'react-native'
-import { Image } from 'expo-image'
-import { container, textShadow } from '@/constants/Styles'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import Colors from '@/constants/Colors'
-import { useColorScheme } from '@/components/useColorScheme'
-import { DefaultTheme } from 'expo-router/react-navigation'
-import { Text, View } from '@/components/Themed'
-import Today from '@/components/Today'
-import { useQuery } from '@apollo/client'
-import { LiveTimeQueryResponse } from '@/types/contentful'
-import { useAutoRefetch } from '@/components/useAutoRefetch'
+import { ScrollView, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { QUERY_LIVE_TIME_OCCURRENCES } from '@/lib/graphql'
-import { liveAtQueryTo } from '@/lib/pacificTime'
-import { mapLiveTimeOccurrences } from '@/lib/transitTimes'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Text, View } from '@/components/Themed'
+import MergeBoard from '@/components/merge/MergeBoard'
+import Colors from '@/constants/Colors'
+import { container, textShadow } from '@/constants/Styles'
+import { useColorScheme } from '@/components/useColorScheme'
+import { activeMergePack } from '@/lib/merge/pack'
 
-const TODAY_LIVE_TIME_LIMIT = 40
-
-const HomeScreen = () => {
+/**
+ * Merge board home stub.
+ * Match-3 levels, rewarded ads, and IAP are deferred — see README.
+ */
+const GardenScreen = () => {
   const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
-  const to = liveAtQueryTo()
-
-  const { data, refetch, loading, error } = useQuery<LiveTimeQueryResponse>(
-    QUERY_LIVE_TIME_OCCURRENCES,
-    {
-      fetchPolicy: 'network-only',
-      variables: { to, limit: TODAY_LIVE_TIME_LIMIT },
-    },
-  )
-
-  const occurrences = useMemo(
-    () => mapLiveTimeOccurrences(data?.transitLiveTimeCollection?.items ?? []),
-    [data?.transitLiveTimeCollection?.items],
-  )
-
-  const { onRefresh, isRefreshing } = useAutoRefetch({ refetch })
-  if (loading) return <ActivityIndicator size='large' />
-  if (error) return <Text>Error: {error.message}</Text>
 
   return (
     <LinearGradient
       colors={[
-        colorScheme
-          ? Colors[colorScheme].background
-          : DefaultTheme.colors.background,
-        colorScheme === 'dark' ? '#000' : '#fac7b0',
+        Colors[colorScheme].background,
+        colorScheme === 'dark' ? '#1a2218' : '#e8d5c4',
       ]}
-      start={{ x: 0.5, y: 0.6 }}
+      start={{ x: 0.5, y: 0.15 }}
+      end={{ x: 0.5, y: 1 }}
+      style={styles.gradient}
     >
       <ScrollView
-        style={{
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
-          display: 'flex',
+        contentContainerStyle={{
+          paddingTop: insets.top + 8,
+          paddingBottom: insets.bottom + 28,
         }}
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-        }
+        showsVerticalScrollIndicator={false}
       >
-        <View style={container}>
-          <Text style={styles.title}>AstroSnax</Text>
-          <Text style={styles.subtitle}>Food for celestial thought</Text>
-          <Text style={styles.p}>
-            What’s the astrological weather report for today? Below you will
-            find a list of today’s transits. Interpret them how you will. I have
-            done so by providing recipes created with the mashup of these
-            cosmological characters and dishes that express how their powers
-            combine...for better or worse...
+        <View style={[container, styles.inner]}>
+          <Text style={styles.brand}>AstroSnax</Text>
+          <Text style={styles.title}>{activeMergePack.name}</Text>
+          <Text style={styles.subtitle}>
+            A small garden of sky pieces. Merge matches to climb the chain.
           </Text>
-          <Text style={styles.p}>
-            Oh and why not have some music with dinner? Spotify will provide
-            playlists based on either the transits or the recipes. Enjoy!
-          </Text>
-          <Image
-            style={styles.logo}
-            source={require('@/assets/images/logo.png')}
-            alt='AstroSnax logo'
-            contentFit='cover'
-          />
-          <Today occurrences={occurrences} />
+          <MergeBoard />
         </View>
       </ScrollView>
     </LinearGradient>
@@ -93,31 +47,35 @@ const HomeScreen = () => {
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
+  inner: {
+    gap: 6,
+  },
+  brand: {
+    fontFamily: 'AngelClub',
+    fontSize: 28,
+    textAlign: 'center',
+    marginTop: 8,
+    ...textShadow,
+  },
   title: {
     fontFamily: 'AngelClub',
-    fontSize: 24,
-    marginTop: 20,
+    fontSize: 20,
     textAlign: 'center',
-    ...textShadow,
+    marginTop: 4,
+    opacity: 0.9,
   },
   subtitle: {
-    fontFamily: 'AngelClub',
-    fontSize: 22,
-    margin: 10,
-    textAlign: 'center',
-    ...textShadow,
-  },
-  p: {
     fontFamily: 'Nimbus',
-    fontSize: 16,
-    marginTop: 20,
-    marginBottom: 0,
-  },
-  logo: {
-    width: 300,
-    height: 250,
-    alignSelf: 'center',
+    fontSize: 15,
+    textAlign: 'center',
+    marginBottom: 10,
+    marginHorizontal: 8,
+    lineHeight: 22,
+    opacity: 0.78,
   },
 })
 
-export default HomeScreen
+export default GardenScreen

@@ -1,21 +1,24 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 
-if (
-  !process.env.EXPO_PUBLIC_CONTENTFUL_KEY ||
-  !process.env.EXPO_PUBLIC_CONTENTFUL_ENVIRONMENT
-) {
-  throw new Error('Required Contentful environment variables are not defined')
+const contentfulKey = process.env.EXPO_PUBLIC_CONTENTFUL_KEY
+const contentfulEnvironment =
+  process.env.EXPO_PUBLIC_CONTENTFUL_ENVIRONMENT ?? 'master'
+
+if (!contentfulKey || !process.env.EXPO_PUBLIC_CONTENTFUL_ENVIRONMENT) {
+  // Soft-fail so the merge Garden stub can boot without Contentful secrets.
+  // Today / Archive / About still need real env vars to fetch content.
+  console.warn(
+    'Contentful environment variables are not defined; content tabs will not load.',
+  )
 }
 
 export const cache = new InMemoryCache()
 
 export const client = new ApolloClient({
-  uri: `https://graphql.contentful.com/content/v1/spaces/125gutb64ghd/environments/${
-    process.env.EXPO_PUBLIC_CONTENTFUL_ENVIRONMENT
-  }`,
+  uri: `https://graphql.contentful.com/content/v1/spaces/125gutb64ghd/environments/${contentfulEnvironment}`,
   cache,
   credentials: 'same-origin',
   headers: {
-    Authorization: `Bearer ${process.env.EXPO_PUBLIC_CONTENTFUL_KEY}`,
+    Authorization: `Bearer ${contentfulKey ?? ''}`,
   },
 })

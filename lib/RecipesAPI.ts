@@ -10,7 +10,8 @@ const appId = process.env.EXPO_PUBLIC_EDAMAM_ID
 const appKey = process.env.EXPO_PUBLIC_EDAMAM_KEY
 
 if (!appId || !appKey) {
-  throw new Error('EDAMAM_ID or EDAMAM_KEY is not set')
+  // Soft-fail so the merge Garden stub can boot without recipe API secrets.
+  console.warn('EDAMAM_ID or EDAMAM_KEY is not set; recipe search will fail.')
 }
 
 const CACHE_MAX_AGE = 3600 * 1000 * 12 // 12 hours in milliseconds

@@ -1,6 +1,6 @@
 # AstroSnax — Quiet Sky Garden (merge stub)
 
-Expo (React Native + TypeScript) app. This branch adds a **playable merge-board stub** as the Garden home tab, alongside the existing Today / Archive / About content.
+Expo (React Native + TypeScript) app. This branch adds a **playable merge-board stub** as the home **Garden** tab (`/`), alongside the existing Today / Archive / About content.
 
 ## Run
 
@@ -13,7 +13,7 @@ Then open in iOS Simulator, Android emulator, or Expo Go.
 
 ## What works in the stub
 
-- **Garden tab** — 5×5 merge board is the home surface
+- **Garden tab (home `/`)** — 5×5 merge board is the home surface
 - **Drag pieces** with `react-native-gesture-handler` (Reanimated motion)
 - **Merge** two matching tiers into the next tier along an 8-step chain
 - **Add spark** places a new lowest-tier piece in an empty cell
